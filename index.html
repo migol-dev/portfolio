@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Miguel García - Desarrollador JavaScript especializado en TypeScript y Discord Bots. 3 años de experiencia creando soluciones innovadoras.">
+    <meta name="author" content="Miguel García">
+    <meta name="keywords" content="JavaScript, TypeScript, Discord Bot Developer, Web Developer, Frontend, Backend">
+    
+    <!-- Open Graph -->
+    <meta property="og:title" content="Miguel García - JavaScript Developer">
+    <meta property="og:description" content="Desarrollador especializado en TypeScript y Discord Bots con 3 años de experiencia.">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://migol.dev">
+    
+    <!-- Preconnects para optimización -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    
+    <title>Miguel García | JavaScript Developer</title>
+    
+    <!-- Critical CSS inline -->
+    <style>
+        /* Reset y Variables CSS */
+        :root {
+            --bg-primary: #0a0a0a;
+            --bg-secondary: #141414;
+            --bg-card: rgba(255, 255, 255, 0.03);
+            --text-primary: #ffffff;
+            --text-secondary: #a0a0a0;
+            --text-muted: #666666;
+            --accent: #6366f1;
+            --accent-light: #818cf8;
+            --border: rgba(255, 255, 255, 0.08);
+            --shadow: 0 10px 40px rgba(0, 0, 0, 0.5);
+            --gradient: linear-gradient(135deg, var(--accent) 0%, var(--accent-light) 100%);
+            --max-width: 1200px;
+            --transition-base: 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+            --transition-smooth: 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+        }
+
+        /* Modo claro */
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-primary: #ffffff;
+                --bg-secondary: #f8f8f8;
+                --bg-card: rgba(0, 0, 0, 0.02);
+                --text-primary: #0a0a0a;
+                --text-secondary: #4a4a4a;
+                --text-muted: #999999;
+                --border: rgba(0, 0, 0, 0.08);
+                --shadow: 0 10px 40px rgba(0, 0, 0, 0.1);
+            }
+        }
+
+        /* Reset moderno */
+        *, *::before, *::after {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html {
+            scroll-behavior: smooth;
+            font-size: 16px;
+            -webkit-font-smoothing: antialiased;
+            -moz-osx-font-smoothing: grayscale;
+        }
+
+        body {
+            font-family: system-ui, -apple-system, "Segoe UI", Roboto, sans-serif;
+            background-color: var(--bg-primary);
+            color: var(--text-secondary);
+            line-height: 1.6;
+            overflow-x: hidden;
+            min-height: 100vh;
+            position: relative;
+        }
+
+        /* Textura de ruido SVG */
+        body::before {
+            content: '';
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            opacity: 0.03;
+            z-index: 1;
+            pointer-events: none;
+            background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.65' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.5'/%3E%3C/svg%3E");
+            background-repeat: repeat;
+        }
+
+        /* Tipografía fluida */
+        h1 { 
+            font-size: clamp(2rem, 5vw + 1rem, 5rem);
+            font-weight: 800;
+            line-height: 1.1;
+            color: var(--text-primary);
+        }
+        
+        h2 { 
+            font-size: clamp(1.5rem, 3vw + 0.5rem, 3rem);
+            font-weight: 700;
+            color: var(--text-primary);
+        }
+        
+        h3 { 
+            font-size: clamp(1.25rem, 2vw + 0.5rem, 1.75rem);
+            font-weight: 600;
+            color: var(--text-primary);
+        }
+
+        p {
+            font-size: clamp(0.95rem, 1vw + 0.5rem, 1.125rem);
+            color: var(--text-secondary);
+        }
+
+        /* Container responsive */
+        .container {
+            width: 100%;
+            max-width: var(--max-width);
+            margin: 0 auto;
+            padding: 0 1.5rem;
+            position: relative;
+            z-index: 2;
+        }
+
+        /* Skip to content - Accesibilidad */
+        .skip-to-content {
+            position: absolute;
+            top: -40px;
+            left: 0;
+            background: var(--accent);
+            color: white;
+            padding: 8px;
+            z-index: 100;
+            text-decoration: none;
+            border-radius: 0 0 4px 0;
+        }
+
+        .skip-to-content:focus {
+            top: 0;
+        }
+
+        /* Header */
+        header {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background: var(--bg-primary);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border-bottom: 1px solid var(--border);
+            z-index: 100;
+            transition: transform var(--transition-base);
+        }
+
+        header.scrolled {
+            background: rgba(10, 10, 10, 0.95);
+        }
+
+        nav {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 1.25rem 0;
+        }
+
+        .logo {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: var(--text-primary);
+            text-decoration: none;
+            letter-spacing: -0.5px;
+            transition: color var(--transition-base);
+        }
+
+        .logo:hover {
+            color: var(--accent);
+        }
+
+        .nav-menu {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+            align-items: center;
+        }
+
+        .nav-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            font-size: 0.95rem;
+            font-weight: 500;
+            position: relative;
+            transition: color var(--transition-base);
+        }
+
+        .nav-link::after {
+            content: '';
+            position: absolute;
+            bottom: -4px;
+            left: 0;
+            width: 0;
+            height: 2px;
+            background: var(--gradient);
+            transition: width var(--transition-base);
+        }
+
+        .nav-link:hover,
+        .nav-link:focus-visible {
+            color: var(--text-primary);
+        }
+
+        .nav-link:hover::after {
+            width: 100%;
+        }
+
+        /* Menu móvil */
+        .menu-toggle {
+            display: none;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0.5rem;
+            color: var(--text-primary);
+        }
+
+        .menu-toggle svg {
+            width: 24px;
+            height: 24px;
+        }
+
+        /* Main content */
+        main {
+            position: relative;
+            z-index: 2;
+        }
+
+        section {
+            padding: 5rem 0;
+            min-height: 100vh;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Hero Section */
+        .hero {
+            position: relative;
+            overflow: hidden;
+        }
+
+        .hero-content {
+            display: grid;
+            gap: 2rem;
+            opacity: 0;
+            animation: fadeInUp 0.8s ease forwards;
+        }
+
+        .hero-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.5rem 1rem;
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 2rem;
+            font-size: 0.875rem;
+            color: var(--text-secondary);
+            width: fit-content;
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            background: #10b981;
+            border-radius: 50%;
+            animation: pulse 2s infinite;
+        }
+
+        @keyframes pulse {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        .hero-title {
+            background: var(--gradient);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+            background-clip: text;
+            margin: 1rem 0;
+        }
+
+        .hero-subtitle {
+            font-size: clamp(1rem, 2vw, 1.25rem);
+            color: var(--text-muted);
+            font-weight: 500;
+            letter-spacing: 0.5px;
+        }
+
+        .hero-description {
+            max-width: 650px;
+            line-height: 1.8;
+            margin: 1rem 0;
+        }
+
+        .hero-actions {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 2rem;
+        }
+
+        .btn {
+            padding: 0.875rem 2rem;
+            border-radius: 0.5rem;
+            font-weight: 600;
+            text-decoration: none;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            transition: all var(--transition-base);
+            cursor: pointer;
+            border: 2px solid transparent;
+            font-size: 0.95rem;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .btn-primary {
+            background: var(--gradient);
+            color: white;
+            box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+        }
+
+        .btn-primary:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+        }
+
+        .btn-secondary {
+            background: var(--bg-card);
+            color: var(--text-primary);
+            border-color: var(--border);
+        }
+
+        .btn-secondary:hover {
+            background: var(--bg-secondary);
+            border-color: var(--accent);
+        }
+
+        /* Skills Grid */
+        .skills-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .skill-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 2rem;
+            transition: all var(--transition-base);
+            cursor: pointer;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .skill-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 2px;
+            background: var(--gradient);
+            transform: scaleX(0);
+            transition: transform var(--transition-base);
+        }
+
+        .skill-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+            box-shadow: var(--shadow);
+        }
+
+        .skill-card:hover::before {
+            transform: scaleX(1);
+        }
+
+        .skill-icon {
+            width: 48px;
+            height: 48px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: var(--gradient);
+            border-radius: 0.75rem;
+            margin-bottom: 1rem;
+            font-size: 1.5rem;
+        }
+
+        .skill-name {
+            font-size: 1.25rem;
+            margin-bottom: 0.5rem;
+        }
+
+        .skill-level {
+            font-size: 0.875rem;
+            color: var(--text-muted);
+            margin-bottom: 0.75rem;
+        }
+
+        /* Timeline */
+        .timeline {
+            position: relative;
+            max-width: 900px;
+            margin: 3rem auto 0;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 20px;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--border);
+        }
+
+        .timeline-item {
+            position: relative;
+            padding-left: 60px;
+            margin-bottom: 3rem;
+            opacity: 0;
+            transform: translateX(-20px);
+        }
+
+        .timeline-item.in-view {
+            animation: slideInLeft 0.6s ease forwards;
+        }
+
+        .timeline-dot {
+            position: absolute;
+            left: 11px;
+            top: 0;
+            width: 20px;
+            height: 20px;
+            border-radius: 50%;
+            background: var(--bg-primary);
+            border: 3px solid var(--accent);
+            transition: all var(--transition-base);
+        }
+
+        .timeline-item:hover .timeline-dot {
+            transform: scale(1.3);
+            background: var(--gradient);
+        }
+
+        .timeline-content {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            transition: all var(--transition-base);
+        }
+
+        .timeline-content:hover {
+            border-color: var(--accent);
+            transform: translateX(5px);
+        }
+
+        .timeline-year {
+            color: var(--accent);
+            font-size: 0.875rem;
+            font-weight: 600;
+            margin-bottom: 0.5rem;
+        }
+
+        .timeline-title {
+            margin-bottom: 0.75rem;
+        }
+
+        /* Contact */
+        .contact-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 1.5rem;
+            margin-top: 3rem;
+        }
+
+        .contact-card {
+            background: var(--bg-card);
+            border: 1px solid var(--border);
+            border-radius: 1rem;
+            padding: 1.5rem;
+            text-align: center;
+            transition: all var(--transition-base);
+        }
+
+        .contact-card:hover {
+            transform: translateY(-5px);
+            border-color: var(--accent);
+        }
+
+        .contact-icon {
+            font-size: 2rem;
+            margin-bottom: 1rem;
+        }
+
+        .contact-link {
+            color: var(--text-secondary);
+            text-decoration: none;
+            transition: color var(--transition-base);
+        }
+
+        .contact-link:hover {
+            color: var(--accent);
+        }
+
+        /* Footer */
+        footer {
+            padding: 2rem 0;
+            text-align: center;
+            border-top: 1px solid var(--border);
+            margin-top: 4rem;
+        }
+
+        /* Animaciones */
+        @keyframes fadeInUp {
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        @keyframes slideInLeft {
+            to {
+                opacity: 1;
+                transform: translateX(0);
+            }
+        }
+
+        .fade-in {
+            opacity: 0;
+            transform: translateY(20px);
+            transition: all var(--transition-smooth);
+        }
+
+        .fade-in.in-view {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        /* Reduce motion */
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after {
+                animation-duration: 0.01ms !important;
+                animation-iteration-count: 1 !important;
+                transition-duration: 0.01ms !important;
+            }
+            
+            html {
+                scroll-behavior: auto;
+            }
+        }
+
+        /* Focus visible */
+        :focus-visible {
+            outline: 2px solid var(--accent);
+            outline-offset: 2px;
+        }
+
+        /* Mobile responsive */
+        @media (max-width: 768px) {
+            .nav-menu {
+                position: fixed;
+                top: 0;
+                right: -100%;
+                width: 100%;
+                height: 100vh;
+                background: var(--bg-primary);
+                flex-direction: column;
+                justify-content: center;
+                gap: 3rem;
+                transition: right var(--transition-base);
+            }
+
+            .nav-menu.active {
+                right: 0;
+            }
+
+            .menu-toggle {
+                display: block;
+                z-index: 101;
+            }
+
+            .hero-actions {
+                flex-direction: column;
+                width: 100%;
+            }
+
+            .btn {
+                width: 100%;
+                justify-content: center;
+            }
+
+            .skills-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .timeline::before {
+                left: 15px;
+            }
+
+            .timeline-item {
+                padding-left: 45px;
+            }
+
+            .timeline-dot {
+                left: 6px;
+            }
+
+            section {
+                padding: 3rem 0;
+                min-height: auto;
+            }
+        }
+
+        /* Tablet */
+        @media (min-width: 769px) and (max-width: 1024px) {
+            .skills-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+
+        /* Loading skeleton */
+        .skeleton {
+            background: linear-gradient(90deg, var(--bg-card) 0%, var(--bg-secondary) 50%, var(--bg-card) 100%);
+            background-size: 200% 100%;
+            animation: skeleton 1.5s ease infinite;
+        }
+
+        @keyframes skeleton {
+            0% { background-position: 200% 0; }
+            100% { background-position: -200% 0; }
+        }
+    </style>
+    
+    <!-- Google Fonts con font-display swap -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+</head>
+
+<body>
+    <!-- Skip to content para accesibilidad -->
+    <a href="#main" class="skip-to-content">Saltar al contenido</a>
+
+    <!-- Header -->
+    <header id="header">
+        <nav class="container">
+            <a href="#hero" class="logo" aria-label="MIGOL - Inicio">MIGOL</a>
+            
+            <ul class="nav-menu" role="navigation" aria-label="Menú principal">
+                <li><a href="#hero" class="nav-link">Inicio</a></li>
+                <li><a href="#about" class="nav-link">Sobre Mi</a></li>
+                <li><a href="#skills" class="nav-link">Habilidades</a></li>
+                <li><a href="#experience" class="nav-link">Experiencia</a></li>
+                <li><a href="#contact" class="nav-link">Contacto</a></li>
+            </ul>
+            
+            <button class="menu-toggle" aria-label="Abrir menú" aria-expanded="false">
+                <svg fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                    <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"/>
+                </svg>
+            </button>
+        </nav>
+    </header>
+
+    <!-- Main content -->
+    <main id="main">
+        <!-- Hero Section -->
+        <section id="hero" class="hero">
+            <div class="container">
+                <div class="hero-content">
+                    <div class="hero-badge">
+                        <span class="status-dot"></span>
+                        Disponible para proyectos
+                    </div>
+                    
+                    <h1 class="hero-title">JavaScript<br>Developer</h1>
+                    
+                    <p class="hero-subtitle">TypeScript • Discord Bots • Full Stack</p>
+                    
+                    <p class="hero-description">
+                        Desarrollador junior especializado en TypeScript y JavaScript con 3 años de experiencia 
+                        creando bots de Discord innovadores. Bilingüe español/inglés, apasionado por crear 
+                        soluciones elegantes y eficientes.
+                    </p>
+                    
+                    <div class="hero-actions">
+                        <a href="#contact" class="btn btn-primary">
+                            Contactar
+                            <svg width="20" height="20" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3"/>
+                            </svg>
+                        </a>
+                        <a href="#skills" class="btn btn-secondary">Ver Habilidades</a>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- About Section -->
+        <section id="about" class="fade-in">
+            <div class="container">
+                <h2>Sobre Mi</h2>
+                <p style="max-width: 800px; line-height: 1.8; margin-top: 2rem;">
+                    Soy un desarrollador apasionado por la tecnología y la programación. Mi especialidad es el desarrollo 
+                    de bots de Discord utilizando las últimas tecnologías de JavaScript y TypeScript. Con 3 años de experiencia, 
+                    he creado soluciones automatizadas que mejoran la experiencia de miles de usuarios en diferentes comunidades. 
+                    Mi dominio del español e inglés me permite trabajar con equipos internacionales y documentar proyectos de 
+                    manera efectiva.
+                </p>
+            </div>
+        </section>
+
+        <!-- Skills Section -->
+        <section id="skills" class="fade-in">
+            <div class="container">
+                <h2>Habilidades</h2>
+                <div class="skills-grid">
+                    <article class="skill-card">
+                        <div class="skill-icon">⚡</div>
+                        <h3 class="skill-name">JavaScript</h3>
+                        <p class="skill-level">Nivel Intermedio</p>
+                        <p class="skill-description">
+                            Dominio intermedio con énfasis en Discord.js v14 para la creación de bots con sistemas complejos e integrales.
+                        </p>
+                    </article>
+
+                    <article class="skill-card">
+                        <div class="skill-icon">📷</div>
+                        <h3 class="skill-name">TypeScript</h3>
+                        <p class="skill-level">Nivel Intermedio</p>
+                        <p class="skill-description">
+                            Tipado estático, interfaces y desarrollo escalable para aplicaciones robustas.
+                        </p>
+                    </article>
+
+                    <article class="skill-card">
+                        <div class="skill-icon">🤖</div>
+                        <h3 class="skill-name">Discord Bots</h3>
+                        <p class="skill-level">1+ Año de Experiencia</p>
+                        <p class="skill-description">
+                            Creación de bots complejos con Discord.js y sistemas de comandos avanzados.
+                        </p>
+                    </article>
+
+                    <article class="skill-card">
+                        <div class="skill-icon">🌐</div>
+                        <h3 class="skill-name">Bilingüe</h3>
+                        <p class="skill-level">Español / Inglés</p>
+                        <p class="skill-description">
+                            Comunicación fluida en español e inglés para equipos globales.
+                        </p>
+                    </article>
+
+                    <article class="skill-card">
+                        <div class="skill-icon">📦</div>
+                        <h3 class="skill-name">Node.js</h3>
+                        <p class="skill-level">Nivel Intermedio</p>
+                        <p class="skill-description">
+                            Backend development y manejo de bases de datos con Express y MongoDB.
+                        </p>
+                    </article>
+
+                    <article class="skill-card">
+                        <div class="skill-icon">🚀</div>
+                        <h3 class="skill-name">Git</h3>
+                        <p class="skill-level">Control de Versiones</p>
+                        <p class="skill-description">
+                            Control de versiones, colaboración y flujos de trabajo eficientes.
+                        </p>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Experience Section -->
+        <section id="experience" class="fade-in">
+            <div class="container">
+                <h2>Experiencia</h2>
+                <div class="timeline">
+                    <article class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p class="timeline-year">2024 - PRESENTE</p>
+                            <h3 class="timeline-title">Discord Bot Developer Junior</h3>
+                            <p class="timeline-description">
+                                Desarrollo de bots con funcionalidades avanzadas de moderación con sistemas escalables y de aprendizaje automático, 
+                                y sistemas de tickets para comunidades de +5,000 miembros.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p class="timeline-year">2023</p>
+                            <h3 class="timeline-title">Discord Community Manager</h3>
+                            <p class="timeline-description">
+                                Lideré y administré diversas comunidades dentro de Discord empleando mis propios sistemas y optimizando los ya existentes, 
+                                mejorando la tasa de permanencia de los nuevos miembros hasta en un 80%.
+                            </p>
+                        </div>
+                    </article>
+
+                    <article class="timeline-item">
+                        <div class="timeline-dot"></div>
+                        <div class="timeline-content">
+                            <p class="timeline-year">2022</p>
+                            <h3 class="timeline-title">Bot Developer Trainee</h3>
+                            <p class="timeline-description">
+                                Inicio en el desarrollo de bots de Discord, creando sistemas de música, 
+                                niveles y gamificación para diversas comunidades.
+                            </p>
+                        </div>
+                    </article>
+                </div>
+            </div>
+        </section>
+
+        <!-- Contact Section -->
+        <section id="contact" class="fade-in">
+            <div class="container">
+                <h2>Contacto</h2>
+                <div class="contact-grid">
+                    <article class="contact-card">
+                        <div class="contact-icon">📧</div>
+                        <h3>Email</h3>
+                        <a href="mailto:business.migol.gg@gmail.com" class="contact-link">
+                            business.migol.gg@gmail.com
+                        </a>
+                    </article>
+
+                    <article class="contact-card">
+                        <div class="contact-icon">💬</div>
+                        <h3>Discord</h3>
+                        <span class="contact-link">migol.gg</span>
+                    </article>
+
+                    <article class="contact-card">
+                        <div class="contact-icon">🌍</div>
+                        <h3>Idiomas</h3>
+                        <span class="contact-link">Español / English</span>
+                    </article>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 Miguel García. Todos los derechos reservados.</p>
+        </div>
+    </footer>
+
+    <!-- JavaScript mínimo y optimizado -->
+    <script>
+        // Mobile menu toggle
+        const menuToggle = document.querySelector('.menu-toggle');
+        const navMenu = document.querySelector('.nav-menu');
+        const navLinks = document.querySelectorAll('.nav-link');
+        
+        menuToggle?.addEventListener('click', () => {
+            const isActive = navMenu.classList.contains('active');
+            navMenu.classList.toggle('active');
+            menuToggle.setAttribute('aria-expanded', !isActive);
+        });
+        
+        navLinks.forEach(link => {
+            link.addEventListener('click', () => {
+                navMenu.classList.remove('active');
+                menuToggle?.setAttribute('aria-expanded', 'false');
+            });
+        });
+
+        // Header scroll effect
+        const header = document.getElementById('header');
+        let lastScrollY = 0;
+        
+        const handleScroll = () => {
+            const currentScrollY = window.scrollY;
+            
+            if (currentScrollY > 50) {
+                header.classList.add('scrolled');
+            } else {
+                header.classList.remove('scrolled');
+            }
+            
+            // Hide/show header on scroll
+            if (currentScrollY > lastScrollY && currentScrollY > 100) {
+                header.style.transform = 'translateY(-100%)';
+            } else {
+                header.style.transform = 'translateY(0)';
+            }
+            
+            lastScrollY = currentScrollY;
+        };
+        
+        // Throttle scroll event
+        let scrollTimeout;
+        window.addEventListener('scroll', () => {
+            if (!scrollTimeout) {
+                scrollTimeout = setTimeout(() => {
+                    handleScroll();
+                    scrollTimeout = null;
+                }, 10);
+            }
+        });
+
+        // Intersection Observer para animaciones
+        const observerOptions = {
+            threshold: 0.1,
+            rootMargin: '0px 0px -50px 0px'
+        };
+        
+        const observer = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('in-view');
+                    // Desconectar después de animar para mejor performance
+                    if (!entry.target.classList.contains('timeline-item')) {
+                        observer.unobserve(entry.target);
+                    }
+                }
+            });
+        }, observerOptions);
+        
+        // Observar elementos
+        document.querySelectorAll('.fade-in, .timeline-item').forEach(el => {
+            observer.observe(el);
+        });
+
+        // Smooth scroll para navegación (fallback para navegadores antiguos)
+        if (!CSS.supports('scroll-behavior', 'smooth')) {
+            document.querySelectorAll('a[href^="#"]').forEach(anchor => {
+                anchor.addEventListener('click', function (e) {
+                    e.preventDefault();
+                    const target = document.querySelector(this.getAttribute('href'));
+                    if (target) {
+                        target.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            });
+        }
+
+        // Lazy loading para imágenes futuras
+        if ('loading' in HTMLImageElement.prototype) {
+            const images = document.querySelectorAll('img[loading="lazy"]');
+            images.forEach(img => {
+                img.src = img.dataset.src;
+            });
+        } else {
+            // Fallback para navegadores antiguos
+            const script = document.createElement('script');
+            script.src = 'https://cdnjs.cloudflare.com/ajax/libs/lazysizes/5.3.2/lazysizes.min.js';
+            script.integrity = 'sha512-q583ppKrCRc7N5O0n2nzUiJ+suUv7Et1JGels4bXOaMFQcamPk9HjdUknZuuFjBNs7tsMuadge5k9RzdmO+1GQ==';
+            script.crossOrigin = 'anonymous';
+            document.body.appendChild(script);
+        }
+
+        // Service Worker para PWA (opcional)
+        if ('serviceWorker' in navigator && location.protocol === 'https:') {
+            // navigator.serviceWorker.register('/sw.js');
+        }
+
+        // Prefetch para mejorar navegación
+        const prefetchLinks = () => {
+            if ('requestIdleCallback' in window) {
+                requestIdleCallback(() => {
+                    const links = document.querySelectorAll('a[href^="#"]');
+                    links.forEach(link => {
+                        link.addEventListener('mouseenter', () => {
+                            const href = link.getAttribute('href');
+                            if (href && href !== '#') {
+                                const linkElement = document.createElement('link');
+                                linkElement.rel = 'prefetch';
+                                linkElement.href = href;
+                                document.head.appendChild(linkElement);
+                            }
+                        }, { once: true });
+                    });
+                });
+            }
+        };
+        
+        prefetchLinks();
+
+        // Mejorar accesibilidad con teclas
+        document.addEventListener('keydown', (e) => {
+            // Cerrar menú con ESC
+            if (e.key === 'Escape' && navMenu.classList.contains('active')) {
+                navMenu.classList.remove('active');
+                menuToggle?.setAttribute('aria-expanded', 'false');
+                menuToggle?.focus();
+            }
+        });
+
+        // Performance: limpiar event listeners al salir
+        window.addEventListener('beforeunload', () => {
+            window.removeEventListener('scroll', handleScroll);
+            observer.disconnect();
+        });
+    </script>
+</body>
+</html>
