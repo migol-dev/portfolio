@@ -1,6 +1,59 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
+    <style>
+        /* Preloader creativo */
+        #preloader {
+            position: fixed;
+            top: 0; left: 0; right: 0; bottom: 0;
+            width: 100vw; height: 100vh;
+            background: var(--bg-primary, #0a0a0a);
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+            transition: opacity 0.5s;
+        }
+        .preloader-figures {
+            display: flex;
+            gap: 1.5rem;
+            margin-bottom: 1.5rem;
+        }
+        .preloader-figures span {
+            display: block;
+            width: 32px; height: 32px;
+            background: var(--accent, #6366f1);
+            border-radius: 8px;
+            animation: preloader-bounce 1.2s infinite cubic-bezier(.68,-0.55,.27,1.55);
+        }
+        .preloader-figures span:nth-child(2) {
+            border-radius: 50%;
+            background: var(--accent-light, #818cf8);
+            animation-delay: 0.2s;
+        }
+        .preloader-figures span:nth-child(3) {
+            border-radius: 0;
+            background: var(--text-primary, #fff);
+            animation-delay: 0.4s;
+        }
+        @keyframes preloader-bounce {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-32px) scale(1.1); }
+        }
+        .preloader-text {
+            color: var(--text-primary, #fff);
+            font-family: 'Inter', system-ui, sans-serif;
+            font-size: 1.2rem;
+            letter-spacing: 0.1em;
+            font-weight: 600;
+            text-align: center;
+            opacity: 0.85;
+        }
+        body.preloader-active {
+            overflow: hidden !important;
+        }
+    </style>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta name="description" content="Miguel García - Desarrollador JavaScript especializado en TypeScript y Discord Bots. 3 años de experiencia creando soluciones innovadoras.">
@@ -291,13 +344,139 @@
             -webkit-text-fill-color: transparent;
             background-clip: text;
             margin: 1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 1.2rem;
+        }
+
+        .code-window {
+            background: var(--bg-card);
+            border: 1.5px solid var(--border);
+            border-radius: 10px;
+            box-shadow: 0 4px 24px 0 rgba(99,102,241,0.10);
+            padding: 0.7em 1.1em 0.7em 1.1em;
+            min-width: 200px;
+            min-height: 70px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            position: relative;
+        }
+        .code-window-bar {
+            display: flex;
+            gap: 0.4em;
+            position: absolute;
+            top: 0.5em;
+            left: 0.7em;
+        }
+        .code-window-dot {
+            width: 9px;
+            height: 9px;
+            border-radius: 50%;
+            display: inline-block;
+        }
+        .code-window-dot.red { background: #f87171; }
+        .code-window-dot.yellow { background: #fde68a; }
+        .code-window-dot.green { background: #6ee7b7; }
+        .code-animation {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+            font-size: 1.05rem;
+            margin-top: 1.2em;
+        }
+
+        .code-animation {
+            display: flex;
+            flex-direction: column;
+            justify-content: flex-start;
+            min-width: 170px;
+            font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+            font-size: 1.05rem;
+            margin-top: 0.2em;
+        }
+        .code-line {
+            color: var(--accent);
+            opacity: 0.85;
+            background: var(--bg-card);
+            border-radius: 6px;
+            padding: 0.08em 0.7em 0.08em 0.5em;
+            margin-bottom: 0.18em;
+            min-height: 1.2em;
+            width: fit-content;
+            box-shadow: 0 1px 6px 0 rgba(99,102,241,0.07);
+            border-left: 3px solid var(--accent-light);
+            white-space: pre;
+            transition: background 0.3s;
+        }
+        .code-line span {
+            color: var(--text-primary);
+            font-weight: 500;
+        }
+        .code-cursor {
+            color: var(--accent-light);
+            font-weight: bold;
+            animation: blink-cursor 0.8s steps(1) infinite;
         }
 
         .hero-subtitle {
             font-size: clamp(1rem, 2vw, 1.25rem);
-            color: var(--text-muted);
-            font-weight: 500;
+            color: var(--text-primary);
+            font-weight: 600;
             letter-spacing: 0.5px;
+            min-height: 1.5em;
+            white-space: nowrap;
+            overflow: hidden;
+            background: none;
+            transition: color 0.3s;
+            display: flex;
+            align-items: center;
+            gap: 0.3em;
+        }
+
+        .typewriter-cursor {
+            color: var(--accent);
+            font-weight: bold;
+            font-family: 'Fira Mono', 'Consolas', 'Menlo', monospace;
+            font-size: 1.1em;
+            animation: blink-cursor 0.8s steps(1) infinite;
+            margin-left: 0.1em;
+        }
+
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        @media (prefers-color-scheme: dark) {
+            :root {
+                --bg-primary: #0a0a0a;
+                --bg-secondary: #141414;
+                --bg-card: rgba(255, 255, 255, 0.04);
+                --text-primary: #fff;
+                --text-secondary: #b3b3b3;
+                --text-muted: #888;
+                --accent: #818cf8;
+                --accent-light: #a5b4fc;
+                --border: rgba(255,255,255,0.10);
+                --shadow: 0 10px 40px rgba(0,0,0,0.7);
+            }
+        }
+
+        @media (prefers-color-scheme: light) {
+            :root {
+                --bg-primary: #f9fafb;
+                --bg-secondary: #fff;
+                --bg-card: rgba(0,0,0,0.03);
+                --text-primary: #18181b;
+                --text-secondary: #444;
+                --text-muted: #888;
+                --accent: #6366f1;
+                --accent-light: #818cf8;
+                --border: rgba(0,0,0,0.10);
+                --shadow: 0 10px 40px rgba(0,0,0,0.08);
+            }
         }
 
         .hero-description {
@@ -320,24 +499,40 @@
             text-decoration: none;
             display: inline-flex;
             align-items: center;
-            gap: 0.5rem;
+            gap: 0.7em;
             transition: all var(--transition-base);
             cursor: pointer;
             border: 2px solid transparent;
             font-size: 0.95rem;
             position: relative;
             overflow: hidden;
+            vertical-align: middle;
         }
 
         .btn-primary {
-            background: var(--gradient);
+            background: linear-gradient(120deg, var(--accent), var(--accent-light), #a5b4fc, var(--accent), var(--accent-light));
+            background-size: 200% 200%;
             color: white;
             box-shadow: 0 4px 14px rgba(99, 102, 241, 0.3);
+            animation: lava-move 3.5s ease-in-out infinite;
+        }
+
+        @keyframes lava-move {
+            0% {
+                background-position: 0% 50%;
+            }
+            50% {
+                background-position: 100% 50%;
+            }
+            100% {
+                background-position: 0% 50%;
+            }
         }
 
         .btn-primary:hover {
-            transform: translateY(-2px);
+            transform: translateY(-2px) scale(1.04);
             box-shadow: 0 6px 20px rgba(99, 102, 241, 0.4);
+            filter: brightness(1.08) saturate(1.2);
         }
 
         .btn-secondary {
@@ -402,6 +597,8 @@
             border-radius: 0.75rem;
             margin-bottom: 1rem;
             font-size: 1.5rem;
+            line-height: 1;
+            vertical-align: middle;
         }
 
         .skill-name {
@@ -656,6 +853,12 @@
 </head>
 
 <body>
+    <div id="preloader" aria-label="Cargando la página" role="status">
+        <div class="preloader-figures">
+            <span></span><span></span><span></span>
+        </div>
+        <div class="preloader-text">Loading...</div>
+    </div>
     <!-- Skip to content para accesibilidad -->
     <a href="#main" class="skip-to-content">Saltar al contenido</a>
 
@@ -692,8 +895,20 @@
                     </div>
                     
                     <h1 class="hero-title">JavaScript<br>Developer</h1>
+                    <div class="code-window">
+                        <div class="code-window-bar">
+                            <span class="code-window-dot red"></span>
+                            <span class="code-window-dot yellow"></span>
+                            <span class="code-window-dot green"></span>
+                        </div>
+                        <div class="code-animation" id="code-animation">
+                            <div class="code-line" style="opacity:0"></div>
+                            <div class="code-line" style="opacity:0"></div>
+                            <div class="code-line" style="opacity:0"></div>
+                        </div>
+                    </div>
                     
-                    <p class="hero-subtitle">TypeScript • Discord Bots • Full Stack</p>
+                    <p class="hero-subtitle" id="typewriter-text"></p>
                     
                     <p class="hero-description">
                         Desarrollador junior especializado en TypeScript y JavaScript con 3 años de experiencia 
@@ -872,6 +1087,82 @@
 
     <!-- JavaScript mínimo y optimizado -->
     <script>
+        // Animación de líneas de código junto a JavaScript Developer
+        document.addEventListener('DOMContentLoaded', () => {
+            const codeLines = [
+                'const <span>dev</span> = "Miguel";',
+                'console.log(<span>dev</span>);',
+                '<span>// Full Stack & Bots</span>'
+            ];
+            const codeAnim = document.getElementById('code-animation');
+            if (codeAnim) {
+                const lines = codeAnim.querySelectorAll('.code-line');
+                let line = 0, char = 0;
+                function typeLine() {
+                    if (line < codeLines.length) {
+                        lines[line].style.opacity = 1;
+                        let html = codeLines[line].slice(0, char);
+                        lines[line].innerHTML = html + '<span class="code-cursor">|</span>';
+                        if (char < codeLines[line].length) {
+                            char++;
+                            setTimeout(typeLine, 28);
+                        } else {
+                            lines[line].innerHTML = codeLines[line];
+                            line++;
+                            char = 0;
+                            setTimeout(typeLine, 350);
+                        }
+                    }
+                }
+                setTimeout(typeLine, 600);
+            }
+        });
+        // Preloader: ocultar al cargar (100ms)
+        document.body.classList.add('preloader-active');
+        window.addEventListener('DOMContentLoaded', () => {
+            const preloader = document.getElementById('preloader');
+            function hidePreloader() {
+                if (preloader) {
+                    preloader.style.opacity = '0';
+                    setTimeout(() => {
+                        preloader.style.display = 'none';
+                        document.body.classList.remove('preloader-active');
+                    }, 500);
+                }
+            }
+            if (document.readyState === 'complete') {
+                hidePreloader();
+            } else {
+                window.addEventListener('load', hidePreloader);
+            }
+        });
+        // Efecto máquina de escribir para el subtítulo
+        document.addEventListener('DOMContentLoaded', () => {
+            const text = 'TypeScript • Discord Bots • Full Stack';
+            const el = document.getElementById('typewriter-text');
+            let i = 0;
+            const cursor = document.createElement('span');
+            cursor.className = 'typewriter-cursor';
+            cursor.textContent = '>_';
+            if (el) el.textContent = '';
+            function type() {
+                if (el) {
+                    el.textContent = text.slice(0, i);
+                    el.appendChild(cursor);
+                    if (i < text.length) {
+                        i++;
+                        setTimeout(type, 60);
+                    } else {
+                        // Al terminar, dejar el texto estático y quitar el cursor tras un parpadeo
+                        setTimeout(() => {
+                            if (el.contains(cursor)) el.removeChild(cursor);
+                            el.textContent = text;
+                        }, 900);
+                    }
+                }
+            }
+            type();
+        });
         // Mobile menu toggle
         const menuToggle = document.querySelector('.menu-toggle');
         const navMenu = document.querySelector('.nav-menu');
