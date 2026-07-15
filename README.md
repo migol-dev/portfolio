@@ -51,8 +51,12 @@ Edita `.env` y completa estas variables:
   Un ejemplo sería:
 
 ```text
-postgresql://postgres:TU_PASSWORD@db.TU_PROJECT_REF.supabase.co:5432/postgres?sslmode=require
+postgresql://postgres:TU_PASSWORD@db.TU_PROJECT_REF.supabase.co:5432/postgres?sslmode=verify-full
 ```
+
+**Importante sobre SSL**: Para Prisma 7+, usa `sslmode=verify-full` (no `require`) para
+mayor seguridad. Si experimentas problemas de certificado autofirmado en desarrollo,
+descomenta `NODE_TLS_REJECT_UNAUTHORIZED="0"` en `.env` (⚠️ nunca en producción).
 
 - `AUTH_SECRET`: genera uno con `openssl rand -base64 32`.
 - `ADMIN_EMAIL` y `ADMIN_PASSWORD`: serán las credenciales del usuario admin
@@ -101,17 +105,27 @@ middleware.ts           # Protege /admin/*
 
 ## 🌐 Desplegar en Vercel
 
+### Guía Rápida
+
 1. Sube este proyecto a un repositorio de GitHub.
 2. Impórtalo en [vercel.com/new](https://vercel.com/new).
-3. En **Environment Variables**, agrega `DATABASE_URL`, `AUTH_SECRET`,
-   `ADMIN_EMAIL`, `ADMIN_PASSWORD` y `NEXT_PUBLIC_SITE_URL` (tu dominio final).
-4. Despliega. Luego, desde tu máquina (con `DATABASE_URL` de producción en tu
-   `.env`), corre una vez:
+3. En **Environment Variables**, agrega:
+   - `DATABASE_URL`: Tu PostgreSQL connection string con `sslmode=verify-full`
+   - `AUTH_SECRET`: Genera con `openssl rand -base64 32`
+   - `ADMIN_EMAIL`: tu@correo.com
+   - `ADMIN_PASSWORD`: una-contraseña-segura
+   - `NEXT_PUBLIC_SITE_URL`: https://tu-dominio.com
+4. Despliega. Luego desde tu máquina, corre una vez:
    ```bash
    npm run db:push
    npm run db:seed
    ```
-5. Entra a `tudominio.com/admin` con las credenciales que definiste.
+5. Entra a `tu-dominio.com/admin` con tus credenciales.
+
+### Guía Detallada
+
+Para instrucciones paso a paso, opciones de base de datos, troubleshooting y más,
+consulta [VERCEL_DEPLOYMENT.md](./VERCEL_DEPLOYMENT.md).
 
 ## 🎨 Personalizar
 
