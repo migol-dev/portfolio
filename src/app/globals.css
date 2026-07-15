@@ -1,0 +1,107 @@
+@import "tailwindcss";
+
+@theme inline {
+  /* ---- Paleta: inspirada en un editor de código nocturno ---- */
+  --color-void: #0b0e14;
+  --color-panel: #11151c;
+  --color-panel-2: #161b24;
+  --color-border: rgba(255, 255, 255, 0.08);
+  --color-border-strong: rgba(255, 255, 255, 0.16);
+  --color-text: #e6e8eb;
+  --color-text-dim: #838d9e;
+  --color-text-faint: #4d5566;
+
+  --color-cyan: #5ccfe6;
+  --color-amber: #ffad66;
+  --color-green: #95e6cb;
+  --color-magenta: #d2a6ff;
+  --color-red: #f28779;
+
+  --font-display: var(--font-space-grotesk), "Space Grotesk", sans-serif;
+  --font-mono: var(--font-jetbrains-mono), "JetBrains Mono", monospace;
+  --font-body: var(--font-inter), "Inter", sans-serif;
+}
+
+* {
+  border-color: var(--color-border);
+}
+
+html {
+  scroll-behavior: smooth;
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-void);
+  color: var(--color-text-dim);
+  font-family: var(--font-body);
+  line-height: 1.65;
+  position: relative;
+}
+
+/* Textura de ruido sutil, como el sitio original pero más contenida */
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  opacity: 0.035;
+  z-index: 0;
+  pointer-events: none;
+  background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.7' numOctaves='3' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)'/%3E%3C/svg%3E");
+}
+
+h1,
+h2,
+h3,
+h4 {
+  font-family: var(--font-display);
+  color: var(--color-text);
+  letter-spacing: -0.02em;
+}
+
+::selection {
+  background: var(--color-cyan);
+  color: var(--color-void);
+}
+
+:focus-visible {
+  outline: 2px solid var(--color-cyan);
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Scrollbar estilo editor */
+::-webkit-scrollbar {
+  width: 10px;
+  height: 10px;
+}
+::-webkit-scrollbar-track {
+  background: var(--color-void);
+}
+::-webkit-scrollbar-thumb {
+  background: var(--color-panel-2);
+  border-radius: 999px;
+  border: 2px solid var(--color-void);
+}
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-border-strong);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
+  }
+}
+
+/* Utilidad: numeración tipo "gutter" de editor */
+.line-gutter {
+  font-family: var(--font-mono);
+  color: var(--color-text-faint);
+  font-size: 0.75rem;
+  user-select: none;
+}

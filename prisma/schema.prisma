@@ -1,0 +1,79 @@
+// Prisma schema — Finance Pal / MIGOL portfolio
+// Docs: https://pris.ly/d/prisma-schema
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum SkillCategory {
+  LANGUAGE
+  FRONTEND
+  BACKEND
+  DATABASE
+  TOOLING
+  OTHER
+}
+
+enum SkillLevel {
+  APRENDIENDO
+  INTERMEDIO
+  AVANZADO
+}
+
+enum ProjectStatus {
+  LIVE
+  IN_PROGRESS
+  ARCHIVED
+}
+
+model Project {
+  id          String        @id @default(cuid())
+  slug        String        @unique
+  name        String
+  tagline     String
+  description String        @db.Text
+  logoUrl     String?
+  coverUrl    String?
+  tags        String[]      @default([])
+  status      ProjectStatus @default(LIVE)
+  repoUrl     String?
+  liveUrl     String?
+  featured    Boolean       @default(false)
+  order       Int           @default(0)
+  createdAt   DateTime      @default(now())
+  updatedAt   DateTime      @updatedAt
+}
+
+model Skill {
+  id        String        @id @default(cuid())
+  name      String        @unique
+  category  SkillCategory
+  level     SkillLevel
+  summary   String
+  icon      String? // lucide icon name or emoji fallback
+  order     Int           @default(0)
+  createdAt DateTime      @default(now())
+  updatedAt DateTime      @updatedAt
+}
+
+model ContactMessage {
+  id        String   @id @default(cuid())
+  name      String
+  email     String
+  message   String   @db.Text
+  ip        String?
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}
+
+model AdminUser {
+  id           String   @id @default(cuid())
+  email        String   @unique
+  passwordHash String
+  createdAt    DateTime @default(now())
+}
