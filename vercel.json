@@ -1,26 +1,4 @@
 {
-  "env": {
-    "DATABASE_URL": {
-      "description": "PostgreSQL connection string. Must be the DIRECT connection (not pooling)",
-      "required": true
-    },
-    "AUTH_SECRET": {
-      "description": "Secret for JWT authentication. Generate with: openssl rand -base64 32",
-      "required": true
-    },
-    "ADMIN_EMAIL": {
-      "description": "Email for the admin user created on first seed",
-      "required": true
-    },
-    "ADMIN_PASSWORD": {
-      "description": "Password for the admin user created on first seed",
-      "required": true
-    },
-    "NEXT_PUBLIC_SITE_URL": {
-      "description": "Your production domain (e.g., https://migol.dev)",
-      "required": true
-    }
-  },
   "buildCommand": "npm run build",
   "devCommand": "npm run dev",
   "installCommand": "npm install"
