@@ -3,20 +3,21 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
-// Limpiamos la URL para evitar conflictos con sslmode=verify-full de la cadena
-const rawConnectionString = process.env.DATABASE_URL || "";
-const connectionString = rawConnectionString.split("?")[0];
+// Obtenemos la URL y eliminamos CUALQUIER parámetro de SSL que venga en el string
+// para que no sobrescriba nuestra configuración de abajo.
+const rawUrl = process.env.DATABASE_URL || "";
+const connectionString = rawUrl.split("?")[0];
 
 const sslConfig =
   connectionString.includes("localhost") || connectionString.includes("127.0.0.1")
     ? false
     : {
-        rejectUnauthorized: false, // Permite conectar a Supabase sin el certificado CA
+        rejectUnauthorized: false, // Forzamos la aceptación del certificado
       };
 
 const pool = new Pool({
-  connectionString: rawConnectionString, // Usamos la original por si tiene otros params
-  ssl: sslConfig,                        // Pero sobreescribimos el SSL aquí
+  connectionString, // Usamos la URL limpia (sin sslmode=...)
+  ssl: sslConfig,
   max: 10,
   idleTimeoutMillis: 30000,
   connectionTimeoutMillis: 10000,
