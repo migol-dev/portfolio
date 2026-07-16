@@ -1,8 +1,7 @@
-import { PrismaClient } from "@prisma/client";
+import "dotenv/config";
 import bcrypt from "bcryptjs";
 import { FALLBACK_PROJECTS, FALLBACK_SKILLS } from "../src/lib/fallback-content";
-
-const prisma = new PrismaClient();
+import { prisma } from "../src/lib/prisma";
 
 async function main() {
   console.log("Sembrando proyectos...");
