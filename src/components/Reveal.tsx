@@ -1,7 +1,8 @@
 "use client";
 
-import { motion } from "framer-motion";
+import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
+import { useEffect, useState } from "react";
 
 export function Reveal({
   children,
@@ -12,12 +13,27 @@ export function Reveal({
   delay?: number;
   className?: string;
 }) {
+  const [isMobile, setIsMobile] = useState(false);
+  const shouldReduceMotion = useReducedMotion();
+
+  useEffect(() => {
+    const checkMobile = () => setIsMobile(window.innerWidth < 768);
+    checkMobile();
+    window.addEventListener("resize", checkMobile);
+    return () => window.removeEventListener("resize", checkMobile);
+  }, []);
+
+  const viewportMargin = isMobile ? "-50px" : "-80px";
+  const transitionDuration = shouldReduceMotion ? 0.01 : 0.5;
+  const initialY = shouldReduceMotion ? 0 : 20;
+  const animateY = shouldReduceMotion ? 0 : 0;
+
   return (
     <motion.div
-      initial={{ opacity: 0, y: 20 }}
-      whileInView={{ opacity: 1, y: 0 }}
-      viewport={{ once: true, margin: "-80px" }}
-      transition={{ duration: 0.5, delay, ease: "easeOut" }}
+      initial={{ opacity: shouldReduceMotion ? 1 : 0, y: initialY }}
+      whileInView={{ opacity: 1, y: animateY }}
+      viewport={{ once: true, margin: viewportMargin }}
+      transition={{ duration: transitionDuration, delay, ease: "easeOut" }}
       className={className}
     >
       {children}

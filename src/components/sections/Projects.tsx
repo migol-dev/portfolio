@@ -4,12 +4,12 @@ import { ProjectCard } from "@/components/ProjectCard";
 
 export function Projects({ projects }: { projects: Project[] }) {
   return (
-    <section id="projects" className="py-20 sm:py-28 border-t border-border">
+    <section id="projects" className="py-16 sm:py-20 lg:py-28 border-t border-border">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <SectionEyebrow path="src/projects/" label="Proyectos" />
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Cosas que he construido</h2>
-          <p className="max-w-xl text-text-dim mb-12">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">Cosas que he construido</h2>
+          <p className="max-w-xl text-text-dim mb-8 sm:mb-12">
             Una selección de proyectos propios, desde bots en producción hasta
             aplicaciones que uso todos los días.
           </p>
@@ -20,7 +20,7 @@ export function Projects({ projects }: { projects: Project[] }) {
             {"// aún no hay proyectos publicados — vuelve pronto"}
           </p>
         ) : (
-          <div className="grid sm:grid-cols-2 lg:grid-cols-2 gap-5">
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-5">
             {projects.map((project, i) => (
               <ProjectCard key={project.id} project={project} delay={Math.min(i * 0.08, 0.3)} />
             ))}

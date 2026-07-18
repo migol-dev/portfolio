@@ -2,23 +2,24 @@ import { Reveal, SectionEyebrow } from "@/components/Reveal";
 
 export function About() {
   return (
-    <section id="about" className="py-20 sm:py-28 border-t border-border">
+    <section id="about" className="py-16 sm:py-20 lg:py-28 border-t border-border">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <SectionEyebrow path="src/about.tsx" label="Sobre mí" />
         </Reveal>
 
-        <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-10 items-start mt-6">
+        <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-10 items-start mt-6">
           <Reveal className="lg:col-span-1">
-            <p className="text-xl sm:text-2xl text-text leading-snug font-medium">
+            <p className="text-lg sm:text-xl lg:text-2xl text-text leading-snug font-medium">
               Empecé automatizando comunidades de Discord por curiosidad.
               Hoy construyo productos completos, del backend a la interfaz.
             </p>
           </Reveal>
 
           <div className="hidden lg:block w-px bg-border self-stretch" />
+          <div className="w-full lg:hidden h-px bg-border my-6" aria-hidden="true" />
 
-          <Reveal delay={0.1} className="space-y-4 text-[15px] leading-relaxed">
+          <Reveal delay={0.1} className="space-y-3 sm:space-y-4 text-sm sm:text-[15px] leading-relaxed">
             <p>
               Soy desarrollador full stack con base en Colima, México. Todo empezó
               creando bots de moderación y gamificación para comunidades de Discord de

@@ -51,29 +51,29 @@ export function Contact() {
   }
 
   return (
-    <section id="contact" className="py-20 sm:py-28 border-t border-border">
+    <section id="contact" className="py-16 sm:py-20 lg:py-28 border-t border-border">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <SectionEyebrow path="src/contact.tsx" label="Contacto" />
-          <h2 className="text-3xl sm:text-4xl font-bold mb-4">Construyamos algo</h2>
-          <p className="max-w-xl text-text-dim mb-12">
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-4">Construyamos algo</h2>
+          <p className="max-w-xl text-text-dim mb-8 sm:mb-12">
             ¿Tienes un proyecto en mente, una comunidad que necesita un bot, o solo
             quieres saludar? Escríbeme.
           </p>
         </Reveal>
 
-        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-8">
+        <div className="grid lg:grid-cols-[1fr_1.4fr] gap-6 lg:gap-8">
           <Reveal className="space-y-3">
             {CONTACT_LINKS.map((link) => (
               <div
                 key={link.label}
-                className="flex items-center gap-4 rounded-lg border border-border bg-panel/60 p-4"
+                className="flex items-center gap-3 sm:gap-4 rounded-lg border border-border bg-panel/60 p-3 sm:p-4"
               >
-                <div className="rounded-md border border-border-strong bg-panel-2 p-2.5 text-cyan">
+                <div className="rounded-md border border-border-strong bg-panel-2 p-2.5 text-cyan shrink-0">
                   <link.icon className="h-4 w-4" />
                 </div>
                 <div className="min-w-0">
-                  <p className="text-xs font-mono text-text-faint uppercase tracking-wide">
+                  <p className="text-[10px] sm:text-xs font-mono text-text-faint uppercase tracking-wide">
                     {link.label}
                   </p>
                   {link.href ? (
@@ -94,7 +94,7 @@ export function Contact() {
           <Reveal delay={0.1}>
             <form
               onSubmit={handleSubmit(onSubmit)}
-              className="rounded-lg border border-border bg-panel/60 p-6 space-y-5"
+              className="rounded-lg border border-border bg-panel/60 p-4 sm:p-6 space-y-4 sm:space-y-5"
               noValidate
             >
               {/* Honeypot anti-spam, oculto para humanos */}

@@ -26,26 +26,26 @@ const ENTRIES = [
 
 export function Experience() {
   return (
-    <section id="experience" className="py-20 sm:py-28 border-t border-border">
+    <section id="experience" className="py-16 sm:py-20 lg:py-28 border-t border-border">
       <div className="mx-auto max-w-6xl px-4 sm:px-6">
         <Reveal>
           <SectionEyebrow path="src/experience.log" label="Experiencia" />
-          <h2 className="text-3xl sm:text-4xl font-bold mb-12">Historial de commits</h2>
+          <h2 className="text-2xl sm:text-3xl lg:text-4xl font-bold mb-8 sm:mb-12">Historial de commits</h2>
         </Reveal>
 
         <div className="relative">
-          <div className="absolute left-[7px] top-2 bottom-2 w-px bg-border-strong" aria-hidden />
-          <ol className="space-y-10">
+          <div className="absolute left-1/2 top-2 bottom-2 w-px -translate-x-1/2 bg-border-strong lg:left-[7px] lg:translate-x-0" aria-hidden />
+          <ol className="space-y-6 sm:space-y-8 lg:space-y-10">
             {ENTRIES.map((entry, i) => (
               <Reveal key={entry.title} delay={i * 0.1}>
-                <li className="relative pl-8">
+                <li className="relative pl-6 lg:pl-8">
                   <span
-                    className="absolute left-0 top-1.5 h-3.5 w-3.5 rounded-full border-2 border-cyan bg-void"
+                    className="absolute left-1/2 top-2 -translate-x-1/2 h-3.5 w-3.5 rounded-full border-2 border-cyan bg-void lg:left-0 lg:translate-x-0"
                     aria-hidden
                   />
-                  <p className="font-mono text-xs text-amber mb-1.5">{entry.period}</p>
-                  <h3 className="text-lg font-semibold text-text mb-1.5">{entry.title}</h3>
-                  <p className="text-sm text-text-dim leading-relaxed max-w-2xl">
+                  <p className="font-mono text-xs sm:text-xs lg:text-xs text-amber mb-1.5">{entry.period}</p>
+                  <h3 className="text-base sm:text-lg font-semibold text-text mb-1.5">{entry.title}</h3>
+                  <p className="text-xs sm:text-sm text-text-dim leading-relaxed max-w-full lg:max-w-2xl">
                     {entry.description}
                   </p>
                 </li>
