@@ -1,17 +1,15 @@
 "use client";
 
-import React, { createContext, useContext, useEffect, useState, useMemo } from "react";
+import React, { createContext, useContext, useEffect, useState, useMemo, useCallback } from "react";
 import { useRouter } from "next/navigation";
 import {
   Search,
-  Command,
   ArrowRight,
   Palette,
   Copy,
   Check,
   Cpu,
   Sparkles,
-  ExternalLink,
   ShieldAlert,
   Code2,
 } from "lucide-react";
@@ -68,16 +66,16 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
     return () => window.removeEventListener("keydown", handleKeyDown);
   }, []);
 
-  const copyToClipboard = (text: string, label: string) => {
+  const copyToClipboard = useCallback((text: string, label: string) => {
     navigator.clipboard.writeText(text);
     setCopiedText(label);
     setTimeout(() => {
       setCopiedText(null);
       setOpen(false);
     }, 900);
-  };
+  }, []);
 
-  const navigateTo = (hash: string) => {
+  const navigateTo = useCallback((hash: string) => {
     setOpen(false);
     if (window.location.pathname !== "/") {
       router.push(`/${hash}`);
@@ -85,7 +83,7 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
       const el = document.querySelector(hash);
       el?.scrollIntoView({ behavior: "smooth" });
     }
-  };
+  }, [router]);
 
   const items: CommandItem[] = useMemo(() => [
     {
@@ -208,7 +206,7 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
         router.push("/admin");
       },
     },
-  ], [theme, copiedText]);
+  ], [theme, copiedText, navigateTo, router, toggleTheme, copyToClipboard]);
 
   const filtered = useMemo(() => {
     if (!query.trim()) return items;
@@ -221,9 +219,6 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
     );
   }, [items, query]);
 
-  useEffect(() => {
-    setSelectedIndex(0);
-  }, [query]);
 
   // Manejo de flechas ↑↓ y Enter
   const handleKeyDown = (e: React.KeyboardEvent) => {
@@ -264,7 +259,10 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
                 autoFocus
                 type="text"
                 value={query}
-                onChange={(e) => setQuery(e.target.value)}
+                onChange={(e) => {
+                  setQuery(e.target.value);
+                  setSelectedIndex(0);
+                }}
                 placeholder="Escribe un comando, sección o perfil cognitivo..."
                 className="w-full bg-transparent text-sm text-[var(--color-text)] placeholder:text-[var(--color-text-faint)] focus:outline-hidden"
               />

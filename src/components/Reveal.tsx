@@ -59,7 +59,7 @@ export function SectionEyebrow({
 
   return (
     <div className="flex items-center gap-2.5 mb-3 font-mono text-[11px] select-none">
-      <span className="text-[var(--color-accent)] font-semibold">[{displayIndex} //</span>
+      <span className="text-[var(--color-accent)] font-semibold">[{displayIndex} {"//"}</span>
       <span className="uppercase tracking-[0.08em] font-medium text-[var(--color-text)]">
         {label}
       </span>

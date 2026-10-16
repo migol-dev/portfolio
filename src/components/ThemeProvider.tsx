@@ -23,8 +23,10 @@ export function ThemeProvider({ children }: { children: React.ReactNode }) {
     try {
       const saved = localStorage.getItem("migol_theme") as Theme | null;
       if (saved === "cryo" || saved === "crimson") {
-        setThemeState(saved);
         document.documentElement.setAttribute("data-theme", saved);
+        requestAnimationFrame(() => {
+          setThemeState(saved);
+        });
       }
     } catch {
       // localStorage may be disabled in private mode

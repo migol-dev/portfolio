@@ -9,11 +9,7 @@ import { ProjectDetailSheet } from "@/components/ProjectCard";
 import {
   ExternalLink,
   Code2,
-  Folder,
-  ArrowRight,
-  Sparkles,
   Terminal,
-  Filter,
   FileText,
 } from "lucide-react";
 

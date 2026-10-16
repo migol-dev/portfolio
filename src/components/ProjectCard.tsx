@@ -1,7 +1,6 @@
 "use client";
 
-import React, { useState } from "react";
-import Image from "next/image";
+import React from "react";
 import { ExternalLink, Code2, Terminal, ArrowUpRight, FileText, CheckCircle2 } from "lucide-react";
 import type { Project } from "@prisma/client";
 import { Badge } from "@/components/ui/badge";

@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { Terminal, Palette, Command, Menu, X } from "lucide-react";
+import { Terminal, Palette, Command, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ThemeProvider";
 import { useCommandPalette } from "@/components/CommandPalette";
@@ -70,7 +70,7 @@ export function Header() {
             </div>
             <span>[0xMIGOL]</span>
             <span className="hidden lg:inline text-[10px] text-[var(--color-text-faint)] font-normal">
-              // C++ &amp; FULL-STACK
+              {"// C++ & FULL-STACK"}
             </span>
           </a>
 

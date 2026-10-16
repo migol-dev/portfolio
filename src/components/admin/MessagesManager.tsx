@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { toast } from "sonner";
-import { Mail, MailOpen, Trash2, Calendar, User, Search, CheckCheck } from "lucide-react";
+import { Mail, MailOpen, Trash2, Search } from "lucide-react";
 import type { ContactMessage } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

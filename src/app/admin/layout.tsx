@@ -38,7 +38,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
             <div className="flex items-center gap-2 font-mono text-xs font-semibold text-[var(--color-text)]">
               <Terminal className="w-3.5 h-3.5 text-[var(--color-accent)]" strokeWidth={1.5} />
               <span>[0xMIGOL]</span>
-              <span className="text-[var(--color-accent)] font-bold">// ADMIN</span>
+              <span className="text-[var(--color-accent)] font-bold">{"// ADMIN"}</span>
             </div>
             <span className="w-2 h-2 rounded-full bg-[var(--color-status-live)] animate-pulse" />
           </div>

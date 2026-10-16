@@ -9,9 +9,6 @@ import {
   Languages,
   Cpu,
   ShieldCheck,
-  Binary,
-  Layers,
-  ChevronRight,
 } from "lucide-react";
 
 interface CognitiveNode {

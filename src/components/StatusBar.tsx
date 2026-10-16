@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { GitBranch, Sparkles } from "lucide-react";
+import { Sparkles } from "lucide-react";
 import { useTheme } from "@/components/ThemeProvider";
 
 const SECTION_IDS = ["hero", "about", "skills", "projects", "experience", "contact"];
@@ -90,7 +90,7 @@ export function StatusBar() {
         </button>
 
         <span className="hidden md:inline text-[var(--color-text-faint)]">
-          // SEC: &quot;{currentSection}&quot;
+          {`// SEC: "${currentSection}"`}
         </span>
       </div>
 

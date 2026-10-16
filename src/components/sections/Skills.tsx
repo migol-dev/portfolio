@@ -5,7 +5,7 @@ import type { Skill } from "@prisma/client";
 import { Reveal, SectionEyebrow } from "@/components/Reveal";
 import { Badge } from "@/components/ui/badge";
 import { resolveIcon } from "@/lib/icons";
-import { Search, ChevronDown, Cpu, Filter } from "lucide-react";
+import { Search, ChevronDown, Filter } from "lucide-react";
 
 const CATEGORY_LABELS: Record<string, string> = {
   ALL: "Todos",

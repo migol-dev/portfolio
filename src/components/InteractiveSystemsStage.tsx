@@ -9,9 +9,6 @@ import {
   Sliders,
   Code2,
   Box,
-  Activity,
-  Terminal,
-  Zap,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -323,13 +320,13 @@ export function InteractiveSystemsStage() {
                     <span className="text-[var(--color-telemetry)]">struct</span> <span className="text-[var(--color-text)]">DeveloperProfile</span> &#123;{"\n"}
                     {"  "}std::string_view name = <span className="text-[var(--color-status-live)]">&quot;Miguel Garcia (MIGOL)&quot;</span>;{"\n"}
                     {"  "}std::string_view core = <span className="text-[var(--color-status-live)]">&quot;C/C++ &amp; Full Stack Web&quot;</span>;{"\n"}
-                    {"  "}<span className="text-[var(--color-text-faint)]">// Easter egg: Matriz cognitiva de ingeniería</span>{"\n"}
+                    {"  "}<span className="text-[var(--color-text-faint)]">{"// Easter egg: Matriz cognitiva de ingeniería"}</span>{"\n"}
                     {"  "}std::string_view cognitive = <span className="text-[var(--color-status-live)]">&quot;INFP · SO/SX · 9w1 · 946&quot;</span>;{"\n"}
                     &#125;;{"\n\n"}
                     <span className="text-[var(--color-telemetry)]">template</span>&lt;<span className="text-[var(--color-telemetry)]">typename</span> Allocator&gt;{"\n"}
                     <span className="text-[var(--color-telemetry)]">class</span> <span className="text-[var(--color-text)]">MemoryArena</span> &#123;{"\n"}
                     {"  "}uint8_t* buffer_ = <span className="text-[var(--color-accent)]">nullptr</span>;{"\n"}
-                    {"  "}size_t capacity_ = <span className="tnum">1024</span> * <span className="tnum">1024</span>; <span className="text-[var(--color-text-faint)]">// 1 MB Arena</span>{"\n"}
+                    {"  "}size_t capacity_ = <span className="tnum">1024</span> * <span className="tnum">1024</span>; <span className="text-[var(--color-text-faint)]">{"// 1 MB Arena"}</span>{"\n"}
                     &#125;;
                   </pre>
                 ) : (

@@ -1,5 +1,5 @@
 import Link from "next/link";
-import { FolderKanban, Sparkles, Mail, Database, AlertCircle, ArrowUpRight } from "lucide-react";
+import { FolderKanban, Sparkles, Mail, AlertCircle, ArrowUpRight } from "lucide-react";
 import { prisma } from "@/lib/prisma";
 
 export const dynamic = "force-dynamic";

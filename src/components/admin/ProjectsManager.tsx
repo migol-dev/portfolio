@@ -2,7 +2,7 @@
 
 import { useState, useMemo } from "react";
 import { toast } from "sonner";
-import { Plus, Pencil, Trash2, Star, Search, Terminal, ArrowUpRight } from "lucide-react";
+import { Plus, Pencil, Trash2, Star, Search } from "lucide-react";
 import type { Project } from "@prisma/client";
 import { Button } from "@/components/ui/button";
 import { Badge } from "@/components/ui/badge";

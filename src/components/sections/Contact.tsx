@@ -11,9 +11,6 @@ import {
   Check,
   Send,
   Loader2,
-  MapPin,
-  Clock,
-  Sparkles,
   ExternalLink,
 } from "lucide-react";
 import { contactSchema, type ContactInput } from "@/lib/validations";
@@ -22,7 +19,6 @@ import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
-import { Badge } from "@/components/ui/badge";
 
 export function Contact() {
   const [copiedKey, setCopiedKey] = useState<string | null>(null);
