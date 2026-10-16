@@ -90,7 +90,7 @@ async function runBrowserQa() {
   console.log("\n[3] Capturing multi-viewport screenshots with headless browser ...");
   for (const vp of VIEWPORTS) {
     const outFile = path.join(SCREENSHOT_DIR, `${vp.name}-crimson.png`);
-    const cmd = `"${BROWSER_PATH}" --headless --disable-gpu --hide-scrollbars --window-size=${vp.width},${vp.height} --screenshot="${outFile}" http://localhost:3000`;
+    const cmd = `"${BROWSER_PATH}" --headless --disable-gpu --hide-scrollbars --virtual-time-budget=2000 --window-size=${vp.width},${vp.height} --screenshot="${outFile}" http://localhost:3000`;
     console.log(`Capturing ${vp.name} (${vp.width}x${vp.height})...`);
     execSync(cmd, { stdio: "pipe", timeout: 15000 });
     const stats = fs.statSync(outFile);
@@ -101,7 +101,7 @@ async function runBrowserQa() {
   const loginOutFile = path.join(SCREENSHOT_DIR, "1280x800-admin-login.png");
   console.log("Capturing admin login (1280x800)...");
   execSync(
-    `"${BROWSER_PATH}" --headless --disable-gpu --window-size=1280,800 --screenshot="${loginOutFile}" http://localhost:3000/admin/login`,
+    `"${BROWSER_PATH}" --headless --disable-gpu --virtual-time-budget=2000 --window-size=1280,800 --screenshot="${loginOutFile}" http://localhost:3000/admin/login`,
     { stdio: "pipe", timeout: 15000 }
   );
   const loginStats = fs.statSync(loginOutFile);
