@@ -6,7 +6,7 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "group relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs font-mono uppercase tracking-[0.06em] font-medium transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-3.5 [&_svg]:shrink-0 [&_svg]:transition-transform group-hover:[&_svg]:translate-x-0.5 cursor-pointer select-none overflow-hidden",
+  "group relative inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs font-mono uppercase tracking-[0.06em] font-medium transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-3.5 [&_svg]:shrink-0 [&_svg]:transition-transform group-hover:[&_svg]:translate-x-0.5 cursor-pointer select-none overflow-hidden spotlight-box",
   {
     variants: {
       variant: {
@@ -64,8 +64,6 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
     },
     ref
   ) => {
-    const [offset, setOffset] = React.useState({ x: 0, y: 0 });
-
     const handleMouseMove = (e: React.MouseEvent<HTMLButtonElement>) => {
       onMouseMove?.(e);
       const target = e.currentTarget;
@@ -79,23 +77,25 @@ const Button = React.forwardRef<HTMLButtonElement, ButtonProps>(
       if (magnetic && typeof window !== "undefined" && window.matchMedia("(pointer: fine)").matches) {
         const pullX = Math.max(-3, Math.min(3, (x - rect.width / 2) * 0.12));
         const pullY = Math.max(-3, Math.min(3, (y - rect.height / 2) * 0.12));
-        setOffset({ x: pullX, y: pullY });
+        target.style.setProperty("--btn-tx", `${pullX.toFixed(2)}px`);
+        target.style.setProperty("--btn-ty", `${pullY.toFixed(2)}px`);
       }
     };
 
     const handleMouseLeave = (e: React.MouseEvent<HTMLButtonElement>) => {
       onMouseLeave?.(e);
+      const target = e.currentTarget;
+      target.style.setProperty("--mouse-x", "-999px");
+      target.style.setProperty("--mouse-y", "-999px");
       if (magnetic) {
-        setOffset({ x: 0, y: 0 });
+        target.style.setProperty("--btn-tx", "0px");
+        target.style.setProperty("--btn-ty", "0px");
       }
     };
 
     const combinedStyle: React.CSSProperties = {
+      translate: "var(--btn-tx, 0px) var(--btn-ty, 0px)",
       ...style,
-      transform:
-        offset.x || offset.y
-          ? `translate3d(${offset.x}px, ${offset.y}px, 0)`
-          : style?.transform,
     };
 
     if (asChild) {

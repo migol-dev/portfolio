@@ -198,13 +198,13 @@ body {
 .spotlight-box::before {
   content: "";
   position: absolute;
-  inset: -1px;
+  inset: 0;
   border-radius: inherit;
   padding: 1px;
   background: radial-gradient(
-    280px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
+    220px circle at var(--mouse-x, -999px) var(--mouse-y, -999px),
     var(--color-accent) 0%,
-    transparent 70%
+    transparent 75%
   );
   -webkit-mask: 
     linear-gradient(#fff 0 0) content-box, 
@@ -213,12 +213,12 @@ body {
   mask-composite: exclude;
   pointer-events: none;
   opacity: 0;
-  transition: opacity 0.25s ease;
-  z-index: 1;
+  transition: opacity 0.2s ease;
+  z-index: 2;
 }
 
 .spotlight-box:hover::before {
-  opacity: 0.85;
+  opacity: 0.9;
 }
 
 /* Smooth Theme Switching */
