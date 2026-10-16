@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
+import { toast } from "sonner";
 import type { Project } from "@prisma/client";
 import { projectSchema, type ProjectInput } from "@/lib/validations";
 import {
@@ -16,6 +17,7 @@ import { Textarea } from "@/components/ui/textarea";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { Loader2 } from "lucide-react";
 
 const EMPTY: ProjectInput = {
   slug: "",
@@ -80,98 +82,100 @@ export function ProjectForm({
     const url = project ? `/api/projects/${project.id}` : "/api/projects";
     const method = project ? "PUT" : "POST";
 
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    if (!res.ok) {
-      const body = await res.json().catch(() => null);
-      throw new Error(body?.error ?? "No se pudo guardar el proyecto.");
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error ?? "No se pudo guardar el proyecto.");
+      }
+
+      const saved = (await res.json()) as Project;
+      toast.success(project ? "Proyecto actualizado." : "Proyecto creado.");
+      onSaved(saved);
+      onOpenChange(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Error al guardar proyecto.");
     }
-
-    const saved = (await res.json()) as Project;
-    onSaved(saved);
-    onOpenChange(false);
   }
 
   const status = watch("status");
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent>
+      <DialogContent className="max-w-2xl max-h-[90vh] overflow-y-auto">
         <DialogHeader>
           <DialogTitle>{project ? "Editar proyecto" : "Nuevo proyecto"}</DialogTitle>
         </DialogHeader>
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="name">Nombre</Label>
-              <Input id="name" {...register("name")} />
-              {errors.name && <p className="text-xs text-red">{errors.name.message}</p>}
+              <Label htmlFor="project-name">Nombre</Label>
+              <Input id="project-name" placeholder="Ej. Finance Pal" {...register("name")} />
+              {errors.name && <p className="text-xs text-[var(--color-danger)]">{errors.name.message}</p>}
             </div>
+
             <div className="space-y-1.5">
-              <Label htmlFor="slug">Slug</Label>
-              <Input id="slug" placeholder="mi-proyecto" {...register("slug")} />
-              {errors.slug && <p className="text-xs text-red">{errors.slug.message}</p>}
+              <Label htmlFor="project-slug">Slug (URL)</Label>
+              <Input id="project-slug" placeholder="finance-pal" {...register("slug")} />
+              {errors.slug && <p className="text-xs text-[var(--color-danger)]">{errors.slug.message}</p>}
             </div>
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="tagline">Descripción corta</Label>
-            <Input id="tagline" {...register("tagline")} />
-            {errors.tagline && <p className="text-xs text-red">{errors.tagline.message}</p>}
+            <Label htmlFor="project-tagline">Tagline</Label>
+            <Input
+              id="project-tagline"
+              placeholder="Una línea descriptiva del proyecto"
+              {...register("tagline")}
+            />
+            {errors.tagline && <p className="text-xs text-[var(--color-danger)]">{errors.tagline.message}</p>}
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="description">Descripción completa</Label>
-            <Textarea id="description" rows={4} {...register("description")} />
+            <Label htmlFor="project-description">Descripción</Label>
+            <Textarea
+              id="project-description"
+              placeholder="Explica qué hace el proyecto, retos técnicos, etc."
+              rows={4}
+              {...register("description")}
+            />
             {errors.description && (
-              <p className="text-xs text-red">{errors.description.message}</p>
+              <p className="text-xs text-[var(--color-danger)]">{errors.description.message}</p>
             )}
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="logoUrl">URL del logo</Label>
-              <Input id="logoUrl" placeholder="https://..." {...register("logoUrl")} />
-              {errors.logoUrl && <p className="text-xs text-red">{errors.logoUrl.message}</p>}
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="tags">Tags (separados por coma)</Label>
+              <Label htmlFor="project-tags">Tags (separados por coma)</Label>
               <Input
-                id="tags"
-                defaultValue={project?.tags.join(", ") ?? ""}
-                onChange={(e) =>
-                  setValue(
-                    "tags",
-                    e.target.value
-                      .split(",")
-                      .map((t) => t.trim())
-                      .filter(Boolean)
-                  )
-                }
+                id="project-tags"
+                placeholder="React, TypeScript, Vite"
+                defaultValue={project?.tags?.join(", ") ?? ""}
+                onChange={(e) => {
+                  const tags = e.target.value
+                    .split(",")
+                    .map((t) => t.trim())
+                    .filter(Boolean);
+                  setValue("tags", tags);
+                }}
               />
+              {errors.tags && <p className="text-xs text-[var(--color-danger)]">{errors.tags.message}</p>}
             </div>
-          </div>
 
-          <div className="grid grid-cols-2 gap-3">
-            <div className="space-y-1.5">
-              <Label htmlFor="repoUrl">Repositorio (opcional)</Label>
-              <Input id="repoUrl" placeholder="https://github.com/..." {...register("repoUrl")} />
-            </div>
-            <div className="space-y-1.5">
-              <Label htmlFor="liveUrl">Enlace en vivo (opcional)</Label>
-              <Input id="liveUrl" placeholder="https://..." {...register("liveUrl")} />
-            </div>
-          </div>
-
-          <div className="grid grid-cols-2 gap-3">
             <div className="space-y-1.5">
               <Label>Estado</Label>
-              <Select value={status} onValueChange={(v) => setValue("status", v as ProjectInput["status"])}>
+              <Select
+                value={status}
+                onValueChange={(v) =>
+                  setValue("status", v as "LIVE" | "IN_PROGRESS" | "ARCHIVED")
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -182,24 +186,69 @@ export function ProjectForm({
                 </SelectContent>
               </Select>
             </div>
+          </div>
+
+          <div className="grid sm:grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label htmlFor="order">Orden</Label>
+              <Label htmlFor="project-repo">URL del repositorio</Label>
               <Input
-                id="order"
+                id="project-repo"
+                placeholder="https://github.com/..."
+                {...register("repoUrl")}
+              />
+              {errors.repoUrl && <p className="text-xs text-[var(--color-danger)]">{errors.repoUrl.message}</p>}
+            </div>
+
+            <div className="space-y-1.5">
+              <Label htmlFor="project-live">URL del demo / sitio</Label>
+              <Input id="project-live" placeholder="https://..." {...register("liveUrl")} />
+              {errors.liveUrl && <p className="text-xs text-[var(--color-danger)]">{errors.liveUrl.message}</p>}
+            </div>
+          </div>
+
+          <div className="flex items-center gap-6 pt-2">
+            <label className="flex items-center gap-2 text-xs font-mono text-[var(--color-text)] cursor-pointer">
+              <input
+                type="checkbox"
+                className="rounded-[3px] accent-[var(--color-accent)]"
+                {...register("featured")}
+              />
+              <span>Destacado (aparece primero)</span>
+            </label>
+
+            <div className="flex items-center gap-2">
+              <Label htmlFor="project-order" className="text-xs font-mono">
+                Orden:
+              </Label>
+              <Input
+                id="project-order"
                 type="number"
+                className="w-20 h-8 text-xs font-mono"
                 {...register("order", { valueAsNumber: true })}
               />
             </div>
           </div>
 
-          <label className="flex items-center gap-2 text-sm text-text-dim">
-            <input type="checkbox" {...register("featured")} className="accent-cyan" />
-            Destacar en la portada
-          </label>
-
-          <Button type="submit" disabled={isSubmitting} className="w-full">
-            {isSubmitting ? "Guardando..." : "Guardar proyecto"}
-          </Button>
+          <div className="flex justify-end gap-2.5 pt-4 border-t border-[var(--color-border)]">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => onOpenChange(false)}
+            >
+              Cancelar
+            </Button>
+            <Button type="submit" size="sm" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Guardando...</span>
+                </>
+              ) : (
+                <span>Guardar proyecto</span>
+              )}
+            </Button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

@@ -2,7 +2,7 @@
 
 import { Suspense, useState } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
-import { Lock, Loader2 } from "lucide-react";
+import { Lock, Loader2, Terminal, ShieldAlert } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
@@ -29,10 +29,17 @@ function LoginForm() {
 
       if (!res.ok) {
         const body = await res.json().catch(() => null);
-        throw new Error(body?.error ?? "No se pudo iniciar sesión.");
+        throw new Error(body?.error ?? "Credenciales inválidas.");
       }
 
-      router.push(searchParams.get("next") ?? "/admin");
+      // Validación rigurosa para prevenir ataques de Open Redirect
+      const rawNext = searchParams.get("next");
+      const safeNext =
+        rawNext && rawNext.startsWith("/") && !rawNext.startsWith("//") && !rawNext.includes("\\")
+          ? rawNext
+          : "/admin";
+
+      router.push(safeNext);
       router.refresh();
     } catch (err) {
       setError(err instanceof Error ? err.message : "Algo salió mal.");
@@ -42,44 +49,70 @@ function LoginForm() {
   }
 
   return (
-    <div className="min-h-screen flex items-center justify-center px-4 bg-void">
-      <div className="w-full max-w-sm">
-        <div className="flex items-center gap-2 justify-center mb-8 font-mono text-sm text-text-dim">
-          <Lock className="h-4 w-4 text-cyan" />
-          panel de administración
+    <div className="min-h-screen flex items-center justify-center px-4 bg-[var(--color-void)]">
+      <div className="w-full max-w-sm space-y-6">
+        <div className="flex flex-col items-center text-center space-y-2">
+          <div className="p-2.5 rounded-[6px] bg-white/[0.04] border border-[var(--color-border)] text-[var(--color-accent)]">
+            <Lock className="w-5 h-5" strokeWidth={1.5} />
+          </div>
+          <div className="font-mono text-xs font-semibold text-[var(--color-text)]">
+            [0xMIGOL // AUTENTICACIÓN]
+          </div>
+          <p className="text-xs text-[var(--color-text-dim)]">
+            Acceso restringido para gestión de contenido
+          </p>
         </div>
 
         <form
           onSubmit={onSubmit}
-          className="rounded-lg border border-border bg-panel/60 p-6 space-y-5"
+          className="rounded-[8px] border border-[var(--color-border)] bg-[var(--color-panel)] p-6 sm:p-7 space-y-4 shadow-xl surface-elevation"
         >
           <div className="space-y-1.5">
-            <Label htmlFor="email">Email</Label>
+            <Label htmlFor="login-email" className="text-xs font-mono text-[var(--color-text)]">
+              Correo Admin
+            </Label>
             <Input
-              id="email"
+              id="login-email"
               type="email"
               autoComplete="username"
               required
+              placeholder="admin@migol.dev"
               value={email}
               onChange={(e) => setEmail(e.target.value)}
             />
           </div>
+
           <div className="space-y-1.5">
-            <Label htmlFor="password">Contraseña</Label>
+            <Label htmlFor="login-password" className="text-xs font-mono text-[var(--color-text)]">
+              Contraseña Maestra
+            </Label>
             <Input
-              id="password"
+              id="login-password"
               type="password"
               autoComplete="current-password"
               required
+              placeholder="••••••••••••"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
             />
           </div>
 
-          {error && <p className="text-xs text-red">{error}</p>}
+          {error && (
+            <div className="p-2.5 rounded-[4px] border border-[var(--color-danger)]/30 bg-[var(--color-danger)]/10 text-xs font-mono text-[var(--color-danger)] flex items-center gap-2">
+              <ShieldAlert className="w-3.5 h-3.5 shrink-0" strokeWidth={1.5} />
+              <span>{error}</span>
+            </div>
+          )}
 
-          <Button type="submit" disabled={loading} className="w-full">
-            {loading ? <Loader2 className="h-4 w-4 animate-spin" /> : "Entrar"}
+          <Button type="submit" disabled={loading} className="w-full mt-2">
+            {loading ? (
+              <>
+                <Loader2 className="w-4 h-4 animate-spin" />
+                <span>Verificando credenciales...</span>
+              </>
+            ) : (
+              <span>[INGRESAR AL PANEL]</span>
+            )}
           </Button>
         </form>
       </div>

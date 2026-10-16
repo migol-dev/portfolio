@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
+import { toast } from "sonner";
 import type { Skill } from "@prisma/client";
 import { skillSchema, type SkillInput } from "@/lib/validations";
 import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/ui/dialog";
@@ -11,6 +12,7 @@ import { Label } from "@/components/ui/label";
 import { Button } from "@/components/ui/button";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
 import { ICON_MAP } from "@/lib/icons";
+import { Loader2 } from "lucide-react";
 
 const EMPTY: SkillInput = {
   name: "",
@@ -60,20 +62,25 @@ export function SkillForm({
     const url = skill ? `/api/skills/${skill.id}` : "/api/skills";
     const method = skill ? "PUT" : "POST";
 
-    const res = await fetch(url, {
-      method,
-      headers: { "Content-Type": "application/json" },
-      body: JSON.stringify(data),
-    });
+    try {
+      const res = await fetch(url, {
+        method,
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify(data),
+      });
 
-    if (!res.ok) {
-      const body = await res.json().catch(() => null);
-      throw new Error(body?.error ?? "No se pudo guardar la habilidad.");
+      if (!res.ok) {
+        const body = await res.json().catch(() => null);
+        throw new Error(body?.error ?? "No se pudo guardar la habilidad.");
+      }
+
+      const saved = (await res.json()) as Skill;
+      toast.success(skill ? "Habilidad actualizada." : "Habilidad creada.");
+      onSaved(saved);
+      onOpenChange(false);
+    } catch (err) {
+      toast.error(err instanceof Error ? err.message : "Error al guardar habilidad.");
     }
-
-    const saved = (await res.json()) as Skill;
-    onSaved(saved);
-    onOpenChange(false);
   }
 
   const category = watch("category");
@@ -89,21 +96,30 @@ export function SkillForm({
 
         <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
           <div className="space-y-1.5">
-            <Label htmlFor="name">Nombre</Label>
-            <Input id="name" {...register("name")} />
-            {errors.name && <p className="text-xs text-red">{errors.name.message}</p>}
+            <Label htmlFor="skill-name">Nombre</Label>
+            <Input id="skill-name" placeholder="Ej. C / C++" {...register("name")} />
+            {errors.name && <p className="text-xs text-[var(--color-danger)]">{errors.name.message}</p>}
           </div>
 
           <div className="space-y-1.5">
-            <Label htmlFor="summary">Descripción</Label>
-            <Input id="summary" {...register("summary")} />
-            {errors.summary && <p className="text-xs text-red">{errors.summary.message}</p>}
+            <Label htmlFor="skill-summary">Descripción / Resumen técnico</Label>
+            <Input
+              id="skill-summary"
+              placeholder="Punteros, estructuras de datos, gestión manual..."
+              {...register("summary")}
+            />
+            {errors.summary && <p className="text-xs text-[var(--color-danger)]">{errors.summary.message}</p>}
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
               <Label>Categoría</Label>
-              <Select value={category} onValueChange={(v) => setValue("category", v as SkillInput["category"])}>
+              <Select
+                value={category}
+                onValueChange={(v) =>
+                  setValue("category", v as SkillInput["category"])
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -117,9 +133,15 @@ export function SkillForm({
                 </SelectContent>
               </Select>
             </div>
+
             <div className="space-y-1.5">
               <Label>Nivel</Label>
-              <Select value={level} onValueChange={(v) => setValue("level", v as SkillInput["level"])}>
+              <Select
+                value={level}
+                onValueChange={(v) =>
+                  setValue("level", v as "APRENDIENDO" | "INTERMEDIO" | "AVANZADO")
+                }
+              >
                 <SelectTrigger>
                   <SelectValue />
                 </SelectTrigger>
@@ -132,31 +154,56 @@ export function SkillForm({
             </div>
           </div>
 
-          <div className="grid grid-cols-2 gap-3">
+          <div className="grid grid-cols-2 gap-4">
             <div className="space-y-1.5">
-              <Label>Ícono</Label>
-              <Select value={icon || undefined} onValueChange={(v) => setValue("icon", v)}>
+              <Label>Icono (Lucide)</Label>
+              <Select
+                value={icon || "Code2"}
+                onValueChange={(v) => setValue("icon", v)}
+              >
                 <SelectTrigger>
-                  <SelectValue placeholder="Elegir ícono" />
+                  <SelectValue />
                 </SelectTrigger>
                 <SelectContent>
-                  {Object.keys(ICON_MAP).map((name) => (
-                    <SelectItem key={name} value={name}>
-                      {name}
+                  {Object.keys(ICON_MAP).map((iconName) => (
+                    <SelectItem key={iconName} value={iconName}>
+                      {iconName}
                     </SelectItem>
                   ))}
                 </SelectContent>
               </Select>
             </div>
+
             <div className="space-y-1.5">
-              <Label htmlFor="order">Orden</Label>
-              <Input id="order" type="number" {...register("order", { valueAsNumber: true })} />
+              <Label htmlFor="skill-order">Orden</Label>
+              <Input
+                id="skill-order"
+                type="number"
+                {...register("order", { valueAsNumber: true })}
+              />
             </div>
           </div>
 
-          <Button type="submit" disabled={isSubmitting} className="w-full">
-            {isSubmitting ? "Guardando..." : "Guardar habilidad"}
-          </Button>
+          <div className="flex justify-end gap-2.5 pt-4 border-t border-[var(--color-border)]">
+            <Button
+              type="button"
+              variant="ghost"
+              size="sm"
+              onClick={() => onOpenChange(false)}
+            >
+              Cancelar
+            </Button>
+            <Button type="submit" size="sm" disabled={isSubmitting}>
+              {isSubmitting ? (
+                <>
+                  <Loader2 className="w-4 h-4 animate-spin" />
+                  <span>Guardando...</span>
+                </>
+              ) : (
+                <span>Guardar habilidad</span>
+              )}
+            </Button>
+          </div>
         </form>
       </DialogContent>
     </Dialog>

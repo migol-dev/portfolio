@@ -317,17 +317,17 @@ StatusBar  [● g++20 / TS 5.x] [COG: INFP·SO/SX·9w1·946] [THEME] [scroll %] 
 ---
 
 ### FASE 4 — Panel `/admin` · `@admin-ui`
-- [ ] **T4.1** `admin/layout.tsx`: rail `panel`, navegación con estado activo, colapsable en móvil
-- [ ] **T4.2** `admin/login/page.tsx`: minimalista; validar que `next` sea una ruta interna (evitar open redirect)
-- [ ] **T4.3** `admin/page.tsx`: métricas en fila separadas por hairlines verticales (sin tarjetas), aviso de DB
-- [ ] **T4.4** `ProjectsManager` / `SkillsManager`: tabla 1px, búsqueda, acciones en hover, edición en `Sheet`
-- [ ] **T4.5** `MessagesManager`: master-detail; filtro leído/no leído; marcar como leído al abrir
-- [ ] **T4.6** Reemplazar `confirm()` por un diálogo de confirmación propio
-- [ ] **T4.7** `ProjectForm` / `SkillForm`: mostrar errores del servidor con toast (hoy se lanza un `throw` sin capturar)
-- [ ] **✅ CHECKPOINT 4**
-  - [ ] Login → CRUD completo → logout sin errores
-  - [ ] El cambio en admin se ve en `/` de inmediato (revalidación)
-  - [ ] `npm run build` exitoso
+- [x] **T4.1** `admin/layout.tsx`: rail `panel`, navegación con estado activo, colapsable en móvil
+- [x] **T4.2** `admin/login/page.tsx`: minimalista; validar que `next` sea una ruta interna (evitar open redirect)
+- [x] **T4.3** `admin/page.tsx`: métricas en fila separadas por hairlines verticales (sin tarjetas), aviso de DB
+- [x] **T4.4** `ProjectsManager` / `SkillsManager`: tabla 1px, búsqueda, acciones en hover, edición en `Sheet`
+- [x] **T4.5** `MessagesManager`: master-detail; filtro leído/no leído; marcar como leído al abrir
+- [x] **T4.6** Reemplazar `confirm()` por un diálogo de confirmación propio
+- [x] **T4.7** `ProjectForm` / `SkillForm`: mostrar errores del servidor con toast (hoy se lanza un `throw` sin capturar)
+- [x] **✅ CHECKPOINT 4**
+  - [x] Login → CRUD completo → logout sin errores
+  - [x] El cambio en admin se ve en `/` de inmediato (revalidación)
+  - [x] `npm run build` exitoso
 
 ---
 
