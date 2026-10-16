@@ -3,6 +3,7 @@
 import React, { useState } from "react";
 import { useForm } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
+import { motion, AnimatePresence } from "framer-motion";
 import { toast } from "sonner";
 import {
   Mail,
@@ -86,7 +87,7 @@ export function Contact() {
             {/* Direct Channel Items (Hairlines, zero card-itis) */}
             <div className="border border-[var(--color-border)] rounded-[6px] bg-[var(--color-panel)] divide-y divide-[var(--color-border)] overflow-hidden font-mono text-xs">
               {/* Email */}
-              <div className="p-3.5 flex items-center justify-between gap-3">
+              <div className="p-3.5 flex items-center justify-between gap-3 transition-colors hover:bg-white/[0.02]">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="p-1.5 rounded-[4px] bg-white/[0.03] text-[var(--color-accent)] shrink-0">
                     <Mail className="w-4 h-4" strokeWidth={1.5} />
@@ -103,26 +104,41 @@ export function Contact() {
 
                 <button
                   type="button"
+                  data-cursor="[COPY]"
                   onClick={() => copyToClipboard("mgarcia245@ucol.mx", "email", "mgarcia245@ucol.mx")}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-[4px] bg-[var(--color-panel-2)] border border-[var(--color-border)] hover:border-[var(--color-accent)] active:scale-[0.97] transition-all text-[11px] text-[var(--color-text)] shrink-0 cursor-pointer"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-[var(--color-panel-2)] border border-[var(--color-border)] hover:border-[var(--color-accent)] active:scale-[0.97] transition-all text-[11px] text-[var(--color-text)] shrink-0 cursor-pointer"
                   title="Copiar correo"
                 >
-                  {copiedKey === "email" ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-[var(--color-status-live)]" strokeWidth={1.5} />
-                      <span className="text-[var(--color-status-live)]">Copiado</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5 text-[var(--color-text-dim)]" strokeWidth={1.5} />
-                      <span>Copiar</span>
-                    </>
-                  )}
+                  <AnimatePresence mode="wait" initial={false}>
+                    {copiedKey === "email" ? (
+                      <motion.span
+                        key="check"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        className="flex items-center gap-1 text-[var(--color-status-live)]"
+                      >
+                        <Check className="w-3.5 h-3.5" strokeWidth={1.5} />
+                        <span>Copiado</span>
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="copy"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        className="flex items-center gap-1 text-[var(--color-text-dim)]"
+                      >
+                        <Copy className="w-3.5 h-3.5" strokeWidth={1.5} />
+                        <span>Copiar</span>
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                 </button>
               </div>
 
               {/* Discord */}
-              <div className="p-3.5 flex items-center justify-between gap-3">
+              <div className="p-3.5 flex items-center justify-between gap-3 transition-colors hover:bg-white/[0.02]">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="p-1.5 rounded-[4px] bg-white/[0.03] text-[var(--color-telemetry)] shrink-0">
                     <MessageCircle className="w-4 h-4" strokeWidth={1.5} />
@@ -139,26 +155,41 @@ export function Contact() {
 
                 <button
                   type="button"
+                  data-cursor="[COPY]"
                   onClick={() => copyToClipboard("migol", "discord", "migol")}
-                  className="flex items-center gap-1 px-2.5 py-1 rounded-[4px] bg-[var(--color-panel-2)] border border-[var(--color-border)] hover:border-[var(--color-telemetry)] active:scale-[0.97] transition-all text-[11px] text-[var(--color-text)] shrink-0 cursor-pointer"
+                  className="flex items-center gap-1.5 px-2.5 py-1 rounded-[4px] bg-[var(--color-panel-2)] border border-[var(--color-border)] hover:border-[var(--color-telemetry)] active:scale-[0.97] transition-all text-[11px] text-[var(--color-text)] shrink-0 cursor-pointer"
                   title="Copiar usuario de Discord"
                 >
-                  {copiedKey === "discord" ? (
-                    <>
-                      <Check className="w-3.5 h-3.5 text-[var(--color-status-live)]" strokeWidth={1.5} />
-                      <span className="text-[var(--color-status-live)]">Copiado</span>
-                    </>
-                  ) : (
-                    <>
-                      <Copy className="w-3.5 h-3.5 text-[var(--color-text-dim)]" strokeWidth={1.5} />
-                      <span>Copiar</span>
-                    </>
-                  )}
+                  <AnimatePresence mode="wait" initial={false}>
+                    {copiedKey === "discord" ? (
+                      <motion.span
+                        key="check"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        className="flex items-center gap-1 text-[var(--color-status-live)]"
+                      >
+                        <Check className="w-3.5 h-3.5" strokeWidth={1.5} />
+                        <span>Copiado</span>
+                      </motion.span>
+                    ) : (
+                      <motion.span
+                        key="copy"
+                        initial={{ scale: 0.8, opacity: 0 }}
+                        animate={{ scale: 1, opacity: 1 }}
+                        exit={{ scale: 0.8, opacity: 0 }}
+                        className="flex items-center gap-1 text-[var(--color-text-dim)]"
+                      >
+                        <Copy className="w-3.5 h-3.5" strokeWidth={1.5} />
+                        <span>Copiar</span>
+                      </motion.span>
+                    )}
+                  </AnimatePresence>
                 </button>
               </div>
 
               {/* GitHub */}
-              <div className="p-3.5 flex items-center justify-between gap-3">
+              <div className="p-3.5 flex items-center justify-between gap-3 transition-colors hover:bg-white/[0.02]">
                 <div className="flex items-center gap-2.5 min-w-0">
                   <div className="p-1.5 rounded-[4px] bg-white/[0.03] text-[var(--color-text)] shrink-0">
                     <ExternalLink className="w-4 h-4" strokeWidth={1.5} />

@@ -1,6 +1,7 @@
 "use client";
 
 import React, { useState } from "react";
+import { motion, AnimatePresence } from "framer-motion";
 import { Reveal, SectionEyebrow } from "@/components/Reveal";
 import { Badge } from "@/components/ui/badge";
 import { GitCommit, ChevronDown, CheckCircle2 } from "lucide-react";
@@ -106,7 +107,7 @@ export function Experience() {
           </p>
         </div>
 
-        {/* 3:9 Changelog Timeline */}
+        {/* 3:9 Changelog Timeline with Git Branch Connectors */}
         <div className="border border-[var(--color-border)] rounded-[6px] bg-[var(--color-panel)] divide-y divide-[var(--color-border)] overflow-hidden">
           {TIMELINE.map((entry) => {
             const isExpanded = expandedVer === entry.version;
@@ -118,10 +119,10 @@ export function Experience() {
               >
                 <div
                   onClick={() => setExpandedVer(isExpanded ? "" : entry.version)}
-                  className="grid grid-cols-12 gap-4 p-4 sm:p-6 cursor-pointer select-none items-start"
+                  className="grid grid-cols-12 gap-4 p-4 sm:p-6 cursor-pointer select-none items-start active:scale-[0.99] transition-transform"
                 >
                   {/* Left: 3 cols -> Version, Period & Hash */}
-                  <div className="col-span-12 sm:col-span-4 lg:col-span-3 space-y-1.5 font-mono">
+                  <div className="col-span-12 sm:col-span-4 lg:col-span-3 space-y-1.5 font-mono relative pl-3 sm:pl-0">
                     <div className="flex items-center gap-2">
                       <span className="text-xs font-bold text-[var(--color-accent-bright)]">
                         {entry.version}
@@ -139,7 +140,12 @@ export function Experience() {
                     <div className="text-xs text-[var(--color-text-dim)] font-medium">
                       {entry.period}
                     </div>
-                    <div className="text-[10px] text-[var(--color-text-faint)] flex items-center gap-1">
+                    <div className="text-[10px] text-[var(--color-text-faint)] flex items-center gap-1.5">
+                      <span className={`w-2 h-2 rounded-full border ${
+                        isExpanded
+                          ? "bg-[var(--color-accent)] border-[var(--color-accent-bright)] animate-pulse"
+                          : "bg-white/10 border-[var(--color-border)]"
+                      }`} />
                       <GitCommit className="w-3 h-3 text-[var(--color-accent)]" strokeWidth={1.5} />
                       <span className="tnum">commit {entry.commitHash}</span>
                     </div>
@@ -163,25 +169,35 @@ export function Experience() {
                       {entry.summary}
                     </p>
 
-                    {/* Expandable Milestones */}
-                    {isExpanded && (
-                      <div className="pt-3 border-t border-[var(--color-border)]/60 space-y-2 animate-in fade-in-0 duration-200">
-                        <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-text-faint)] block">
-                          Hitos y aprendizajes clave:
-                        </span>
-                        <ul className="space-y-1.5 text-xs text-[var(--color-text)] font-[family-name:var(--font-body)]">
-                          {entry.achievements.map((item, idx) => (
-                            <li key={idx} className="flex items-start gap-2">
-                              <CheckCircle2
-                                className="w-3.5 h-3.5 text-[var(--color-status-live)] shrink-0 mt-0.5"
-                                strokeWidth={1.5}
-                              />
-                              <span>{item}</span>
-                            </li>
-                          ))}
-                        </ul>
-                      </div>
-                    )}
+                    {/* Expandable Milestones with AnimatePresence */}
+                    <AnimatePresence initial={false}>
+                      {isExpanded && (
+                        <motion.div
+                          initial={{ opacity: 0, height: 0 }}
+                          animate={{ opacity: 1, height: "auto" }}
+                          exit={{ opacity: 0, height: 0 }}
+                          transition={{ duration: 0.22, ease: [0.165, 0.84, 0.44, 1] }}
+                          className="overflow-hidden"
+                        >
+                          <div className="pt-3 border-t border-[var(--color-border)]/60 space-y-2">
+                            <span className="text-[10px] font-mono uppercase tracking-wider text-[var(--color-text-faint)] block">
+                              Hitos y aprendizajes clave:
+                            </span>
+                            <ul className="space-y-1.5 text-xs text-[var(--color-text)] font-[family-name:var(--font-body)]">
+                              {entry.achievements.map((item, idx) => (
+                                <li key={idx} className="flex items-start gap-2">
+                                  <CheckCircle2
+                                    className="w-3.5 h-3.5 text-[var(--color-status-live)] shrink-0 mt-0.5"
+                                    strokeWidth={1.5}
+                                  />
+                                  <span>{item}</span>
+                                </li>
+                              ))}
+                            </ul>
+                          </div>
+                        </motion.div>
+                      )}
+                    </AnimatePresence>
                   </div>
                 </div>
               </div>

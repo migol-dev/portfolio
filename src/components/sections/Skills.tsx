@@ -2,6 +2,7 @@
 
 import React, { useState, useMemo } from "react";
 import type { Skill } from "@prisma/client";
+import { motion, AnimatePresence } from "framer-motion";
 import { Reveal, SectionEyebrow } from "@/components/Reveal";
 import { Badge } from "@/components/ui/badge";
 import { resolveIcon } from "@/lib/icons";
@@ -88,7 +89,7 @@ export function Skills({ skills }: { skills: Skill[] }) {
               />
             </div>
 
-            {/* Category Filter Pills */}
+            {/* Category Filter Pills with layoutId */}
             <div className="space-y-2">
               <div className="flex items-center gap-1.5 text-[10px] font-mono text-[var(--color-text-faint)] uppercase tracking-wider">
                 <Filter className="w-3 h-3 text-[var(--color-accent)]" strokeWidth={1.5} />
@@ -102,13 +103,20 @@ export function Skills({ skills }: { skills: Skill[] }) {
                       key={catKey}
                       type="button"
                       onClick={() => setSelectedCategory(catKey)}
-                      className={`px-2.5 py-1 rounded-[4px] text-[11px] font-mono transition-all duration-150 active:scale-[0.97] cursor-pointer border ${
+                      className={`relative px-2.5 py-1 rounded-[4px] text-[11px] font-mono transition-all duration-150 active:scale-[0.97] cursor-pointer border ${
                         isActive
-                          ? "bg-[var(--color-accent)] text-white border-[var(--color-accent)] font-semibold shadow-xs"
+                          ? "text-white font-semibold border-[var(--color-accent)] shadow-xs"
                           : "bg-[var(--color-panel-2)] text-[var(--color-text-dim)] border-[var(--color-border)] hover:text-[var(--color-text)] hover:border-[var(--color-border-strong)]"
                       }`}
                     >
-                      {catLabel}
+                      {isActive && (
+                        <motion.span
+                          layoutId="skills-active-filter"
+                          className="absolute inset-0 bg-[var(--color-accent)] rounded-[3px] -z-0"
+                          transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                        />
+                      )}
+                      <span className="relative z-10">{catLabel}</span>
                     </button>
                   );
                 })}
@@ -168,7 +176,7 @@ export function Skills({ skills }: { skills: Skill[] }) {
                       >
                         <div
                           onClick={() => setExpandedId(isExpanded ? null : skill.id)}
-                          className="grid grid-cols-12 items-center px-4 py-3 text-xs font-mono cursor-pointer select-none"
+                          className="grid grid-cols-12 items-center px-4 py-3 text-xs font-mono cursor-pointer select-none active:scale-[0.99] transition-transform"
                         >
                           {/* Index 0x01 */}
                           <div className="col-span-2 sm:col-span-1 text-[11px] text-[var(--color-accent)] font-semibold">
@@ -204,24 +212,36 @@ export function Skills({ skills }: { skills: Skill[] }) {
                           </div>
                         </div>
 
-                        {/* Expandable Technical Summary Stage */}
-                        {isExpanded && (
-                          <div className="px-4 pb-4 pt-1 bg-white/[0.01] border-t border-[var(--color-border)]/50 space-y-2">
-                            <p className="text-xs text-[var(--color-text-dim)] leading-relaxed font-[family-name:var(--font-body)] pl-7">
-                              {skill.summary}
-                            </p>
-                            <div className="pl-7 flex items-center gap-3 text-[10px] font-mono text-[var(--color-text-faint)]">
-                              <span>Nivel de competencia estimado:</span>
-                              <div className="flex-1 max-w-48 h-1.5 bg-black/40 rounded-full overflow-hidden border border-[var(--color-border)]">
-                                <div
-                                  className="h-full bg-[var(--color-accent)] rounded-full transition-all duration-500"
-                                  style={{ width: `${config.percent}%` }}
-                                />
+                        {/* Expandable Technical Summary Stage with AnimatePresence */}
+                        <AnimatePresence initial={false}>
+                          {isExpanded && (
+                            <motion.div
+                              initial={{ opacity: 0, height: 0 }}
+                              animate={{ opacity: 1, height: "auto" }}
+                              exit={{ opacity: 0, height: 0 }}
+                              transition={{ duration: 0.22, ease: [0.165, 0.84, 0.44, 1] }}
+                              className="overflow-hidden"
+                            >
+                              <div className="px-4 pb-4 pt-1 bg-white/[0.01] border-t border-[var(--color-border)]/50 space-y-2">
+                                <p className="text-xs text-[var(--color-text-dim)] leading-relaxed font-[family-name:var(--font-body)] pl-7">
+                                  {skill.summary}
+                                </p>
+                                <div className="pl-7 flex items-center gap-3 text-[10px] font-mono text-[var(--color-text-faint)]">
+                                  <span>Nivel de competencia estimado:</span>
+                                  <div className="flex-1 max-w-48 h-1.5 bg-black/40 rounded-full overflow-hidden border border-[var(--color-border)]">
+                                    <motion.div
+                                      initial={{ width: 0 }}
+                                      animate={{ width: `${config.percent}%` }}
+                                      transition={{ duration: 0.5, ease: [0.165, 0.84, 0.44, 1] }}
+                                      className="h-full bg-[var(--color-accent)] rounded-full"
+                                    />
+                                  </div>
+                                  <span className="tnum text-[var(--color-text)]">{config.percent}%</span>
+                                </div>
                               </div>
-                              <span className="tnum text-[var(--color-text)]">{config.percent}%</span>
-                            </div>
-                          </div>
-                        )}
+                            </motion.div>
+                          )}
+                        </AnimatePresence>
                       </div>
                     );
                   })
