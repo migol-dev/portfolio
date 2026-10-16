@@ -125,10 +125,10 @@ export function Projects({ projects }: { projects: Project[] }) {
                         [{formattedNum}]
                       </span>
                       <Badge
-                        variant={p.status === "LIVE" ? "live" : "accent"}
+                        variant={p.status === "LIVE" ? "live" : p.status === "ARCHIVED" ? "outline" : "accent"}
                         className="text-[9px]"
                       >
-                        {p.status === "LIVE" ? "LIVE" : "DEV"}
+                        {p.status === "LIVE" ? "LIVE" : p.status === "ARCHIVED" ? "ARCHIVE" : "DEV"}
                       </Badge>
                     </div>
 
@@ -173,10 +173,20 @@ export function Projects({ projects }: { projects: Project[] }) {
                     </span>
                   </div>
                   <Badge
-                    variant={activeProject.status === "LIVE" ? "live" : "accent"}
+                    variant={
+                      activeProject.status === "LIVE"
+                        ? "live"
+                        : activeProject.status === "ARCHIVED"
+                        ? "outline"
+                        : "accent"
+                    }
                     className="text-[9px]"
                   >
-                    {activeProject.status === "LIVE" ? "EN PRODUCCIÓN" : "EN DESARROLLO"}
+                    {activeProject.status === "LIVE"
+                      ? "EN PRODUCCIÓN"
+                      : activeProject.status === "ARCHIVED"
+                      ? "ARCHIVADO"
+                      : "EN DESARROLLO"}
                   </Badge>
                 </div>
 

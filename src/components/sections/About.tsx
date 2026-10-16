@@ -121,9 +121,17 @@ export function About() {
                   <div className="px-3.5 py-2.5 flex items-center justify-between">
                     <span className="text-[var(--color-text-dim)] flex items-center gap-1.5">
                       <Languages className="w-3.5 h-3.5 text-[var(--color-telemetry)]" strokeWidth={1.5} />
-                      Idiomas:
+                      Trayectoria:
                     </span>
-                    <span className="text-[var(--color-text)] font-medium">Español (Nativo) · Inglés (B2+)</span>
+                    <span className="text-[var(--color-text)] font-medium">4 años en código (desde 2022)</span>
+                  </div>
+
+                  <div className="px-3.5 py-2.5 flex items-center justify-between">
+                    <span className="text-[var(--color-text-dim)] flex items-center gap-1.5">
+                      <ShieldCheck className="w-3.5 h-3.5 text-[var(--color-status-live)]" strokeWidth={1.5} />
+                      Comunidades:
+                    </span>
+                    <span className="text-[var(--color-text)] font-medium">+5,000 usuarios gestionados</span>
                   </div>
 
                   <div className="px-3.5 py-2.5 flex items-center justify-between">
@@ -131,15 +139,7 @@ export function About() {
                       <Cpu className="w-3.5 h-3.5 text-[var(--color-accent)]" strokeWidth={1.5} />
                       Núcleo Técnico:
                     </span>
-                    <span className="text-[var(--color-text)] font-medium">C/C++ · React · Vite · TS · SQL</span>
-                  </div>
-
-                  <div className="px-3.5 py-2.5 flex items-center justify-between">
-                    <span className="text-[var(--color-text-dim)] flex items-center gap-1.5">
-                      <ShieldCheck className="w-3.5 h-3.5 text-[var(--color-status-live)]" strokeWidth={1.5} />
-                      Estándar:
-                    </span>
-                    <span className="text-[var(--color-text)] font-medium">Zero-Leak Mindset · Tipado Estricto</span>
+                    <span className="text-[var(--color-text)] font-medium">React · TS · Vite · C/C++ (aspirante)</span>
                   </div>
                 </div>
               </div>
@@ -158,28 +158,28 @@ export function About() {
                 <div className="space-y-6 text-sm text-[var(--color-text-dim)] leading-relaxed">
                   <div className="border-l-2 border-[var(--color-border-strong)] pl-4 space-y-1">
                     <div className="text-xs font-mono font-semibold text-[var(--color-text)]">
-                      01 // El metal y la memoria (C / C++)
+                      01 // El metal y la memoria (C / C++ · 2026)
                     </div>
                     <p>
-                      Profundizo de forma continua en C y C++ moderno para dominar lo que ocurre a nivel de CPU, pila y montículo. Construir mis propias estructuras de datos y gestionar memoria manualmente me otorga una ventaja crítica al depurar o crear arquitecturas web exigentes.
+                      En 2026 inicié mi aprendizaje de C y C++ como aspirante en desarrollo de bajo nivel. Mi objetivo es dominar punteros, gestión manual de memoria (malloc/free, new/delete) y estructuras de datos nativas para entender a fondo el hardware y construir software sin sobrecarga innecesaria.
                     </p>
                   </div>
 
                   <div className="border-l-2 border-[var(--color-accent)] pl-4 space-y-1">
                     <div className="text-xs font-mono font-semibold text-[var(--color-text)]">
-                      02 // La web reactiva (React, Vite &amp; TypeScript)
+                      02 // Desarrollo web full-stack (React, Vite, TS &amp; Next.js · 2025—presente)
                     </div>
                     <p>
-                      Traslado ese rigor al frontend: desarrollo aplicaciones rápidas, orientadas a tipos, con Vite y React 19, utilizando stores ligeros como Zustand y manteniendo un diseño consistente sin librerías hinchadas ni abstracciones innecesarias.
+                      Mi dedicación central como desarrollador web junior-intermedio: interfaces reactivas, consistentes y orientadas a tipos con React 19, TypeScript, Vite, Next.js y Zustand. Destacan proyectos como <em>Finance Pal</em> (gestión financiera privada), <em>Ritmo</em> (gestor de hábitos) y <em>FinanceMate Webpage</em>.
                     </p>
                   </div>
 
                   <div className="border-l-2 border-[var(--color-telemetry)] pl-4 space-y-1">
                     <div className="text-xs font-mono font-semibold text-[var(--color-text)]">
-                      03 // Sistemas masivos y concurrencia (Node.js &amp; Discord.js)
+                      03 // Comunidades, Azure Mod &amp; Networks de Minecraft (2022—2025)
                     </div>
                     <p>
-                      Mi experiencia gestionando comunidades y bots con decenas de miles de eventos en Discord.js v14 me enseñó a manejar concurrencia, rate limits y resiliencia ante caídas de red en producción real.
+                      Inicié en 2022 creando bots en Discord, escalé como Community Manager de comunidades que congregaron a más de 5,000 miembros y desarrollé <em>Azure Mod</em> (automoderación reactiva, detección de toxicidad y sanciones escalonadas). Posteriormente administré y aseguré redes de servidores de Minecraft con plugins y datapacks personalizados.
                     </p>
                   </div>
                 </div>

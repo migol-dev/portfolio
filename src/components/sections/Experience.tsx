@@ -17,60 +17,74 @@ interface TimelineEntry {
 
 const TIMELINE: TimelineEntry[] = [
   {
+    version: "v4.0.0",
+    period: "2026 — presente",
+    commitHash: "a0f81d2",
+    role: "Aspirante C/C++ & Full Stack Web Developer",
+    isCurrent: true,
+    summary:
+      "Inicio del aprendizaje en desarrollo de bajo nivel con C y C++ (fundamentos de memoria, punteros, estructuras nativas y compilación con GCC), en simultáneo con el desarrollo continuo de aplicaciones web modernas con React, TypeScript y PostgreSQL.",
+    achievements: [
+      "Prácticas continuas de manipulación de punteros, memoria manual y estructuras nativas en C/C++.",
+      "Desarrollo de Ritmo (gestor de hábitos) y evolución de la suite financiera Finance Pal.",
+      "Arquitectura de componentes limpios y sistemas de diseño con Tailwind CSS v4 y TypeScript.",
+    ],
+  },
+  {
     version: "v3.0.0",
     period: "2025 — presente",
     commitHash: "7b4f91e",
-    role: "Junior C/C++ & Full Stack Web Developer",
-    isCurrent: true,
+    role: "Desarrollador Web Junior-Intermedio",
     summary:
-      "Evolución hacia desarrollo de bajo nivel con C/C++ (gestión de memoria, estructuras nativas y compiladores) combinado con desarrollo web moderno en React 19, TypeScript, Vite y bases de datos PostgreSQL.",
+      "Foco pleno en desarrollo web full-stack moderno. Creación de aplicaciones interactivas completas con React 19, TypeScript, Vite, Next.js y persistencia relacional con PostgreSQL y Prisma.",
     achievements: [
-      "Diseño de laboratorios de estructuras de datos y custom memory arenas en C/C++.",
-      "Creación y mantenimiento de Finance Pal (React, TS, Vite, Zustand, Capacitor).",
-      "Arquitecturas full-stack robustas con Next.js App Router y Prisma ORM.",
+      "Diseño y despliegue de Finance Pal (React, TS, Vite, Zustand, Capacitor) para finanzas personales locales.",
+      "Creación del sitio web oficial FinanceMate Webpage optimizado para SEO y desplegado en Vercel.",
+      "Dominio de arquitecturas de componentes basadas en estado, TypeScript estricto y Tailwind CSS.",
+    ],
+  },
+  {
+    version: "v2.5.0",
+    period: "2024 — inicios 2025",
+    commitHash: "5c31b99",
+    role: "Desarrollador de Networks & Servidores Minecraft",
+    summary:
+      "Configuración, optimización y aseguramiento de servidores y networks completas en Minecraft, junto con el desarrollo de plugins y datapacks ligeros.",
+    achievements: [
+      "Despliegue y mantenimiento de networks distribuidas con proxies de alto rendimiento.",
+      "Políticas de seguridad, mitigación de exploits y control de integridad de datos de jugadores.",
+      "Programación de plugins y datapacks sencillos para mecánicas personalizadas.",
     ],
   },
   {
     version: "v2.0.0",
-    period: "2024",
+    period: "2023 — 2024",
     commitHash: "4a28c31",
-    role: "Full Stack & Discord Bot Developer",
+    role: "Community Manager & Creador de Azure Mod",
     summary:
-      "Desarrollo integral de microservicios con Node.js y Discord.js v14 para servidores de alta concurrencia con más de 5,000 usuarios activos.",
+      "Liderazgo de comunidades en Discord que agruparon a más de 5,000 miembros, y desarrollo de Azure Mod, bot de automoderación avanzada y gamificación comunitaria.",
     achievements: [
-      "Implementación de AutoMod Sentinel: filtrado automático de spam, raids y enlaces maliciosos.",
-      "Manejo de WebSockets en tiempo real y persistencia relacional con PostgreSQL.",
-      "Sistemas de tickets de soporte técnico y telemetría de eventos en producción.",
+      "Desarrollo de Azure Mod: filtro inteligente de toxicidad, insultos, spam, enlaces no autorizados y contenido inapropiado.",
+      "Sistema de sanciones escalonadas/progresivas y mecánicas de gamificación para fomento de la convivencia.",
+      "Moderación técnica y gestión comunitaria de más de 5,000 usuarios activos concurrentes.",
     ],
   },
   {
     version: "v1.0.0",
-    period: "2023",
-    commitHash: "1e07b82",
-    role: "Discord Community Manager & Tech Lead",
-    summary:
-      "Liderazgo técnico y gestión de comunidades masivas en Discord, diseñando mecánicas de gamificación y bots que optimizaron la retención de usuarios.",
-    achievements: [
-      "Aumento medible de retención y permanencia de nuevos miembros hasta en un 80%.",
-      "Coordinación de flujos de moderación y directrices de seguridad contra incursiones.",
-    ],
-  },
-  {
-    version: "v0.5.0",
     period: "2022",
     commitHash: "0a89d44",
-    role: "Bot Developer Trainee & Foundations",
+    role: "Bot Developer Trainee & Inicios en Programación",
     summary:
-      "Inicios en programación orientada a eventos con JavaScript (Node.js) y fundamentos de desarrollo web.",
+      "Primeros pasos en programación orientada a eventos con JavaScript y Node.js, creando bots básicos para automatización en Discord.",
     achievements: [
-      "Creación de los primeros bots de música, economía virtual y comandos interactivos.",
-      "Dominio de Git, control de versiones en GitHub y resolución de problemas algorítmicos.",
+      "Desarrollo de bots de bienvenida, respuestas automáticas a mensajes y comandos interactivos.",
+      "Adquisición de bases sólidas en Git, GitHub y lógica algorítmica fundamental.",
     ],
   },
 ];
 
 export function Experience() {
-  const [expandedVer, setExpandedVer] = useState<string>("v3.0.0");
+  const [expandedVer, setExpandedVer] = useState<string>("v4.0.0");
 
   return (
     <section id="experience" className="py-20 sm:py-24 lg:py-32 border-t border-[var(--color-border)] relative">

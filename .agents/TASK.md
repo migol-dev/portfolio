@@ -164,16 +164,19 @@ Rediseñar completamente el portfolio de **Miguel García (MIGOL)** — Next.js 
 
 > ❓ **El usuario debe confirmar los niveles.**
 
-### 3.4 Proyectos
-1. **Finance Pal** — React · TypeScript · Vite · Zustand · Tailwind · Capacitor (existente).
-2. **AutoMod Sentinel** — TypeScript · Node.js · Discord.js v14 (existente).
-3. **Proyecto C/C++** — ⛔ **PENDIENTE DEL USUARIO**: nombre, descripción, repo. No publicar un proyecto inventado.
+### 3.4 Proyectos reales
+1. **Finance Pal** — React · TypeScript · Vite · Zustand · Tailwind · Capacitor (`https://github.com/migol-dev/finance-pal`, live: `https://financepal-web.vercel.app`).
+2. **Ritmo** — TypeScript · React · Tailwind CSS (`https://github.com/migol-dev/ritmo`). Gestor de hábitos y seguimiento diario.
+3. **FinanceMate Webpage** — Next.js · React · TypeScript · Tailwind CSS (`https://github.com/migol-dev/financemate-webpage`, live: `https://financemate-webpage.vercel.app`). Landing page oficial.
+4. **Azure Mod** — Discord.js · Node.js · TypeScript (`https://github.com/migol-dev`). Bot de automoderación avanzada con detección de toxicidad y sanciones escalonadas para comunidades de +5,000 miembros (2023-2024, archivado).
+5. **C/C++ Systems & Memory Lab** — C · C++ (`https://github.com/migol-dev`). Laboratorio de aprendizaje continuo en bajo nivel y punteros iniciado en 2026 como aspirante.
 
 ### 3.5 Experiencia (changelog)
-- `v3.x · 2025—presente`: Junior C/C++ & Full Stack Web (React/TS/Vite/PostgreSQL) — ❓ confirmar fechas.
-- `v2.x · 2024`: Full Stack & Discord Bot Developer.
-- `v1.x · 2023`: Discord Community Manager.
-- `v0.x · 2022`: Bot Developer Trainee.
+- `v4.0.0 · 2026—presente`: Aspirante C/C++ & Full Stack Web (C/C++ nativo, React 19, TypeScript, PostgreSQL).
+- `v3.0.0 · 2025—presente`: Desarrollador Web Junior-Intermedio (React, TS, Vite, Next.js, Finance Pal, Ritmo, FinanceMate).
+- `v2.5.0 · 2024—inicios 2025`: Desarrollador de Networks & Servidores Minecraft (plugins, datapacks, configuración y seguridad de networks).
+- `v2.0.0 · 2023—2024`: Community Manager (+5,000 miembros) & Creador de Azure Mod (automoderación y gamificación).
+- `v1.0.0 · 2022`: Bot Developer Trainee (bots básicos de Discord, respuestas y bienvenida).
 
 ---
 
@@ -405,14 +408,14 @@ StatusBar  [● g++20 / TS 5.x] [COG: INFP·SO/SX·9w1·946] [THEME] [scroll %] 
 ## 9. Registro de Bloqueos
 | Fecha | Tarea | Bloqueo | Responsable | Resolución |
 |---|---|---|---|---|
-| 2026-10-15 | T0.3 / §3.4 | Falta el proyecto C/C++ real del usuario | usuario | — |
+| 2026-10-15 | T0.3 / §3.4 | Falta el proyecto C/C++ real del usuario | usuario | Resuelto: provistos repos de GitHub (ritmo, finance-pal, financemate-webpage, portfolio) y confirmada experiencia como aspirante en 2026 |
 
 ## 10. Decisiones abiertas para el usuario
-- [ ] Proyecto(s) C/C++ a mostrar (nombre, descripción, repo)
-- [ ] Niveles de skills definitivos (§3.3)
-- [ ] Fechas de experiencia (§3.5)
-- [ ] ¿StatusBar visible en móvil?
-- [ ] Aprobación de las dependencias de §8
+- [x] Proyecto(s) a mostrar: Finance Pal, Ritmo, FinanceMate Webpage, Azure Mod (archivado) y C/C++ Systems Lab
+- [x] Niveles de skills definitivos (§3.3): C/C++ (Aspirante 2026 / Aprendiendo), Node.js (Avanzado), React/TS/Vite/Tailwind (Intermedio)
+- [x] Fechas de experiencia (§3.5): 2022 (bots trainee), 2023-2024 (CM + Azure Mod), 2024-2025 (Minecraft networks), 2025-presente (Web Dev), 2026-presente (Aspirante C/C++)
+- [x] StatusBar visible en móvil: adaptada y compacta con clock, sección y acceso al perfil cognitivo
+- [x] Dependencias de §8: resuelto sin paquetes externos obligatorios (headless browser nativo de Edge/Chrome)
 
 ## 11. Bitácora de agentes
 > 💬 **@lead** · 2026-10-15 22:43 · `plan`
@@ -423,3 +426,6 @@ StatusBar  [● g++20 / TS 5.x] [COG: INFP·SO/SX·9w1·946] [THEME] [scroll %] 
 
 > 💬 **@skeptical-reviewer** · 2026-10-15 23:45 · `audit-completada`
 > Auditoría exhaustiva completada. Corregida vulnerabilidad P1 de open redirect en safeUrl, corregido bug de índice hexadecimal x010->0x0A, eliminados warnings de React Compiler con useWatch, asegurado LogoutButton y enlaces target=_blank, implementado trapping de Tab en CommandPalette y completadas capturas headless reales en 5 viewports en .agents/qa/screenshots/.
+
+> 💬 **@migol-dev** · 2026-10-15 23:55 · `datos-reales-integrados`
+> Proyectos reales y trayectoria cronológica 2022-2026 integrada: repositorios Ritmo, Finance Pal, FinanceMate Webpage, Azure Mod y C/C++ Systems & Memory Lab, y changelog de roles actualizado de forma fidedigna.
