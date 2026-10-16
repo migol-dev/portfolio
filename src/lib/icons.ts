@@ -10,6 +10,10 @@ import {
   GitBranch,
   Smartphone,
   Code2,
+  Cpu,
+  Terminal,
+  Binary,
+  Zap,
   type LucideIcon,
 } from "lucide-react";
 
@@ -24,6 +28,10 @@ export const ICON_MAP: Record<string, LucideIcon> = {
   Database,
   GitBranch,
   Smartphone,
+  Cpu,
+  Terminal,
+  Binary,
+  Zap,
 };
 
 export function resolveIcon(name?: string | null): LucideIcon {

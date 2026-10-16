@@ -1,29 +1,33 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { contactSchema } from "@/lib/validations";
 import { rateLimit, getClientIp } from "@/lib/rate-limit";
+import { verifyOrigin, readJsonLimited, jsonResponse } from "@/lib/security";
 
 export async function POST(req: NextRequest) {
+  if (!verifyOrigin(req)) {
+    return jsonResponse({ error: "Origen no autorizado." }, { status: 403 });
+  }
+
   const ip = getClientIp(req.headers);
 
   const limited = rateLimit(`contact:${ip}`, { limit: 5, windowMs: 10 * 60 * 1000 });
   if (!limited.success) {
-    return NextResponse.json(
+    return jsonResponse(
       { error: "Demasiados mensajes enviados. Intenta de nuevo más tarde." },
-      { status: 429 }
+      {
+        status: 429,
+        headers: { "Retry-After": String(limited.retryAfter) },
+      }
     );
   }
 
-  let body: unknown;
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: "JSON inválido." }, { status: 400 });
-  }
+  const { data: body, error: jsonError } = await readJsonLimited(req, 16_384);
+  if (jsonError) return jsonError;
 
   const parsed = contactSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
+    return jsonResponse(
       { error: "Datos inválidos.", issues: parsed.error.flatten().fieldErrors },
       { status: 400 }
     );
@@ -31,12 +35,12 @@ export async function POST(req: NextRequest) {
 
   // Honeypot: si el campo oculto "company" viene relleno, es un bot.
   if (parsed.data.company) {
-    return NextResponse.json({ ok: true }); // respuesta silenciosa, no delatamos el honeypot
+    return jsonResponse({ ok: true }); // respuesta silenciosa
   }
 
   if (!process.env.DATABASE_URL) {
-    console.error("[contact] DATABASE_URL no configurado, mensaje no guardado:", parsed.data);
-    return NextResponse.json(
+    console.warn("[contact] Base de datos no configurada, mensaje descartado de manera segura.");
+    return jsonResponse(
       { error: "El formulario aún no está conectado a la base de datos." },
       { status: 503 }
     );
@@ -52,9 +56,9 @@ export async function POST(req: NextRequest) {
       },
     });
   } catch (error) {
-    console.error("[contact] error al guardar mensaje:", error);
-    return NextResponse.json({ error: "No se pudo enviar el mensaje." }, { status: 500 });
+    console.error("[contact] Error al persistir mensaje:", error);
+    return jsonResponse({ error: "No se pudo enviar el mensaje." }, { status: 500 });
   }
 
-  return NextResponse.json({ ok: true });
+  return jsonResponse({ ok: true });
 }

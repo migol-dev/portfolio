@@ -1,5 +1,32 @@
 import { z } from "zod";
 
+export const safeUrl = z
+  .string()
+  .trim()
+  .max(500)
+  .refine(
+    (val) => {
+      if (!val) return true;
+      const lower = val.toLowerCase();
+      if (
+        lower.startsWith("javascript:") ||
+        lower.startsWith("data:") ||
+        lower.startsWith("vbscript:") ||
+        lower.startsWith("http:")
+      ) {
+        return false;
+      }
+      if (val.startsWith("/")) return true;
+      try {
+        const parsed = new URL(val);
+        return parsed.protocol === "https:";
+      } catch {
+        return false;
+      }
+    },
+    { message: "Debe ser una URL segura (https://) o ruta relativa (/)" }
+  );
+
 export const contactSchema = z.object({
   name: z.string().trim().min(2, "Tu nombre es muy corto").max(80),
   email: z.string().trim().email("Correo inválido").max(120),
@@ -15,9 +42,11 @@ export const contactSchema = z.object({
 export type ContactInput = z.infer<typeof contactSchema>;
 
 export const loginSchema = z.object({
-  email: z.string().trim().email(),
-  password: z.string().min(8).max(200),
+  email: z.string().trim().toLowerCase().email("Correo inválido").max(120),
+  password: z.string().min(8, "La contraseña debe tener al menos 8 caracteres").max(200),
 });
+
+export type LoginInput = z.infer<typeof loginSchema>;
 
 export const projectSchema = z.object({
   slug: z
@@ -28,12 +57,12 @@ export const projectSchema = z.object({
   name: z.string().trim().min(2).max(80),
   tagline: z.string().trim().min(2).max(140),
   description: z.string().trim().min(10).max(4000),
-  logoUrl: z.string().trim().url().max(500).optional().or(z.literal("")),
-  coverUrl: z.string().trim().url().max(500).optional().or(z.literal("")),
+  logoUrl: safeUrl.optional().or(z.literal("")),
+  coverUrl: safeUrl.optional().or(z.literal("")),
   tags: z.array(z.string().trim().min(1).max(30)).max(12),
   status: z.enum(["LIVE", "IN_PROGRESS", "ARCHIVED"]),
-  repoUrl: z.string().trim().url().max(500).optional().or(z.literal("")),
-  liveUrl: z.string().trim().url().max(500).optional().or(z.literal("")),
+  repoUrl: safeUrl.optional().or(z.literal("")),
+  liveUrl: safeUrl.optional().or(z.literal("")),
   featured: z.boolean(),
   order: z.number().int().min(0).max(999),
 });
@@ -57,3 +86,16 @@ export const skillSchema = z.object({
 });
 
 export type SkillInput = z.infer<typeof skillSchema>;
+
+export const patchMessageSchema = z.object({
+  read: z.boolean(),
+});
+
+export type PatchMessageInput = z.infer<typeof patchMessageSchema>;
+
+export const idParamSchema = z
+  .string()
+  .trim()
+  .min(3)
+  .max(50)
+  .regex(/^[a-zA-Z0-9_-]+$/, "Identificador de recurso inválido");

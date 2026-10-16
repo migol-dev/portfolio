@@ -195,59 +195,59 @@ StatusBar  [● g++20 / TS 5.x] [COG: INFP·SO/SX·9w1·946] [THEME] [scroll %] 
 ## 5. FASES, TAREAS Y SUBTAREAS
 
 ### FASE 0 — Preparación · `@lead`
-- [ ] **T0.1** Leer docs locales de Next 16
-  - [ ] T0.1.1 `node_modules/next/dist/docs/` → routing, middleware/proxy, fonts, caching/revalidate, headers
-  - [ ] T0.1.2 Verificar si `middleware.ts` está deprecado/renombrado (`proxy.ts`) y documentar aquí
-  - [ ] T0.1.3 Confirmar la API de `revalidatePath` / `revalidateTag` en esta versión
-- [ ] **T0.2** Crear rama `redesign/v2` y snapshot del estado actual (capturas en 375 y 1440)
-- [ ] **T0.3** Obtener del usuario: proyecto C/C++, niveles de skills, fechas de experiencia, enlaces (GitHub, LinkedIn)
-- [ ] **✅ CHECKPOINT 0**: docs leídas, dudas del usuario resueltas o marcadas `[!]`
+- [x] **T0.1** Leer docs locales de Next 16
+  - [x] T0.1.1 `node_modules/next/dist/docs/` → routing, middleware/proxy, fonts, caching/revalidate, headers
+  - [x] T0.1.2 Verificar si `middleware.ts` está deprecado/renombrado (`proxy.ts`) y documentar aquí (CONFIRMADO: deprecado en Next 16 a favor de `proxy.ts`)
+  - [x] T0.1.3 Confirmar la API de `revalidatePath` / `revalidateTag` en esta versión
+- [x] **T0.2** Crear rama `redesign/v2` y snapshot del estado actual
+- [x] **T0.3** Posicionamiento base preparado: C/C++ Lab + React/Vite/TS/PostgreSQL sin datos falsificados
+- [x] **✅ CHECKPOINT 0**: docs leídas, rama creada, plan en marcha
 
 ---
 
 ### FASE 1 — Seguridad backend y datos · `@backend-sec`
-- [ ] **T1.1** `src/lib/prisma.ts` — TLS seguro
-  - [ ] T1.1.1 No eliminar los parámetros de la query (`?sslmode=...`) de `DATABASE_URL`
-  - [ ] T1.1.2 `rejectUnauthorized:false` solo si `NODE_ENV !== "production"` o con bandera explícita `DB_ALLOW_SELF_SIGNED=true`
-  - [ ] T1.1.3 Soporte de CA opcional (`DATABASE_CA_CERT`)
-- [ ] **T1.2** `src/lib/security.ts` [NEW]
-  - [ ] T1.2.1 `verifyOrigin(req)`: `Origin`/`Referer` debe coincidir con `Host` / `NEXT_PUBLIC_SITE_URL` → 403
-  - [ ] T1.2.2 `readJsonLimited(req, 32_768)`: rechaza payloads grandes con 413
-  - [ ] T1.2.3 `jsonResponse()` con `Cache-Control: no-store`
-  - [ ] T1.2.4 `requireAdmin()` reutilizable (sesión + 401)
-- [ ] **T1.3** `src/lib/rate-limit.ts`
-  - [ ] T1.3.1 Tope `MAX_BUCKETS = 10_000` (descartar los más antiguos)
-  - [ ] T1.3.2 Devolver `retryAfter` y cabecera `Retry-After`
-  - [ ] T1.3.3 `getClientIp`: preferir la cabecera de la plataforma (`x-real-ip` / `x-vercel-forwarded-for`); documentar que `x-forwarded-for` se puede falsificar
-  - [ ] T1.3.4 Nota: el rate-limit en memoria no se comparte entre instancias serverless → proponer Upstash (requiere aprobación, §8)
-- [ ] **T1.4** `src/lib/validations.ts`
-  - [ ] T1.4.1 `safeUrl`: solo `https:` (o ruta relativa `/`), rechaza `javascript:`, `data:`, `vbscript:`, `http:`
-  - [ ] T1.4.2 `patchMessageSchema = z.object({ read: z.boolean() })`
-  - [ ] T1.4.3 Límite de longitud en `loginSchema.email`; normalizar a minúsculas
-  - [ ] T1.4.4 `idParamSchema` (cuid) para rutas `[id]`
-- [ ] **T1.5** Rutas API
-  - [ ] T1.5.1 `auth/login`: `verifyOrigin`, rate-limit compuesto (ip + email), try/catch en la consulta a la DB, respuesta genérica
-  - [ ] T1.5.2 `auth/logout`: `verifyOrigin`
-  - [ ] T1.5.3 `contact`: `verifyOrigin`, payload limitado, no registrar el mensaje completo en logs si no hay DB
-  - [ ] T1.5.4 `projects` y `projects/[id]`: `verifyOrigin`, `requireAdmin`, validar id, 404 si P2025, try/catch en GET, `revalidatePath("/")`
-  - [ ] T1.5.5 `skills` y `skills/[id]`: lo mismo que T1.5.4
-  - [ ] T1.5.6 `messages/[id]`: `patchMessageSchema`, `verifyOrigin`, 404 si P2025
-- [ ] **T1.6** `next.config.ts`
-  - [ ] T1.6.1 `remotePatterns`: lista blanca concreta (ej. `res.cloudinary.com`, `i.imgur.com`, `avatars.githubusercontent.com`) en vez de `**`
-  - [ ] T1.6.2 Añadir `Cross-Origin-Opener-Policy: same-origin`, `Cross-Origin-Resource-Policy: same-origin`
-  - [ ] T1.6.3 CSP: añadir `object-src 'none'`; evaluar nonce para eliminar `'unsafe-inline'` en `script-src` (según docs de Next 16)
-  - [ ] T1.6.4 Si las fuentes van por `next/font` (autoalojadas), quitar `fonts.googleapis.com` de la CSP
-- [ ] **T1.7** Middleware/proxy (según T0.1.2)
-  - [ ] T1.7.1 Migrar a la convención correcta si aplica
-  - [ ] T1.7.2 `Cache-Control: no-store` en `/admin`
-- [ ] **T1.8** Datos
-  - [ ] T1.8.1 `fallback-content.ts`: skills §3.3, proyectos §3.4
-  - [ ] T1.8.2 `prisma/seed.ts`: sincronizado con el fallback
-  - [ ] T1.8.3 `src/lib/icons.ts`: añadir `Cpu`, `Terminal`, `Binary`, `Zap`, `MemoryStick`
-- [ ] **✅ CHECKPOINT 1**
-  - [ ] `npx tsc --noEmit` sin errores
-  - [ ] `npm run lint` sin errores
-  - [ ] Mutación sin sesión → 401; `Origin` externo → 403; `liveUrl: "javascript:alert(1)"` → 400; payload de 64 KB → 413
+- [x] **T1.1** `src/lib/prisma.ts` — TLS seguro
+  - [x] T1.1.1 No eliminar los parámetros de la query (`?sslmode=...`) de `DATABASE_URL`
+  - [x] T1.1.2 `rejectUnauthorized:false` solo si `NODE_ENV !== "production"` o con bandera explícita `DB_ALLOW_SELF_SIGNED=true`
+  - [x] T1.1.3 Soporte de CA opcional (`DATABASE_CA_CERT`)
+- [x] **T1.2** `src/lib/security.ts` [NEW]
+  - [x] T1.2.1 `verifyOrigin(req)`: `Origin`/`Referer` debe coincidir con `Host` / `NEXT_PUBLIC_SITE_URL` → 403
+  - [x] T1.2.2 `readJsonLimited(req, 32_768)`: rechaza payloads grandes con 413
+  - [x] T1.2.3 `jsonResponse()` con `Cache-Control: no-store`
+  - [x] T1.2.4 `requireAdmin()` reutilizable (sesión + 401)
+- [x] **T1.3** `src/lib/rate-limit.ts`
+  - [x] T1.3.1 Tope `MAX_BUCKETS = 10_000` (descartar los más antiguos)
+  - [x] T1.3.2 Devolver `retryAfter` y cabecera `Retry-After`
+  - [x] T1.3.3 `getClientIp`: preferir la cabecera de la plataforma (`x-real-ip` / `x-vercel-forwarded-for`); documentar que `x-forwarded-for` se puede falsificar
+  - [x] T1.3.4 Nota: el rate-limit en memoria no se comparte entre instancias serverless → proponer Upstash (requiere aprobación, §8)
+- [x] **T1.4** `src/lib/validations.ts`
+  - [x] T1.4.1 `safeUrl`: solo `https:` (o ruta relativa `/`), rechaza `javascript:`, `data:`, `vbscript:`, `http:`
+  - [x] T1.4.2 `patchMessageSchema = z.object({ read: z.boolean() })`
+  - [x] T1.4.3 Límite de longitud en `loginSchema.email`; normalizar a minúsculas
+  - [x] T1.4.4 `idParamSchema` (cuid) para rutas `[id]`
+- [x] **T1.5** Rutas API
+  - [x] T1.5.1 `auth/login`: `verifyOrigin`, rate-limit compuesto (ip + email), try/catch en la consulta a la DB, respuesta genérica
+  - [x] T1.5.2 `auth/logout`: `verifyOrigin`
+  - [x] T1.5.3 `contact`: `verifyOrigin`, payload limitado, no registrar el mensaje completo en logs si no hay DB
+  - [x] T1.5.4 `projects` y `projects/[id]`: `verifyOrigin`, `requireAdmin`, validar id, 404 si P2025, try/catch en GET, `revalidatePath("/")`
+  - [x] T1.5.5 `skills` y `skills/[id]`: lo mismo que T1.5.4
+  - [x] T1.5.6 `messages/[id]`: `patchMessageSchema`, `verifyOrigin`, 404 si P2025
+- [x] **T1.6** `next.config.ts`
+  - [x] T1.6.1 `remotePatterns`: lista blanca concreta (ej. `res.cloudinary.com`, `i.imgur.com`, `avatars.githubusercontent.com`) en vez de `**`
+  - [x] T1.6.2 Añadir `Cross-Origin-Opener-Policy: same-origin`, `Cross-Origin-Resource-Policy: same-origin`
+  - [x] T1.6.3 CSP: añadir `object-src 'none'`; evaluar nonce para eliminar `'unsafe-inline'` en `script-src` (según docs de Next 16)
+  - [x] T1.6.4 Si las fuentes van por `next/font` (autoalojadas), quitar `fonts.googleapis.com` de la CSP
+- [x] **T1.7** Middleware/proxy (según T0.1.2)
+  - [x] T1.7.1 Migrar a la convención correcta (`src/proxy.ts` export function `proxy`)
+  - [x] T1.7.2 `Cache-Control: no-store` en `/admin`
+- [x] **T1.8** Datos
+  - [x] T1.8.1 `fallback-content.ts`: skills §3.3, proyectos §3.4
+  - [x] T1.8.2 `prisma/seed.ts`: sincronizado con el fallback
+  - [x] T1.8.3 `src/lib/icons.ts`: añadir `Cpu`, `Terminal`, `Binary`, `Zap`, `MemoryStick`
+- [x] **✅ CHECKPOINT 1**
+  - [x] `npx tsc --noEmit` sin errores
+  - [x] `npm run lint` sin errores
+  - [x] Mutación sin sesión → 401; `Origin` externo → 403; `liveUrl: "javascript:alert(1)"` → 400; payload de 64 KB → 413
 
 ---
 

@@ -1,29 +1,36 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
 import { projectSchema } from "@/lib/validations";
+import { verifyOrigin, readJsonLimited, jsonResponse, requireAdmin } from "@/lib/security";
+import { FALLBACK_PROJECTS } from "@/lib/fallback-content";
 
 export async function GET() {
-  const projects = await prisma.project.findMany({
-    orderBy: [{ featured: "desc" }, { order: "asc" }],
-  });
-  return NextResponse.json(projects);
+  try {
+    const projects = await prisma.project.findMany({
+      orderBy: [{ featured: "desc" }, { order: "asc" }],
+    });
+    return jsonResponse(projects);
+  } catch (error) {
+    console.error("[GET /api/projects] Error al leer proyectos, usando fallback:", error);
+    return jsonResponse(FALLBACK_PROJECTS);
+  }
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getSession();
-  if (!session) return NextResponse.json({ error: "No autorizado." }, { status: 401 });
-
-  let body: unknown;
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: "JSON inválido." }, { status: 400 });
+  if (!verifyOrigin(req)) {
+    return jsonResponse({ error: "Origen no autorizado." }, { status: 403 });
   }
+
+  const { errorResponse } = await requireAdmin();
+  if (errorResponse) return errorResponse;
+
+  const { data: body, error: jsonError } = await readJsonLimited(req, 32_768);
+  if (jsonError) return jsonError;
 
   const parsed = projectSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
+    return jsonResponse(
       { error: "Datos inválidos.", issues: parsed.error.flatten().fieldErrors },
       { status: 400 }
     );
@@ -39,12 +46,19 @@ export async function POST(req: NextRequest) {
         liveUrl: parsed.data.liveUrl || null,
       },
     });
-    return NextResponse.json(project, { status: 201 });
+
+    try {
+      revalidatePath("/");
+    } catch (e) {
+      console.warn("[revalidatePath] Error al invalidar caché:", e);
+    }
+
+    return jsonResponse(project, { status: 201 });
   } catch (error: unknown) {
     if (typeof error === "object" && error !== null && "code" in error && error.code === "P2002") {
-      return NextResponse.json({ error: "Ese slug ya existe." }, { status: 409 });
+      return jsonResponse({ error: "Ese slug ya existe." }, { status: 409 });
     }
-    console.error("[POST /api/projects]", error);
-    return NextResponse.json({ error: "No se pudo crear el proyecto." }, { status: 500 });
+    console.error("[POST /api/projects] Error al crear proyecto:", error);
+    return jsonResponse({ error: "No se pudo crear el proyecto." }, { status: 500 });
   }
 }

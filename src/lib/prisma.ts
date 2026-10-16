@@ -3,20 +3,26 @@ import { PrismaClient } from "@prisma/client";
 import { PrismaPg } from "@prisma/adapter-pg";
 import { Pool } from "pg";
 
-// Obtenemos la URL y eliminamos CUALQUIER parámetro de SSL que venga en el string
-// para que no sobrescriba nuestra configuración de abajo.
-const rawUrl = process.env.DATABASE_URL || "";
-const connectionString = rawUrl.split("?")[0];
+// Usamos la URL de conexión preservando parámetros de query para SSL y pooling si existen
+const connectionString = process.env.DATABASE_URL || "";
+const isLocal =
+  connectionString.includes("localhost") || connectionString.includes("127.0.0.1");
 
-const sslConfig =
-  connectionString.includes("localhost") || connectionString.includes("127.0.0.1")
-    ? false
-    : {
-        rejectUnauthorized: false, // Forzamos la aceptación del certificado
-      };
+// rejectUnauthorized solo se desactiva si explícitamente se permite autofirmado en desarrollo
+const allowSelfSigned =
+  process.env.DB_ALLOW_SELF_SIGNED === "true" || process.env.NODE_ENV !== "production";
+const caCert = process.env.DATABASE_CA_CERT;
+
+let sslConfig: boolean | { rejectUnauthorized: boolean; ca?: string } = false;
+if (!isLocal && connectionString) {
+  sslConfig = {
+    rejectUnauthorized: !allowSelfSigned,
+    ...(caCert ? { ca: caCert } : {}),
+  };
+}
 
 const pool = new Pool({
-  connectionString, // Usamos la URL limpia (sin sslmode=...)
+  connectionString,
   ssl: sslConfig,
   max: 10,
   idleTimeoutMillis: 30000,

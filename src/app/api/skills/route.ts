@@ -1,27 +1,34 @@
-import { NextRequest, NextResponse } from "next/server";
+import { NextRequest } from "next/server";
+import { revalidatePath } from "next/cache";
 import { prisma } from "@/lib/prisma";
-import { getSession } from "@/lib/auth";
 import { skillSchema } from "@/lib/validations";
+import { verifyOrigin, readJsonLimited, jsonResponse, requireAdmin } from "@/lib/security";
+import { FALLBACK_SKILLS } from "@/lib/fallback-content";
 
 export async function GET() {
-  const skills = await prisma.skill.findMany({ orderBy: [{ order: "asc" }] });
-  return NextResponse.json(skills);
+  try {
+    const skills = await prisma.skill.findMany({ orderBy: [{ order: "asc" }] });
+    return jsonResponse(skills);
+  } catch (error) {
+    console.error("[GET /api/skills] Error al leer habilidades, usando fallback:", error);
+    return jsonResponse(FALLBACK_SKILLS);
+  }
 }
 
 export async function POST(req: NextRequest) {
-  const session = await getSession();
-  if (!session) return NextResponse.json({ error: "No autorizado." }, { status: 401 });
-
-  let body: unknown;
-  try {
-    body = await req.json();
-  } catch {
-    return NextResponse.json({ error: "JSON inválido." }, { status: 400 });
+  if (!verifyOrigin(req)) {
+    return jsonResponse({ error: "Origen no autorizado." }, { status: 403 });
   }
+
+  const { errorResponse } = await requireAdmin();
+  if (errorResponse) return errorResponse;
+
+  const { data: body, error: jsonError } = await readJsonLimited(req, 16_384);
+  if (jsonError) return jsonError;
 
   const parsed = skillSchema.safeParse(body);
   if (!parsed.success) {
-    return NextResponse.json(
+    return jsonResponse(
       { error: "Datos inválidos.", issues: parsed.error.flatten().fieldErrors },
       { status: 400 }
     );
@@ -29,12 +36,19 @@ export async function POST(req: NextRequest) {
 
   try {
     const skill = await prisma.skill.create({ data: parsed.data });
-    return NextResponse.json(skill, { status: 201 });
+
+    try {
+      revalidatePath("/");
+    } catch (e) {
+      console.warn("[revalidatePath] Error al invalidar caché:", e);
+    }
+
+    return jsonResponse(skill, { status: 201 });
   } catch (error: unknown) {
     if (typeof error === "object" && error !== null && "code" in error && error.code === "P2002") {
-      return NextResponse.json({ error: "Esa habilidad ya existe." }, { status: 409 });
+      return jsonResponse({ error: "Esa habilidad ya existe." }, { status: 409 });
     }
-    console.error("[POST /api/skills]", error);
-    return NextResponse.json({ error: "No se pudo crear la habilidad." }, { status: 500 });
+    console.error("[POST /api/skills] Error al crear habilidad:", error);
+    return jsonResponse({ error: "No se pudo crear la habilidad." }, { status: 500 });
   }
 }

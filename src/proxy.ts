@@ -7,7 +7,6 @@ const AUTH_SECRET = process.env.AUTH_SECRET;
 async function isAuthenticated(req: NextRequest): Promise<boolean> {
   const token = req.cookies.get(COOKIE_NAME)?.value;
   if (!token) return false;
-
   if (!AUTH_SECRET) return false;
 
   try {
@@ -18,10 +17,10 @@ async function isAuthenticated(req: NextRequest): Promise<boolean> {
   }
 }
 
-export async function middleware(req: NextRequest): Promise<NextResponse> {
+export async function proxy(req: NextRequest): Promise<NextResponse> {
   const { pathname } = req.nextUrl;
 
-  // Proteger rutas admin excepto login
+  // Proteger rutas /admin excepto el formulario de login
   if (pathname.startsWith("/admin") && pathname !== "/admin/login") {
     const isAuthed = await isAuthenticated(req);
     if (!isAuthed) {
@@ -33,9 +32,11 @@ export async function middleware(req: NextRequest): Promise<NextResponse> {
 
   const response = NextResponse.next();
 
-  // Agregar cabeceras de seguridad adicionales
+  // Encabezados de seguridad para la consola de administración
   if (pathname.startsWith("/admin")) {
-    response.headers.set("X-Robots-Tag", "noindex, nofollow");
+    response.headers.set("X-Robots-Tag", "noindex, nofollow, noarchive");
+    response.headers.set("Cache-Control", "no-store, no-cache, must-revalidate");
+    response.headers.set("Pragma", "no-cache");
   }
 
   return response;
