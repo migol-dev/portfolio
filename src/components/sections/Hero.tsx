@@ -11,6 +11,7 @@ import { useCommandPalette } from "@/components/CommandPalette";
 export function Hero() {
   const { toggle: toggleCommandPalette } = useCommandPalette();
 
+
   return (
     <section
       id="hero"
@@ -30,17 +31,22 @@ export function Hero() {
           >
             {/* System Status Pill */}
             <div className="flex flex-wrap items-center gap-2">
-              <Badge variant="live" className="py-1 px-2.5">
-                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-status-live)] animate-pulse" />
-                SYS.READY // C/C++ &amp; FULL-STACK WEB — DISPONIBLE
+              <Badge variant="live" className="py-1 px-2.5 text-[10px] sm:text-xs max-w-full">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-status-live)] animate-pulse shrink-0" />
+                <span className="truncate">SYS.READY // C/C++ &amp; FULL-STACK WEB — DISPONIBLE</span>
               </Badge>
               <span className="text-[10px] font-mono text-[var(--color-text-faint)] hidden sm:inline">
                 COLIMA, MX · UTC-6
               </span>
             </div>
 
-            {/* Display Headline: Syne + Instrument Serif italic */}
-            <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold tracking-[-0.035em] text-[var(--color-text)] leading-[1.08] font-[family-name:var(--font-display)]">
+            {/* Display Headline: Syne + Instrument Serif italic with natural responsive wrapping */}
+            <motion.h1
+              initial={{ opacity: 0, y: 12 }}
+              animate={{ opacity: 1, y: 0 }}
+              transition={{ duration: 0.45, ease: [0.165, 0.84, 0.44, 1] }}
+              className="text-2xl sm:text-4xl md:text-5xl xl:text-6xl font-bold tracking-[-0.035em] text-[var(--color-text)] leading-[1.12] font-[family-name:var(--font-display)]"
+            >
               Del control de memoria en{" "}
               <span className="font-[family-name:var(--font-editorial)] italic text-[var(--color-accent-bright)] font-normal">
                 C/C++
@@ -50,7 +56,7 @@ export function Hero() {
                 web
               </span>
               .
-            </h1>
+            </motion.h1>
 
             {/* Subheadline & Value Proposition */}
             <p className="max-w-[58ch] text-sm sm:text-base text-[var(--color-text-dim)] leading-relaxed font-[family-name:var(--font-body)]">
@@ -94,6 +100,7 @@ export function Hero() {
             animate={{ opacity: 1, scale: 1 }}
             transition={{ duration: 0.5, delay: 0.1, ease: [0.165, 0.84, 0.44, 1] }}
             className="lg:col-span-5 w-full"
+            data-cursor="3D // TILT"
           >
             <InteractiveSystemsStage />
           </motion.div>

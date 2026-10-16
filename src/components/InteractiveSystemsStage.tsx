@@ -1,6 +1,6 @@
 "use client";
 
-import React, { useState, useRef, useEffect } from "react";
+import React, { useState, useRef, useEffect, useMemo } from "react";
 import { motion, useMotionValue, useSpring, useReducedMotion } from "framer-motion";
 import {
   Cpu,
@@ -9,6 +9,7 @@ import {
   Sliders,
   Code2,
   Box,
+  Activity,
 } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 
@@ -63,27 +64,39 @@ export function InteractiveSystemsStage() {
   const latencySim = (1200 / opsRate).toFixed(2);
   const memoryAllocSim = (32.4 + (opsRate / 1000) * 1.8).toFixed(1);
 
+  // Dynamic sparkline SVG points based on opsRate and liveCounter
+  const sparklinePoints = useMemo(() => {
+    const points: string[] = [];
+    const count = 10;
+    const amplitude = Math.min(14, 4 + (opsRate / 10000) * 10);
+    for (let i = 0; i <= count; i++) {
+      const x = (i / count) * 60;
+      // Phase shifted pseudo-sine wave
+      const phase = (liveCounter / 200) + i;
+      const y = 10 + Math.sin(phase) * (amplitude * 0.7);
+      points.push(`${x.toFixed(1)},${y.toFixed(1)}`);
+    }
+    return points.join(" ");
+  }, [opsRate, liveCounter]);
+
   return (
-    <div className="w-full relative select-none">
+    <div className="w-full max-w-full relative select-none overflow-hidden">
       {/* Console frame */}
-      <div className="rounded-[8px] border border-[var(--color-border-strong)] bg-[var(--color-panel)] overflow-hidden shadow-2xl surface-elevation">
+      <div className="rounded-[8px] border border-[var(--color-border-strong)] bg-[var(--color-panel)] overflow-hidden shadow-2xl surface-elevation max-w-full">
         {/* Top Control Bar */}
-        <div className="flex flex-wrap items-center justify-between gap-2 px-3.5 py-2.5 border-b border-[var(--color-border)] bg-[var(--color-panel-2)] text-xs font-mono">
-          <div className="flex items-center gap-2">
-            <span className="flex h-2 w-2 relative">
+        <div className="flex items-center justify-between gap-2 px-3 py-2 border-b border-[var(--color-border)] bg-[var(--color-panel-2)] text-xs font-mono">
+          <div className="flex items-center gap-1.5 truncate">
+            <span className="flex h-2 w-2 relative shrink-0">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-status-live)] opacity-75" />
               <span className="relative inline-flex rounded-full h-2 w-2 bg-[var(--color-status-live)]" />
             </span>
-            <span className="text-[11px] uppercase tracking-wider text-[var(--color-text)] font-semibold">
-              SYS.INTERACTIVE //
-            </span>
-            <span className="text-[10px] text-[var(--color-text-dim)] hidden sm:inline">
-              PERSPECTIVA 3D
+            <span className="text-[10px] sm:text-[11px] uppercase tracking-wider text-[var(--color-text)] font-semibold truncate">
+              SYS.STAGE
             </span>
           </div>
 
-          <div className="flex items-center gap-1.5">
-            <Badge variant="live" className="text-[9px] py-0 px-1.5">
+          <div className="flex items-center gap-1.5 shrink-0">
+            <Badge variant="live" className="text-[9px] py-0 px-1.5 hidden sm:inline-flex">
               SIMULACIÓN
             </Badge>
 
@@ -111,56 +124,77 @@ export function InteractiveSystemsStage() {
                 }`}
               >
                 <Code2 className="w-3 h-3" strokeWidth={1.5} />
-                Código Fuente
+                Código
               </button>
             </div>
           </div>
         </div>
 
-        {/* Node Tabs */}
-        <div className="grid grid-cols-3 border-b border-[var(--color-border)] bg-[var(--color-panel)] text-xs font-mono">
+        {/* Node Tabs with layoutId animated sliding active indicator */}
+        <div className="grid grid-cols-3 border-b border-[var(--color-border)] bg-[var(--color-panel)] text-[11px] sm:text-xs font-mono relative">
           <button
             type="button"
             onClick={() => setActiveNode("cpp")}
-            className={`flex items-center justify-center gap-2 py-2.5 px-3 border-r border-[var(--color-border)] transition-all cursor-pointer ${
+            className={`relative flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 px-1.5 sm:px-3 border-r border-[var(--color-border)] transition-all cursor-pointer ${
               activeNode === "cpp"
-                ? "bg-white/[0.04] text-[var(--color-accent-bright)] border-b-2 border-b-[var(--color-accent)] font-semibold"
+                ? "text-[var(--color-accent-bright)] font-semibold"
                 : "text-[var(--color-text-dim)] hover:text-[var(--color-text)] hover:bg-white/[0.01]"
             }`}
           >
-            <Cpu className="w-3.5 h-3.5" strokeWidth={1.5} />
-            <span className="truncate">0x01 C/C++</span>
+            {activeNode === "cpp" && (
+              <motion.span
+                layoutId="stage-active-node"
+                className="absolute inset-0 bg-white/[0.04] border-b-2 border-b-[var(--color-accent)]"
+                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              />
+            )}
+            <Cpu className="w-3.5 h-3.5 relative z-10 shrink-0" strokeWidth={1.5} />
+            <span className="truncate relative z-10">0x01 C/C++</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveNode("react")}
-            className={`flex items-center justify-center gap-2 py-2.5 px-3 border-r border-[var(--color-border)] transition-all cursor-pointer ${
+            className={`relative flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 px-1.5 sm:px-3 border-r border-[var(--color-border)] transition-all cursor-pointer ${
               activeNode === "react"
-                ? "bg-white/[0.04] text-[var(--color-telemetry)] border-b-2 border-b-[var(--color-telemetry)] font-semibold"
+                ? "text-[var(--color-telemetry)] font-semibold"
                 : "text-[var(--color-text-dim)] hover:text-[var(--color-text)] hover:bg-white/[0.01]"
             }`}
           >
-            <Layers className="w-3.5 h-3.5" strokeWidth={1.5} />
-            <span className="truncate">0x02 React/Vite</span>
+            {activeNode === "react" && (
+              <motion.span
+                layoutId="stage-active-node"
+                className="absolute inset-0 bg-white/[0.04] border-b-2 border-b-[var(--color-telemetry)]"
+                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              />
+            )}
+            <Layers className="w-3.5 h-3.5 relative z-10 shrink-0" strokeWidth={1.5} />
+            <span className="truncate relative z-10">0x02 React/Vite</span>
           </button>
 
           <button
             type="button"
             onClick={() => setActiveNode("postgres")}
-            className={`flex items-center justify-center gap-2 py-2.5 px-3 transition-all cursor-pointer ${
+            className={`relative flex items-center justify-center gap-1.5 sm:gap-2 py-2.5 px-1.5 sm:px-3 transition-all cursor-pointer ${
               activeNode === "postgres"
-                ? "bg-white/[0.04] text-[var(--color-status-live)] border-b-2 border-b-[var(--color-status-live)] font-semibold"
+                ? "text-[var(--color-status-live)] font-semibold"
                 : "text-[var(--color-text-dim)] hover:text-[var(--color-text)] hover:bg-white/[0.01]"
             }`}
           >
-            <Database className="w-3.5 h-3.5" strokeWidth={1.5} />
-            <span className="truncate">0x03 Postgres</span>
+            {activeNode === "postgres" && (
+              <motion.span
+                layoutId="stage-active-node"
+                className="absolute inset-0 bg-white/[0.04] border-b-2 border-b-[var(--color-status-live)]"
+                transition={{ type: "spring", stiffness: 380, damping: 30 }}
+              />
+            )}
+            <Database className="w-3.5 h-3.5 relative z-10 shrink-0" strokeWidth={1.5} />
+            <span className="truncate relative z-10">0x03 Postgres</span>
           </button>
         </div>
 
         {/* Main Interactive Stage Body */}
-        <div className="p-4 sm:p-6 min-h-[340px] flex flex-col justify-between relative bg-radial from-white/[0.02] to-transparent">
+        <div className="p-3 sm:p-6 min-h-[340px] flex flex-col justify-between relative bg-radial from-white/[0.02] to-transparent overflow-hidden">
           {viewMode === "stage" ? (
             <div
               ref={containerRef}
@@ -168,22 +202,52 @@ export function InteractiveSystemsStage() {
               onMouseLeave={handleMouseLeave}
               className="relative w-full h-[260px] sm:h-[280px] rounded-[6px] border border-[var(--color-border)] bg-[var(--color-panel-2)]/60 blueprint-grid flex items-center justify-center overflow-hidden [perspective:1200px]"
             >
-              {/* 3D Transform Container */}
+              {/* 3D Transform Container with Z-Axis Assembly */}
               <motion.div
                 style={{
                   rotateX: shouldReduceMotion ? 0 : rotateX,
                   rotateY: shouldReduceMotion ? 0 : rotateY,
                   transformStyle: "preserve-3d",
                 }}
-                className="relative w-full max-w-[340px] h-[200px] flex items-center justify-center transition-transform duration-75"
+                className="relative w-full max-w-[280px] sm:max-w-[340px] h-[200px] flex items-center justify-center transition-transform duration-75"
               >
+                {/* SVG Animated data connection lines between layers */}
+                <svg
+                  className="absolute inset-0 w-full h-full pointer-events-none z-10 overflow-visible"
+                  style={{ transform: "translateZ(14px)" }}
+                >
+                  <line
+                    x1="16"
+                    y1="30"
+                    x2="16"
+                    y2="170"
+                    stroke="var(--color-accent)"
+                    strokeWidth="1"
+                    strokeDasharray="4 4"
+                    className="animate-dash-flow opacity-35"
+                  />
+                  <line
+                    x1="264"
+                    y1="30"
+                    x2="264"
+                    y2="170"
+                    stroke="var(--color-telemetry)"
+                    strokeWidth="1"
+                    strokeDasharray="4 4"
+                    className="animate-dash-flow opacity-35"
+                  />
+                </svg>
+
                 {/* Plane 1: Native Base Layer (Z: 0px) */}
-                <div
+                <motion.div
+                  initial={{ opacity: shouldReduceMotion ? 1 : 0, z: 0 }}
+                  animate={{ opacity: 1, z: 0 }}
+                  transition={{ duration: 0.5, ease: [0.165, 0.84, 0.44, 1] }}
                   style={{ transform: "translateZ(0px)" }}
                   className="absolute inset-0 rounded-[6px] border border-[var(--color-border-strong)] bg-black/40 p-4 flex flex-col justify-between backdrop-blur-xs"
                 >
                   <div className="flex items-center justify-between text-[10px] font-mono text-[var(--color-text-faint)]">
-                    <span>LAYER_00 // HARDWARE & OS</span>
+                    <span>LAYER_00 // HARDWARE &amp; OS</span>
                     <span>MEM_OFFSET: 0x7FFF00</span>
                   </div>
                   <div className="grid grid-cols-4 gap-2 py-2">
@@ -200,12 +264,15 @@ export function InteractiveSystemsStage() {
                     <span>Virtual Memory Map</span>
                     <span className="text-[var(--color-status-live)]">Allocated: OK</span>
                   </div>
-                </div>
+                </motion.div>
 
                 {/* Plane 2: Runtime Execution Layer (Z: 28px) */}
-                <div
+                <motion.div
+                  initial={{ opacity: shouldReduceMotion ? 1 : 0, z: shouldReduceMotion ? 28 : 0 }}
+                  animate={{ opacity: 1, z: 28 }}
+                  transition={{ duration: 0.6, delay: 0.1, ease: [0.165, 0.84, 0.44, 1] }}
                   style={{ transform: "translateZ(28px)" }}
-                  className="absolute inset-x-3 inset-y-3 rounded-[6px] border border-[var(--color-border-strong)] bg-[var(--color-panel)]/80 p-3.5 flex flex-col justify-between shadow-xl"
+                  className="absolute inset-x-3 inset-y-3 rounded-[6px] border border-[var(--color-border-strong)] bg-[var(--color-panel)]/90 p-3.5 flex flex-col justify-between shadow-xl"
                 >
                   <div className="flex items-center justify-between">
                     <span className="text-[11px] font-mono font-semibold text-[var(--color-text)]">
@@ -268,10 +335,13 @@ export function InteractiveSystemsStage() {
                       </div>
                     </div>
                   )}
-                </div>
+                </motion.div>
 
                 {/* Plane 3: Live Pulse Node (Z: 56px) */}
-                <div
+                <motion.div
+                  initial={{ opacity: shouldReduceMotion ? 1 : 0, z: shouldReduceMotion ? 56 : 0 }}
+                  animate={{ opacity: 1, z: 56 }}
+                  transition={{ duration: 0.65, delay: 0.2, ease: [0.165, 0.84, 0.44, 1] }}
                   style={{ transform: "translateZ(56px)" }}
                   className="absolute right-4 bottom-4 pointer-events-none"
                 >
@@ -279,7 +349,7 @@ export function InteractiveSystemsStage() {
                     <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-accent)] animate-pulse" />
                     <span className="tnum">{opsRate.toLocaleString()} ops/s</span>
                   </div>
-                </div>
+                </motion.div>
               </motion.div>
             </div>
           ) : (
@@ -350,17 +420,33 @@ export function InteractiveSystemsStage() {
             </div>
           )}
 
-          {/* Interactive Load Slider & Telemetry Metrics */}
+          {/* Interactive Load Slider & Live Telemetry Sparkline */}
           <div className="mt-4 pt-3 border-t border-[var(--color-border)] flex flex-col sm:flex-row sm:items-center justify-between gap-3">
             <div className="flex-1 space-y-1">
               <div className="flex items-center justify-between text-[11px] font-mono">
                 <span className="text-[var(--color-text-dim)] flex items-center gap-1.5">
                   <Sliders className="w-3.5 h-3.5 text-[var(--color-accent)]" strokeWidth={1.5} />
-                  Frecuencia de Carga (Simulada):
+                  Frecuencia de Carga:
                 </span>
-                <span className="text-[var(--color-text)] font-semibold tnum">
-                  {opsRate.toLocaleString()} ops/s
-                </span>
+                <div className="flex items-center gap-2">
+                  {/* Real-time reactive sparkline */}
+                  <div className="flex items-center gap-1 px-1.5 py-0.5 rounded bg-black/40 border border-[var(--color-border)]">
+                    <Activity className="w-3 h-3 text-[var(--color-status-live)]" strokeWidth={1.5} />
+                    <svg className="w-14 h-4" viewBox="0 0 60 20">
+                      <polyline
+                        fill="none"
+                        stroke="var(--color-status-live)"
+                        strokeWidth="1.5"
+                        strokeLinecap="round"
+                        strokeLinejoin="round"
+                        points={sparklinePoints}
+                      />
+                    </svg>
+                  </div>
+                  <span className="text-[var(--color-text)] font-semibold tnum">
+                    {opsRate.toLocaleString()} ops/s
+                  </span>
+                </div>
               </div>
               <input
                 type="range"
@@ -374,7 +460,7 @@ export function InteractiveSystemsStage() {
               />
             </div>
 
-            <div className="flex items-center gap-4 text-[10px] font-mono shrink-0">
+            <div className="grid grid-cols-3 gap-2 sm:flex sm:items-center sm:gap-4 text-[10px] font-mono shrink-0 w-full sm:w-auto pt-2 sm:pt-0 text-center sm:text-left">
               <div className="flex flex-col">
                 <span className="text-[var(--color-text-faint)]">Latencia media</span>
                 <span className="text-[var(--color-telemetry)] font-semibold tnum">{latencySim} ms</span>
