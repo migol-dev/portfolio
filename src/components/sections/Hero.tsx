@@ -1,117 +1,101 @@
 "use client";
 
 import { motion } from "framer-motion";
-import { ArrowRight } from "lucide-react";
-import { useEffect, useState } from "react";
+import { ArrowRight, Terminal, Sparkles, Command } from "lucide-react";
 import { Button } from "@/components/ui/button";
-
-const CODE_LINES = [
-  { indent: 0, text: "const dev = {" },
-  { indent: 1, text: 'name: "Miguel García",' },
-  { indent: 1, text: 'alias: "migol",' },
-  { indent: 1, text: 'stack: ["TypeScript", "Next.js", "Discord.js"],' },
-  { indent: 1, text: "shipsFast: true," },
-  { indent: 0, text: "};" },
-];
-
-function TypedCode() {
-  const [visibleLines, setVisibleLines] = useState(0);
-
-  useEffect(() => {
-    const timers: ReturnType<typeof setTimeout>[] = [];
-    CODE_LINES.forEach((_, i) => {
-      timers.push(setTimeout(() => setVisibleLines((v) => Math.max(v, i + 1)), 500 + i * 260));
-    });
-    return () => timers.forEach(clearTimeout);
-  }, []);
-
-  return (
-    <div className="rounded-lg border border-border bg-panel overflow-hidden shadow-2xl shadow-black/40">
-      <div className="flex items-center gap-1.5 border-b border-border bg-panel-2 px-3 py-2.5">
-        <span className="h-2.5 w-2.5 rounded-full bg-red/70" />
-        <span className="h-2.5 w-2.5 rounded-full bg-amber/70" />
-        <span className="h-2.5 w-2.5 rounded-full bg-green/70" />
-        <span className="ml-2 text-[11px] font-mono text-text-faint">whoami.ts</span>
-      </div>
-      <pre className="p-4 sm:p-5 text-[12px] sm:text-[13px] font-mono leading-relaxed overflow-x-auto whitespace-pre-wrap break-all">
-        {CODE_LINES.slice(0, visibleLines).map((line, i) => (
-          <div key={i} style={{ paddingLeft: `${line.indent * 1.25}rem` }}>
-            <span className="text-magenta">
-              {line.text.split(/(".*?")/).map((part, j) =>
-                part.startsWith('"') ? (
-                  <span key={j} className="text-green">
-                    {part}
-                  </span>
-                ) : (
-                  <span key={j} className="text-text-dim">
-                    {part}
-                  </span>
-                )
-              )}
-            </span>
-          </div>
-        ))}
-        {visibleLines >= CODE_LINES.length && (
-          <span className="inline-block w-2 h-4 bg-cyan align-middle animate-pulse ml-0.5" />
-        )}
-      </pre>
-    </div>
-  );
-}
+import { Badge } from "@/components/ui/badge";
+import { Kbd } from "@/components/ui/kbd";
+import { InteractiveSystemsStage } from "@/components/InteractiveSystemsStage";
+import { useCommandPalette } from "@/components/CommandPalette";
 
 export function Hero() {
+  const { toggle: toggleCommandPalette } = useCommandPalette();
+
   return (
     <section
       id="hero"
-      className="relative flex min-h-screen items-center pt-20 pb-16 sm:pt-24"
+      className="relative min-h-[calc(100vh-3.5rem)] flex items-center pt-24 pb-16 sm:pt-28 sm:pb-20 overflow-hidden"
     >
-      <div className="mx-auto max-w-6xl px-4 sm:px-6 w-full">
-        <div className="grid lg:grid-cols-[1.1fr_0.9fr] gap-10 lg:gap-12 items-start">
+      {/* Background architectural coordinate line */}
+      <div className="absolute top-1/4 inset-x-0 h-px bg-[var(--color-border)] pointer-events-none" />
+
+      <div className="mx-auto max-w-7xl px-4 sm:px-6 w-full relative z-10">
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-12 items-center">
+          {/* Left Column: 7 columns narrative */}
           <motion.div
-            initial={{ opacity: 0, y: 24 }}
+            initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
-            transition={{ duration: 0.6, ease: "easeOut" }}
+            transition={{ duration: 0.5, ease: [0.165, 0.84, 0.44, 1] }}
+            className="lg:col-span-7 space-y-6"
           >
-            <div className="inline-flex items-center gap-2 rounded-full border border-green/30 bg-green/10 px-3 py-1 text-xs font-mono text-green mb-5 sm:mb-6">
-              <span className="h-1.5 w-1.5 rounded-full bg-green animate-pulse" />
-              disponible para proyectos
+            {/* System Status Pill */}
+            <div className="flex flex-wrap items-center gap-2">
+              <Badge variant="live" className="py-1 px-2.5">
+                <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-status-live)] animate-pulse" />
+                SYS.READY // C/C++ &amp; FULL-STACK WEB — DISPONIBLE
+              </Badge>
+              <span className="text-[10px] font-mono text-[var(--color-text-faint)] hidden sm:inline">
+                COLIMA, MX · UTC-6
+              </span>
             </div>
 
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold leading-[1.05] mb-4 sm:mb-5">
-              Construyo software
-              <br />
-              que <span className="text-cyan">funciona bien</span>
-              <br />
-              y <span className="text-amber">se ve mejor</span>.
+            {/* Display Headline: Syne + Instrument Serif italic */}
+            <h1 className="text-3xl sm:text-4xl md:text-5xl xl:text-6xl font-bold tracking-[-0.035em] text-[var(--color-text)] leading-[1.08] font-[family-name:var(--font-display)]">
+              Del control de memoria en{" "}
+              <span className="font-[family-name:var(--font-editorial)] italic text-[var(--color-accent-bright)] font-normal">
+                C/C++
+              </span>{" "}
+              a interfaces reactivas en la{" "}
+              <span className="font-[family-name:var(--font-editorial)] italic text-[var(--color-text)] font-normal">
+                web
+              </span>
+              .
             </h1>
 
-            <p className="max-w-xl text-base sm:text-lg text-text-dim mb-6 sm:mb-8 leading-relaxed">
-              Soy Miguel García — desarrollador full stack especializado en{" "}
-              <span className="text-text">TypeScript</span> y{" "}
-              <span className="text-text">Next.js</span>, con raíces en el desarrollo de
-              bots de Discord. Bilingüe español/inglés, con 3+ años creando
-              herramientas que la gente realmente usa.
+            {/* Subheadline & Value Proposition */}
+            <p className="max-w-[58ch] text-sm sm:text-base text-[var(--color-text-dim)] leading-relaxed font-[family-name:var(--font-body)]">
+              Soy <span className="text-[var(--color-text)] font-semibold">Miguel García (MIGOL)</span> — desarrollador enfocado en ingeniería de sistemas con C/C++ y en aplicaciones web full stack con React, TypeScript, Vite y PostgreSQL. Bilingüe español/inglés, con criterio riguroso de arquitectura y diseño.
             </p>
 
-            <div className="flex flex-col sm:flex-row gap-3">
+            {/* CTAs with tactile micro-physics */}
+            <div className="flex flex-wrap items-center gap-3 pt-2">
               <Button asChild size="lg" className="w-full sm:w-auto">
-                <a href="#contact">
-                  Hablemos
-                  <ArrowRight className="h-4 w-4" />
+                <a href="#projects">
+                  <span>[01 // EXPLORAR PROYECTOS]</span>
+                  <ArrowRight className="w-3.5 h-3.5" strokeWidth={1.5} />
                 </a>
               </Button>
+
               <Button asChild variant="secondary" size="lg" className="w-full sm:w-auto">
-                <a href="#projects">Ver proyectos</a>
+                <a href="#contact">
+                  <span>[02 // CONTACTAR]</span>
+                </a>
               </Button>
+            </div>
+
+            {/* Micro Hint for Command Palette */}
+            <div className="pt-2 flex items-center gap-2 text-xs font-mono text-[var(--color-text-faint)]">
+              <span>Consejo:</span>
+              <button
+                type="button"
+                onClick={toggleCommandPalette}
+                className="inline-flex items-center gap-1.5 text-[var(--color-text-dim)] hover:text-[var(--color-accent)] transition-colors cursor-pointer"
+              >
+                <span>Presiona</span>
+                <Kbd>⌘K</Kbd>
+                <span className="hidden sm:inline">para abrir la paleta de comandos</span>
+              </button>
             </div>
           </motion.div>
 
+          {/* Right Column: 5 columns 3D Interactive Systems Stage */}
           <motion.div
-            initial={{ opacity: 0, y: 24, scale: 0.98 }}
-            animate={{ opacity: 1, y: 0, scale: 1 }}
-            transition={{ duration: 0.6, delay: 0.15, ease: "easeOut" }}
+            initial={{ opacity: 0, scale: 0.96 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ duration: 0.5, delay: 0.1, ease: [0.165, 0.84, 0.44, 1] }}
+            className="lg:col-span-5 w-full"
           >
-            <TypedCode />
+            <InteractiveSystemsStage />
           </motion.div>
         </div>
       </div>

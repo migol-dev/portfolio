@@ -281,38 +281,38 @@ StatusBar  [● g++20 / TS 5.x] [COG: INFP·SO/SX·9w1·946] [THEME] [scroll %] 
 ---
 
 ### FASE 3 — Sitio público · `@frontend-craft`
-- [ ] **T3.1** `InteractiveSystemsStage.tsx` [NEW]
-  - [ ] T3.1.1 Escena 3D con 3 planos `translateZ` y tilt por puntero (springs)
-  - [ ] T3.1.2 Selector de nodos: `0x01 C/C++ Native Core` (visual stack/heap) · `0x02 React+TS+Vite` (árbol de componentes) · `0x03 PostgreSQL` (tablas/relaciones)
-  - [ ] T3.1.3 Slider de carga 100–10,000 ops/s → velocidad de pulsos y contadores `tabular-nums`
-  - [ ] T3.1.4 Etiqueta visible `SIMULACIÓN` en las métricas
-  - [ ] T3.1.5 Conmutador `3D STAGE ⇄ SOURCE CODE` (pestañas `migol_core.cpp` y `useFinanceStore.ts`)
-  - [ ] T3.1.6 Fallback para táctil y `reduced-motion`
-  - [ ] T3.1.7 Accesibilidad: controles con label, navegables por teclado, `aria-live` discreto
-- [ ] **T3.2** `CommandPalette.tsx` [NEW]
-  - [ ] T3.2.1 Atajo `⌘K` / `Ctrl+K`, cierre con `Esc`, foco atrapado
-  - [ ] T3.2.2 Grupos: Navegación · Proyectos · Habilidades · Acciones (copiar email, copiar Discord, cambiar tema, ver perfil cognitivo, abrir admin)
-  - [ ] T3.2.3 Filtro en vivo con navegación ↑↓ / Enter
-- [ ] **T3.3** `Header.tsx`: hairline, índice 01–06 con estado activo (IntersectionObserver), switch de tema, trigger ⌘K, menú móvil con drawer
-- [ ] **T3.4** `StatusBar.tsx`: compilador/TS, badge COG (clic → `#about`), tema, scroll %, reloj `tabular-nums`; visible y compacta en móvil (decidir)
-- [ ] **T3.5** `Footer.tsx` y `Reveal.tsx`: easing propio; `SectionEyebrow` → `[0x02 // SOBRE MÍ]`
-- [ ] **T3.6** `Hero.tsx`: layout 7:5 con crosshairs, badge, titular Syne + Instrument Serif, CTA primario y secundario, hint ⌘K
-- [ ] **T3.7** `About.tsx`
-  - [ ] T3.7.1 Columna 5: manifiesto + telemetría (años programando, idiomas, ubicación `Colima, MX · UTC-6`)
-  - [ ] T3.7.2 Columna 7: narrativa 01/02/03 con hairlines
-  - [ ] T3.7.3 **Módulo `[02.B // COGNITIVE TOPOLOGY]`** con 4 nodos §3.2 (hover/clic/teclado, panel de detalle animado, `id="cognitive"`)
-- [ ] **T3.8** `Skills.tsx`: split 4:8, buscador y filtros (useState/useMemo), filas indexadas 0x01–0x0A, barra de nivel, detalle al expandir; sin tarjetas
-- [ ] **T3.9** `Projects.tsx` + `ProjectCard.tsx`
-  - [ ] T3.9.1 Índice numerado + filtros (Todos · C/C++ · React/Vite · TypeScript)
-  - [ ] T3.9.2 Stage sticky `lg:col-span-7 lg:sticky lg:top-24` con tilt
-  - [ ] T3.9.3 Slide-over con la ficha técnica, tags y enlaces (`rel="noopener noreferrer"`)
-  - [ ] T3.9.4 Estado vacío elegante
-- [ ] **T3.10** `Experience.tsx`: changelog 3:9 con despliegue
-- [ ] **T3.11** `Contact.tsx`: copiar en 1 clic (feedback `Check`), formulario con radios concéntricos, honeypot, errores accesibles
-- [ ] **✅ CHECKPOINT 3**
-  - [ ] Todos los controles con estado real (3D, slider, vista código, filtros, slide-over, ⌘K, tema, copiar, formulario)
-  - [ ] Sin errores de hidratación ni de consola
-  - [ ] ≥65 % del contenido sobre el canvas (revisión visual)
+- [x] **T3.1** `InteractiveSystemsStage.tsx` [NEW]
+  - [x] T3.1.1 Escena 3D con 3 planos `translateZ` y tilt por puntero (springs)
+  - [x] T3.1.2 Selector de nodos: `0x01 C/C++ Native Core` (visual stack/heap) · `0x02 React+TS+Vite` (árbol de componentes) · `0x03 PostgreSQL` (tablas/relaciones)
+  - [x] T3.1.3 Slider de carga 100–10,000 ops/s → velocidad de pulsos y contadores `tabular-nums`
+  - [x] T3.1.4 Etiqueta visible `SIMULACIÓN` en las métricas
+  - [x] T3.1.5 Conmutador `3D STAGE ⇄ SOURCE CODE` (pestañas `migol_core.cpp` y `useFinanceStore.ts`)
+  - [x] T3.1.6 Fallback para táctil y `reduced-motion`
+  - [x] T3.1.7 Accesibilidad: controles con label, navegables por teclado, `aria-live` discreto
+- [x] **T3.2** `CommandPalette.tsx` [NEW]
+  - [x] T3.2.1 Atajo `⌘K` / `Ctrl+K`, cierre con `Esc`, foco atrapado
+  - [x] T3.2.2 Grupos: Navegación · Proyectos · Habilidades · Acciones (copiar email, copiar Discord, cambiar tema, ver perfil cognitivo, abrir admin)
+  - [x] T3.2.3 Filtro en vivo con navegación ↑↓ / Enter
+- [x] **T3.3** `Header.tsx`: hairline, índice 01–06 con estado activo (IntersectionObserver), switch de tema, trigger ⌘K, menú móvil con drawer
+- [x] **T3.4** `StatusBar.tsx`: compilador/TS, badge COG (clic → `#about`), tema, scroll %, reloj `tabular-nums`; visible y compacta en móvil
+- [x] **T3.5** `Footer.tsx` y `Reveal.tsx`: easing propio; `SectionEyebrow` → `[0x02 // SOBRE MÍ]`
+- [x] **T3.6** `Hero.tsx`: layout 7:5 con crosshairs, badge, titular Syne + Instrument Serif, CTA primario y secundario, hint ⌘K
+- [x] **T3.7** `About.tsx`
+  - [x] T3.7.1 Columna 5: manifiesto + telemetría (años programando, idiomas, ubicación `Colima, MX · UTC-6`)
+  - [x] T3.7.2 Columna 7: narrativa 01/02/03 con hairlines
+  - [x] T3.7.3 **Módulo `[02.B // COGNITIVE TOPOLOGY]`** con 4 nodos §3.2 (hover/clic/teclado, panel de detalle animado, `id="cognitive"`)
+- [x] **T3.8** `Skills.tsx`: split 4:8, buscador y filtros (useState/useMemo), filas indexadas 0x01–0x0A, barra de nivel, detalle al expandir; sin tarjetas
+- [x] **T3.9** `Projects.tsx` + `ProjectCard.tsx`
+  - [x] T3.9.1 Índice numerado + filtros (Todos · C/C++ · React/Vite · TypeScript)
+  - [x] T3.9.2 Stage sticky `lg:col-span-7 lg:sticky lg:top-24` con tilt
+  - [x] T3.9.3 Slide-over con la ficha técnica, tags y enlaces (`rel="noopener noreferrer"`)
+  - [x] T3.9.4 Estado vacío elegante
+- [x] **T3.10** `Experience.tsx`: changelog 3:9 con despliegue
+- [x] **T3.11** `Contact.tsx`: copiar en 1 clic (feedback `Check`), formulario con radios concéntricos, honeypot, errores accesibles
+- [x] **✅ CHECKPOINT 3**
+  - [x] Todos los controles con estado real (3D, slider, vista código, filtros, slide-over, ⌘K, tema, copiar, formulario)
+  - [x] Sin errores de hidratación ni de consola
+  - [x] ≥65 % del contenido sobre el canvas (revisión visual)
 
 ---
 

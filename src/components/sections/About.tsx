@@ -1,44 +1,261 @@
+"use client";
+
+import React, { useState } from "react";
 import { Reveal, SectionEyebrow } from "@/components/Reveal";
+import { Badge } from "@/components/ui/badge";
+import {
+  Sparkles,
+  MapPin,
+  Languages,
+  Cpu,
+  ShieldCheck,
+  Binary,
+  Layers,
+  ChevronRight,
+} from "lucide-react";
+
+interface CognitiveNode {
+  id: string;
+  code: string;
+  title: string;
+  tag: string;
+  systemRole: string;
+  description: string;
+  workImpact: string;
+}
+
+const COGNITIVE_NODES: CognitiveNode[] = [
+  {
+    id: "infp",
+    code: "COG_01",
+    title: "INFP",
+    tag: "MBTI · Mediador (Fi-Ne-Si-Te)",
+    systemRole: "Arquitectura humana & sentido de propósito",
+    description:
+      "Orientado a conectar la lógica interna de los sistemas con una experiencia de usuario clara, empática y respetuosa. Atención meticulosa tanto al diseño visual como a la solidez de las bases de código.",
+    workImpact:
+      "Capacidad para concebir soluciones elegantes y mantener estándares éticos elevados en el software que produce.",
+  },
+  {
+    id: "sosx",
+    code: "COG_02",
+    title: "SO/SX",
+    tag: "Instinto · Social / Sexual (Uno a uno)",
+    systemRole: "Orientación comunitaria & lealtad técnica",
+    description:
+      "Combina la vocación de construir para comunidades reales y colectivos masivos (+5,000 usuarios) con una profunda lealtad y enfoque en colaboración técnica directa uno a uno.",
+    workImpact:
+      "Excelente sinergia en pair-programming, mentoría y comunicación transparente en equipos reducidos.",
+  },
+  {
+    id: "9w1",
+    code: "COG_03",
+    title: "9w1",
+    tag: "Eneatipo 9 ala 1 · Pacificador & Orden",
+    systemRole: "Calma ante incidentes & rigor estructurado",
+    description:
+      "Mantiene la serenidad y la cabeza fría en situaciones de alta presión o bugs críticos en producción, sumado al estándar deontológico innegociable de orden, modularidad y legibilidad (ala 1).",
+    workImpact:
+      "Mitiga conflictos técnicos de forma constructiva y prioriza estabilidad, testing y refactorizaciones limpias.",
+  },
+  {
+    id: "946",
+    code: "COG_04",
+    title: "946",
+    tag: "Tritipo 9-4-6 · 'The Seeker'",
+    systemRole: "Armonía + Identidad estética + Prevención de riesgos",
+    description:
+      "La convergencia entre la búsqueda de equilibrio (9), el afán por una voz estética y de diseño singular (4), y la anticipación analítica y preventiva ante casos límite y edge cases (6).",
+    workImpact:
+      "Diseño exhaustivo de casos extremos, validación de inputs y protección defensiva en APIs y memoria.",
+  },
+];
 
 export function About() {
+  const [selectedCog, setSelectedCog] = useState<string>("infp");
+  const activeNode = COGNITIVE_NODES.find((n) => n.id === selectedCog) || COGNITIVE_NODES[0];
+
   return (
-    <section id="about" className="py-16 sm:py-20 lg:py-28 border-t border-border">
-      <div className="mx-auto max-w-6xl px-4 sm:px-6">
+    <section id="about" className="py-20 sm:py-24 lg:py-32 border-t border-[var(--color-border)] relative">
+      <div className="mx-auto max-w-7xl px-4 sm:px-6">
         <Reveal>
-          <SectionEyebrow path="src/about.tsx" label="Sobre mí" />
+          <SectionEyebrow
+            index="0x02"
+            label="SOBRE MÍ"
+            sublabel="MANIFIESTO TÉCNICO &amp; TOPOLOGÍA COGNITIVA"
+          />
         </Reveal>
 
-        <div className="grid lg:grid-cols-[1fr_auto_1fr] gap-8 lg:gap-10 items-start mt-6">
-          <Reveal className="lg:col-span-1">
-            <p className="text-lg sm:text-xl lg:text-2xl text-text leading-snug font-medium">
-              Empecé automatizando comunidades de Discord por curiosidad.
-              Hoy construyo productos completos, del backend a la interfaz.
-            </p>
-          </Reveal>
+        {/* 5:7 Asymmetric Split */}
+        <div className="grid lg:grid-cols-12 gap-10 lg:gap-14 items-start mt-8">
+          {/* Left Column: 5 Cols -> Manifesto & Personal Telemetry */}
+          <div className="lg:col-span-5 space-y-8">
+            <Reveal delay={0.05}>
+              <div className="space-y-4">
+                <span className="text-[10px] font-mono uppercase tracking-[0.08em] text-[var(--color-accent)] font-semibold">
+                  02.A // MANIFIESTO
+                </span>
+                <p className="text-xl sm:text-2xl text-[var(--color-text)] font-semibold leading-snug font-[family-name:var(--font-display)]">
+                  La ingeniería en C/C++ enseña el respeto por cada byte; el desarrollo web moderno ofrece el lienzo para impactar a personas reales.
+                </p>
+                <p className="text-sm text-[var(--color-text-dim)] leading-relaxed">
+                  No concibo el software como una caja negra de dependencias sin entender qué ocurre debajo. Busco la convergencia entre el rendimiento nativo del metal y la fluidez de interfaces web accesibles y atractivas.
+                </p>
+              </div>
+            </Reveal>
 
-          <div className="hidden lg:block w-px bg-border self-stretch" />
-          <div className="w-full lg:hidden h-px bg-border my-6" aria-hidden="true" />
+            {/* Personal Telemetry Panel (1px hairlines, no card-itis) */}
+            <Reveal delay={0.1}>
+              <div className="border border-[var(--color-border)] rounded-[6px] bg-[var(--color-panel-2)] overflow-hidden font-mono text-xs">
+                <div className="px-3.5 py-2 border-b border-[var(--color-border)] bg-[var(--color-panel)] text-[10px] uppercase tracking-wider text-[var(--color-text-faint)] flex items-center justify-between">
+                  <span>TELEMETRÍA // DEV_PROFILE</span>
+                  <span className="text-[var(--color-status-live)]">● ACTIVO</span>
+                </div>
 
-          <Reveal delay={0.1} className="space-y-3 sm:space-y-4 text-sm sm:text-[15px] leading-relaxed">
-            <p>
-              Soy desarrollador full stack con base en Colima, México. Todo empezó
-              creando bots de moderación y gamificación para comunidades de Discord de
-              miles de miembros — ahí aprendí a diseñar sistemas que se sostienen bajo
-              uso real, no solo en teoría.
-            </p>
-            <p>
-              Desde entonces amplié mi stack hacia el desarrollo web completo:
-              interfaces con React y Next.js, APIs propias, y bases de datos
-              relacionales con PostgreSQL. Me interesa particularmente construir
-              herramientas prácticas — como una app de finanzas personales que hoy uso
-              yo mismo a diario.
-            </p>
-            <p>
-              Trabajo bilingüe en español e inglés, documento lo que construyo, y
-              disfruto tanto resolver el problema técnico como pulir el último detalle
-              visual.
-            </p>
-          </Reveal>
+                <div className="divide-y divide-[var(--color-border)]">
+                  <div className="px-3.5 py-2.5 flex items-center justify-between">
+                    <span className="text-[var(--color-text-dim)] flex items-center gap-1.5">
+                      <MapPin className="w-3.5 h-3.5 text-[var(--color-accent)]" strokeWidth={1.5} />
+                      Ubicación:
+                    </span>
+                    <span className="text-[var(--color-text)] font-medium">Colima, México (UTC-6)</span>
+                  </div>
+
+                  <div className="px-3.5 py-2.5 flex items-center justify-between">
+                    <span className="text-[var(--color-text-dim)] flex items-center gap-1.5">
+                      <Languages className="w-3.5 h-3.5 text-[var(--color-telemetry)]" strokeWidth={1.5} />
+                      Idiomas:
+                    </span>
+                    <span className="text-[var(--color-text)] font-medium">Español (Nativo) · Inglés (B2+)</span>
+                  </div>
+
+                  <div className="px-3.5 py-2.5 flex items-center justify-between">
+                    <span className="text-[var(--color-text-dim)] flex items-center gap-1.5">
+                      <Cpu className="w-3.5 h-3.5 text-[var(--color-accent)]" strokeWidth={1.5} />
+                      Núcleo Técnico:
+                    </span>
+                    <span className="text-[var(--color-text)] font-medium">C/C++ · React · Vite · TS · SQL</span>
+                  </div>
+
+                  <div className="px-3.5 py-2.5 flex items-center justify-between">
+                    <span className="text-[var(--color-text-dim)] flex items-center gap-1.5">
+                      <ShieldCheck className="w-3.5 h-3.5 text-[var(--color-status-live)]" strokeWidth={1.5} />
+                      Estándar:
+                    </span>
+                    <span className="text-[var(--color-text)] font-medium">Zero-Leak Mindset · Tipado Estricto</span>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
+
+          {/* Right Column: 7 Cols -> Narrative & Cognitive Topology */}
+          <div className="lg:col-span-7 space-y-10">
+            {/* Narrative 01/02/03 with 1px hairlines */}
+            <Reveal delay={0.15}>
+              <div className="space-y-6">
+                <span className="text-[10px] font-mono uppercase tracking-[0.08em] text-[var(--color-text-faint)]">
+                  02.B // TRAYECTORIA TÉCNICA
+                </span>
+
+                <div className="space-y-6 text-sm text-[var(--color-text-dim)] leading-relaxed">
+                  <div className="border-l-2 border-[var(--color-border-strong)] pl-4 space-y-1">
+                    <div className="text-xs font-mono font-semibold text-[var(--color-text)]">
+                      01 // El metal y la memoria (C / C++)
+                    </div>
+                    <p>
+                      Profundizo de forma continua en C y C++ moderno para dominar lo que ocurre a nivel de CPU, pila y montículo. Construir mis propias estructuras de datos y gestionar memoria manualmente me otorga una ventaja crítica al depurar o crear arquitecturas web exigentes.
+                    </p>
+                  </div>
+
+                  <div className="border-l-2 border-[var(--color-accent)] pl-4 space-y-1">
+                    <div className="text-xs font-mono font-semibold text-[var(--color-text)]">
+                      02 // La web reactiva (React, Vite &amp; TypeScript)
+                    </div>
+                    <p>
+                      Traslado ese rigor al frontend: desarrollo aplicaciones rápidas, orientadas a tipos, con Vite y React 19, utilizando stores ligeros como Zustand y manteniendo un diseño consistente sin librerías hinchadas ni abstracciones innecesarias.
+                    </p>
+                  </div>
+
+                  <div className="border-l-2 border-[var(--color-telemetry)] pl-4 space-y-1">
+                    <div className="text-xs font-mono font-semibold text-[var(--color-text)]">
+                      03 // Sistemas masivos y concurrencia (Node.js &amp; Discord.js)
+                    </div>
+                    <p>
+                      Mi experiencia gestionando comunidades y bots con decenas de miles de eventos en Discord.js v14 me enseñó a manejar concurrencia, rate limits y resiliencia ante caídas de red en producción real.
+                    </p>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+
+            {/* Cognitive Topology Module [02.C // COGNITIVE TOPOLOGY] */}
+            <Reveal delay={0.2}>
+              <div id="cognitive" className="border border-[var(--color-border)] rounded-[6px] bg-[var(--color-panel)] overflow-hidden transition-all duration-300">
+                <div className="px-4 py-3 border-b border-[var(--color-border)] bg-[var(--color-panel-2)] flex flex-wrap items-center justify-between gap-2">
+                  <div className="flex items-center gap-2">
+                    <Sparkles className="w-3.5 h-3.5 text-[var(--color-accent)]" strokeWidth={1.5} />
+                    <span className="text-xs font-mono uppercase tracking-wider text-[var(--color-text)] font-semibold">
+                      [02.C // COGNITIVE TOPOLOGY]
+                    </span>
+                  </div>
+                  <Badge variant="telemetry" className="text-[9px]">
+                    INFP · SO/SX · 9w1 · 946
+                  </Badge>
+                </div>
+
+                {/* Interactive Node Selector */}
+                <div className="grid grid-cols-2 sm:grid-cols-4 border-b border-[var(--color-border)] font-mono text-xs">
+                  {COGNITIVE_NODES.map((node) => {
+                    const isSelected = selectedCog === node.id;
+                    return (
+                      <button
+                        key={node.id}
+                        type="button"
+                        onClick={() => setSelectedCog(node.id)}
+                        className={`p-3 text-left transition-all duration-150 active:scale-[0.98] border-r border-b sm:border-b-0 border-[var(--color-border)] cursor-pointer ${
+                          isSelected
+                            ? "bg-white/[0.05] text-[var(--color-text)] font-semibold shadow-inner"
+                            : "text-[var(--color-text-dim)] hover:text-[var(--color-text)] hover:bg-white/[0.02]"
+                        }`}
+                      >
+                        <div className="text-[10px] text-[var(--color-accent)] font-semibold">
+                          {node.code}
+                        </div>
+                        <div className="text-xs font-bold text-[var(--color-text)]">
+                          {node.title}
+                        </div>
+                      </button>
+                    );
+                  })}
+                </div>
+
+                {/* Active Node Detail Stage */}
+                <div className="p-4 sm:p-5 space-y-3 bg-[var(--color-panel-2)]/40 font-mono">
+                  <div className="flex flex-wrap items-center justify-between gap-2">
+                    <div className="text-xs font-semibold text-[var(--color-accent-bright)]">
+                      {activeNode.tag}
+                    </div>
+                    <span className="text-[10px] text-[var(--color-text-faint)]">
+                      ROL: {activeNode.systemRole}
+                    </span>
+                  </div>
+
+                  <p className="text-xs text-[var(--color-text-dim)] leading-relaxed font-[family-name:var(--font-body)]">
+                    {activeNode.description}
+                  </p>
+
+                  <div className="pt-2 border-t border-[var(--color-border)] flex items-start gap-2 text-[11px] text-[var(--color-text)]">
+                    <span className="text-[var(--color-status-live)]">↳</span>
+                    <span>
+                      <strong className="text-[var(--color-text)] font-medium">Impacto en desarrollo:</strong>{" "}
+                      <span className="text-[var(--color-text-dim)]">{activeNode.workImpact}</span>
+                    </span>
+                  </div>
+                </div>
+              </div>
+            </Reveal>
+          </div>
         </div>
       </div>
     </section>

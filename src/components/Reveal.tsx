@@ -23,17 +23,20 @@ export function Reveal({
     return () => window.removeEventListener("resize", checkMobile);
   }, []);
 
-  const viewportMargin = isMobile ? "-50px" : "-80px";
-  const transitionDuration = shouldReduceMotion ? 0.01 : 0.5;
-  const initialY = shouldReduceMotion ? 0 : 20;
-  const animateY = shouldReduceMotion ? 0 : 0;
+  const viewportMargin = isMobile ? "-40px" : "-70px";
+  const transitionDuration = shouldReduceMotion ? 0.01 : 0.45;
+  const initialY = shouldReduceMotion ? 0 : 16;
 
   return (
     <motion.div
       initial={{ opacity: shouldReduceMotion ? 1 : 0, y: initialY }}
-      whileInView={{ opacity: 1, y: animateY }}
+      whileInView={{ opacity: 1, y: 0 }}
       viewport={{ once: true, margin: viewportMargin }}
-      transition={{ duration: transitionDuration, delay, ease: "easeOut" }}
+      transition={{
+        duration: transitionDuration,
+        delay,
+        ease: [0.165, 0.84, 0.44, 1], // easeOutQuart
+      }}
       className={className}
     >
       {children}
@@ -41,12 +44,33 @@ export function Reveal({
   );
 }
 
-export function SectionEyebrow({ path, label }: { path: string; label: string }) {
+export function SectionEyebrow({
+  index,
+  label,
+  sublabel,
+  path, // backwards-compatible if called with path
+}: {
+  index?: string;
+  label: string;
+  sublabel?: string;
+  path?: string;
+}) {
+  const displayIndex = index || path || "0x00";
+
   return (
-    <div className="flex items-center gap-3 mb-3">
-      <span className="font-mono text-xs text-text-faint">{path}</span>
-      <span className="h-px flex-1 max-w-8 bg-border-strong" />
-      <span className="font-mono text-xs uppercase tracking-widest text-cyan">{label}</span>
+    <div className="flex items-center gap-2.5 mb-3 font-mono text-[11px] select-none">
+      <span className="text-[var(--color-accent)] font-semibold">[{displayIndex} //</span>
+      <span className="uppercase tracking-[0.08em] font-medium text-[var(--color-text)]">
+        {label}
+      </span>
+      <span className="text-[var(--color-accent)] font-semibold">]</span>
+      {sublabel && (
+        <>
+          <span className="text-[var(--color-text-faint)]">·</span>
+          <span className="text-[var(--color-text-faint)] hidden sm:inline">{sublabel}</span>
+        </>
+      )}
+      <span className="h-px flex-1 max-w-16 bg-[var(--color-border-strong)] ml-2" />
     </div>
   );
 }
