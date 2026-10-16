@@ -322,16 +322,44 @@ export function Projects({ projects }: { projects: Project[] }) {
                     <div className="p-4 rounded-[6px] border border-[var(--color-border)] bg-[var(--color-panel-2)] space-y-3 font-mono">
                       <div className="flex flex-wrap items-center justify-between gap-2 border-b border-[var(--color-border)] pb-2 text-xs">
                         <div className="flex items-center gap-1.5 text-[var(--color-text)] font-semibold">
-                          <Workflow className="w-3.5 h-3.5 text-[var(--color-accent)]" strokeWidth={1.5} />
-                          <span>ESQUEMA DE ARQUITECTURA</span>
+                          <Workflow className="w-3.5 h-3.5 text-[var(--color-accent)] animate-pulse" strokeWidth={1.5} />
+                          <span>ESQUEMA DE ARQUITECTURA // PIPELINE VIVO</span>
                         </div>
-                        <span className="text-[10px] text-[var(--color-status-live)] bg-[var(--color-status-live)]/10 px-2 py-0.5 rounded border border-[var(--color-status-live)]/20">
-                          {archData.metric}
+                        <span className="flex items-center gap-1.5 text-[10px] text-[var(--color-status-live)] bg-[var(--color-status-live)]/10 px-2 py-0.5 rounded border border-[var(--color-status-live)]/20">
+                          <span className="w-1.5 h-1.5 rounded-full bg-[var(--color-status-live)] animate-pulse" />
+                          <span>{archData.metric}</span>
                         </span>
                       </div>
 
-                      <div className="text-[11px] text-[var(--color-text-faint)]">
-                        {archData.tagline}
+                      <div className="text-[11px] text-[var(--color-text-faint)] flex items-center justify-between">
+                        <span>{archData.tagline}</span>
+                        <span className="text-[9px] uppercase tracking-wider text-[var(--color-telemetry)] hidden sm:inline">
+                          DATA_FLOW: 60FPS
+                        </span>
+                      </div>
+
+                      {/* Animated SVG Bus / Conduit Flow Line */}
+                      <div className="w-full h-1 relative overflow-hidden py-0.5">
+                        <svg className="w-full h-1 overflow-visible" preserveAspectRatio="none">
+                          <line
+                            x1="0"
+                            y1="1"
+                            x2="100%"
+                            y2="1"
+                            stroke="var(--color-border-strong)"
+                            strokeWidth="1"
+                          />
+                          <line
+                            x1="0"
+                            y1="1"
+                            x2="100%"
+                            y2="1"
+                            stroke="var(--color-accent)"
+                            strokeWidth="1.5"
+                            strokeDasharray="6 6"
+                            className="animate-dash-flow opacity-80"
+                          />
+                        </svg>
                       </div>
 
                       {/* Interactive Pipeline Nodes */}
@@ -343,19 +371,34 @@ export function Projects({ projects }: { projects: Project[] }) {
                               key={node.id}
                               type="button"
                               onClick={() => setSelectedNodeId(node.id)}
-                              className={`p-2.5 rounded-[4px] border text-left transition-all duration-150 active:scale-[0.97] cursor-pointer flex flex-col justify-between min-h-[64px] ${
+                              className={`relative p-2.5 rounded-[4px] border text-left transition-all duration-150 active:scale-[0.97] cursor-pointer flex flex-col justify-between min-h-[68px] overflow-hidden ${
                                 isNodeActive
-                                  ? "bg-white/[0.08] border-[var(--color-accent)] shadow-sm"
-                                  : "bg-black/30 border-[var(--color-border)] hover:bg-white/[0.03]"
+                                  ? "text-[var(--color-text)] border-[var(--color-accent)] shadow-sm"
+                                  : "bg-black/30 text-[var(--color-text-dim)] border-[var(--color-border)] hover:bg-white/[0.03] hover:text-[var(--color-text)]"
                               }`}
                             >
-                              <div className="flex items-center justify-between text-[9px] text-[var(--color-text-faint)]">
-                                <span>{node.badge}</span>
+                              {isNodeActive && (
+                                <motion.span
+                                  layoutId="arch-active-node-bg"
+                                  className="absolute inset-0 bg-white/[0.07] border border-[var(--color-accent)] rounded-[4px]"
+                                  transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                                />
+                              )}
+                              <div className="flex items-center justify-between text-[9px] text-[var(--color-text-faint)] relative z-10">
+                                <span className="flex items-center gap-1">
+                                  {isNodeActive && (
+                                    <span className="relative flex h-1.5 w-1.5">
+                                      <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-[var(--color-accent)] opacity-75" />
+                                      <span className="relative inline-flex rounded-full h-1.5 w-1.5 bg-[var(--color-accent)]" />
+                                    </span>
+                                  )}
+                                  <span>{node.badge}</span>
+                                </span>
                                 {i < archData.nodes.length - 1 && (
                                   <ArrowRight className="w-2.5 h-2.5 opacity-50 hidden lg:block" />
                                 )}
                               </div>
-                              <div className="text-[11px] font-semibold text-[var(--color-text)] truncate mt-1">
+                              <div className="text-[11px] font-semibold truncate mt-1 relative z-10">
                                 {node.label}
                               </div>
                             </button>
@@ -363,16 +406,32 @@ export function Projects({ projects }: { projects: Project[] }) {
                         })}
                       </div>
 
-                      {/* Active Node Detail Drawer / Bar */}
-                      <div className="p-2.5 rounded-[4px] bg-black/40 border border-[var(--color-border)] text-xs text-[var(--color-text-dim)] flex items-start gap-2">
-                        <Info className="w-3.5 h-3.5 text-[var(--color-telemetry)] shrink-0 mt-0.5" strokeWidth={1.5} />
-                        <div>
-                          <span className="text-[var(--color-text)] font-semibold mr-1">
-                            {activeNodeInfo.label}:
-                          </span>
-                          <span>{activeNodeInfo.details}</span>
-                        </div>
-                      </div>
+                      {/* Active Node Detail Drawer / Inspection Stage with AnimatePresence */}
+                      <AnimatePresence mode="wait">
+                        <motion.div
+                          key={activeNodeInfo.id}
+                          initial={{ opacity: 0, y: 4 }}
+                          animate={{ opacity: 1, y: 0 }}
+                          exit={{ opacity: 0, y: -4 }}
+                          transition={{ duration: 0.15, ease: [0.165, 0.84, 0.44, 1] }}
+                          className="p-3 rounded-[4px] bg-black/40 border border-[var(--color-border)] text-xs text-[var(--color-text-dim)] flex items-start gap-2.5"
+                        >
+                          <Info className="w-3.5 h-3.5 text-[var(--color-telemetry)] shrink-0 mt-0.5" strokeWidth={1.5} />
+                          <div className="space-y-1 w-full">
+                            <div className="flex items-center justify-between">
+                              <span className="text-[var(--color-text)] font-semibold text-[11px]">
+                                {activeNodeInfo.label}
+                              </span>
+                              <span className="text-[9px] text-[var(--color-status-live)]">
+                                [ESTADO: VERIFICADO]
+                              </span>
+                            </div>
+                            <p className="text-[11px] leading-relaxed text-[var(--color-text-dim)] font-[family-name:var(--font-body)]">
+                              {activeNodeInfo.details}
+                            </p>
+                          </div>
+                        </motion.div>
+                      </AnimatePresence>
                     </div>
 
                     {/* Technical Stack Tags */}

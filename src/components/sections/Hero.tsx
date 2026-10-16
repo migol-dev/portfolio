@@ -40,22 +40,56 @@ export function Hero() {
               </span>
             </div>
 
-            {/* Display Headline: Syne + Instrument Serif italic with natural responsive wrapping */}
+            {/* Display Headline: Syne + Instrument Serif italic with kinetic staggered reveal and mobile wrapping */}
             <motion.h1
-              initial={{ opacity: 0, y: 12 }}
-              animate={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.45, ease: [0.165, 0.84, 0.44, 1] }}
+              initial="hidden"
+              animate="visible"
+              variants={{
+                hidden: { opacity: 0 },
+                visible: {
+                  opacity: 1,
+                  transition: {
+                    staggerChildren: 0.08,
+                    delayChildren: 0.04,
+                  },
+                },
+              }}
               className="text-2xl sm:text-4xl md:text-5xl xl:text-6xl font-bold tracking-[-0.035em] text-[var(--color-text)] leading-[1.12] font-[family-name:var(--font-display)]"
             >
-              Del control de memoria en{" "}
-              <span className="font-[family-name:var(--font-editorial)] italic text-[var(--color-accent-bright)] font-normal">
-                C/C++
-              </span>{" "}
-              a interfaces reactivas en la{" "}
-              <span className="font-[family-name:var(--font-editorial)] italic text-[var(--color-text)] font-normal">
-                web
-              </span>
-              .
+              <motion.span
+                variants={{
+                  hidden: { opacity: 0, y: 12 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.165, 0.84, 0.44, 1] } },
+                }}
+              >
+                Del control de memoria en{" "}
+              </motion.span>
+              <motion.span
+                variants={{
+                  hidden: { opacity: 0, y: 12 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.165, 0.84, 0.44, 1] } },
+                }}
+                className="font-[family-name:var(--font-editorial)] italic text-[var(--color-accent-bright)] font-normal whitespace-nowrap"
+              >
+                C/C++{" "}
+              </motion.span>
+              <motion.span
+                variants={{
+                  hidden: { opacity: 0, y: 12 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.165, 0.84, 0.44, 1] } },
+                }}
+              >
+                a interfaces reactivas en la{" "}
+              </motion.span>
+              <motion.span
+                variants={{
+                  hidden: { opacity: 0, y: 12 },
+                  visible: { opacity: 1, y: 0, transition: { duration: 0.4, ease: [0.165, 0.84, 0.44, 1] } },
+                }}
+                className="font-[family-name:var(--font-editorial)] italic text-[var(--color-text)] font-normal whitespace-nowrap"
+              >
+                web.
+              </motion.span>
             </motion.h1>
 
             {/* Subheadline & Value Proposition */}
