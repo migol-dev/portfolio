@@ -3,6 +3,8 @@ import { Syne, Instrument_Serif, Plus_Jakarta_Sans, JetBrains_Mono } from "next/
 import { Toaster } from "sonner";
 import { ThemeProvider } from "@/components/ThemeProvider";
 import { CommandPaletteProvider } from "@/components/CommandPalette";
+import { CustomCursor } from "@/components/CustomCursor";
+import { ArchitecturalBackground } from "@/components/ArchitecturalBackground";
 import "./globals.css";
 
 const syne = Syne({
@@ -102,6 +104,8 @@ export default function RootLayout({
       <body className="min-h-full flex flex-col relative z-[1] bg-[var(--color-void)] text-[var(--color-text-dim)] font-[family-name:var(--font-body)]">
         <ThemeProvider>
           <CommandPaletteProvider>
+            <ArchitecturalBackground />
+            <CustomCursor />
             {children}
             <Toaster
               theme="dark"
