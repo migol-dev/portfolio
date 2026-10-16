@@ -3,6 +3,7 @@
 import { motion, useReducedMotion } from "framer-motion";
 import type { ReactNode } from "react";
 import { useEffect, useState } from "react";
+import { CipherText } from "@/components/ui/cipher-text";
 
 export function Reveal({
   children,
@@ -48,29 +49,53 @@ export function SectionEyebrow({
   index,
   label,
   sublabel,
-  path, // backwards-compatible if called with path
+  path,
 }: {
   index?: string;
   label: string;
   sublabel?: string;
   path?: string;
 }) {
+  const shouldReduceMotion = useReducedMotion();
   const displayIndex = index || path || "0x00";
 
   return (
-    <div className="flex items-center gap-2.5 mb-3 font-mono text-[11px] select-none">
-      <span className="text-[var(--color-accent)] font-semibold">[{displayIndex} {"//"}</span>
+    <div className="flex items-center gap-2 mb-3 font-mono text-[11px] select-none">
+      {/* Reactive animated coordinate cross */}
+      <motion.span
+        initial={{ rotate: 0 }}
+        whileInView={{ rotate: shouldReduceMotion ? 0 : 90 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.6, ease: [0.165, 0.84, 0.44, 1] }}
+        className="text-[var(--color-accent)] font-semibold text-xs leading-none select-none inline-block origin-center"
+      >
+        +
+      </motion.span>
+
+      <span className="text-[var(--color-accent)] font-semibold">[</span>
+      <CipherText text={displayIndex} className="text-[var(--color-accent)] font-semibold" />
+      <span className="text-[var(--color-accent)] font-semibold">{"//"}</span>
+
       <span className="uppercase tracking-[0.08em] font-medium text-[var(--color-text)]">
         {label}
       </span>
       <span className="text-[var(--color-accent)] font-semibold">]</span>
+
       {sublabel && (
         <>
           <span className="text-[var(--color-text-faint)]">·</span>
           <span className="text-[var(--color-text-faint)] hidden sm:inline">{sublabel}</span>
         </>
       )}
-      <span className="h-px flex-1 max-w-16 bg-[var(--color-border-strong)] ml-2" />
+
+      {/* Expanding hairline separator */}
+      <motion.span
+        initial={{ scaleX: 0, originX: 0 }}
+        whileInView={{ scaleX: 1 }}
+        viewport={{ once: true }}
+        transition={{ duration: 0.5, delay: 0.15, ease: [0.165, 0.84, 0.44, 1] }}
+        className="h-px flex-1 max-w-16 bg-[var(--color-border-strong)] ml-2"
+      />
     </div>
   );
 }

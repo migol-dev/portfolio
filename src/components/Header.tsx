@@ -1,11 +1,13 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { motion } from "framer-motion";
 import { Terminal, Palette, Command, Menu } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { useTheme } from "@/components/ThemeProvider";
 import { useCommandPalette } from "@/components/CommandPalette";
 import { Kbd } from "@/components/ui/kbd";
+import { CipherText } from "@/components/ui/cipher-text";
 import { Sheet, SheetContent, SheetTrigger, SheetHeader, SheetTitle } from "@/components/ui/sheet";
 
 const NAV_ITEMS = [
@@ -68,7 +70,7 @@ export function Header() {
             <div className="p-1 rounded-[4px] bg-white/[0.04] border border-[var(--color-border)] group-hover:border-[var(--color-accent)] transition-colors">
               <Terminal className="w-3.5 h-3.5 text-[var(--color-accent)]" strokeWidth={1.5} />
             </div>
-            <span>[0xMIGOL]</span>
+            <CipherText text="[0xMIGOL]" scrambleOnHover={true} />
             <span className="hidden lg:inline text-[10px] text-[var(--color-text-faint)] font-normal">
               {"// C++ & FULL-STACK"}
             </span>
@@ -85,14 +87,21 @@ export function Header() {
                   className={cn(
                     "relative px-3 py-1.5 text-xs font-mono transition-colors rounded-[4px]",
                     isActive
-                      ? "text-[var(--color-text)] font-medium bg-white/[0.04] border border-[var(--color-border-strong)]"
+                      ? "text-[var(--color-text)] font-medium"
                       : "text-[var(--color-text-dim)] hover:text-[var(--color-text)] hover:bg-white/[0.02]"
                   )}
                 >
-                  <span className="text-[10px] text-[var(--color-accent)] mr-1.5 opacity-80">
+                  {isActive && (
+                    <motion.span
+                      layoutId="header-active-nav"
+                      className="absolute inset-0 rounded-[4px] bg-white/[0.05] border border-[var(--color-border-strong)]"
+                      transition={{ type: "spring", stiffness: 380, damping: 30 }}
+                    />
+                  )}
+                  <span className="relative z-10 text-[10px] text-[var(--color-accent)] mr-1.5 opacity-80">
                     {item.index}
                   </span>
-                  {item.label}
+                  <span className="relative z-10">{item.label}</span>
                 </a>
               );
             })}
