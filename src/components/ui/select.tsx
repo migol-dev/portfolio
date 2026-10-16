@@ -15,14 +15,14 @@ const SelectTrigger = React.forwardRef<
   <SelectPrimitive.Trigger
     ref={ref}
     className={cn(
-      "flex h-11 w-full items-center justify-between rounded-md border border-border-strong bg-panel px-3 py-2 text-sm text-text focus:outline-none focus:border-cyan",
+      "flex h-11 w-full items-center justify-between rounded-[6px] border border-[var(--color-border)] bg-[var(--color-panel-2)] px-3.5 py-2 text-sm text-[var(--color-text)] transition-colors focus:outline-hidden focus:border-[var(--color-accent)] focus:ring-1 focus:ring-[var(--color-accent)]/30",
       className
     )}
     {...props}
   >
     {children}
     <SelectPrimitive.Icon asChild>
-      <ChevronDown className="h-4 w-4 text-text-dim" />
+      <ChevronDown className="w-4 h-4 text-[var(--color-text-dim)]" strokeWidth={1.5} />
     </SelectPrimitive.Icon>
   </SelectPrimitive.Trigger>
 ));
@@ -37,7 +37,8 @@ const SelectContent = React.forwardRef<
       ref={ref}
       position={position}
       className={cn(
-        "z-50 min-w-[8rem] overflow-hidden rounded-md border border-border-strong bg-panel shadow-lg",
+        "z-50 min-w-[8rem] overflow-hidden rounded-[6px] border border-[var(--color-border)] bg-[var(--color-panel-2)] shadow-xl",
+        "data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95",
         className
       )}
       {...props}
@@ -55,14 +56,14 @@ const SelectItem = React.forwardRef<
   <SelectPrimitive.Item
     ref={ref}
     className={cn(
-      "relative flex cursor-pointer select-none items-center rounded px-8 py-1.5 text-sm text-text-dim outline-none data-[highlighted]:bg-cyan/10 data-[highlighted]:text-cyan",
+      "relative flex cursor-pointer select-none items-center rounded-[4px] px-8 py-2 text-xs font-mono uppercase tracking-wider text-[var(--color-text-dim)] outline-hidden transition-colors data-[highlighted]:bg-[var(--color-accent)]/10 data-[highlighted]:text-[var(--color-accent-bright)]",
       className
     )}
     {...props}
   >
     <span className="absolute left-2 flex h-3.5 w-3.5 items-center justify-center">
       <SelectPrimitive.ItemIndicator>
-        <Check className="h-4 w-4" />
+        <Check className="w-3.5 h-3.5 text-[var(--color-accent)]" strokeWidth={1.5} />
       </SelectPrimitive.ItemIndicator>
     </span>
     <SelectPrimitive.ItemText>{children}</SelectPrimitive.ItemText>

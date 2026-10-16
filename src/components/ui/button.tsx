@@ -4,23 +4,30 @@ import { cva, type VariantProps } from "class-variance-authority";
 import { cn } from "@/lib/utils";
 
 const buttonVariants = cva(
-  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-md text-sm font-medium font-mono tracking-tight transition-colors duration-200 disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-4 [&_svg]:shrink-0",
+  "inline-flex items-center justify-center gap-2 whitespace-nowrap rounded-[6px] text-xs font-mono uppercase tracking-[0.06em] font-medium transition-all duration-150 ease-[cubic-bezier(0.4,0,0.2,1)] active:scale-[0.97] disabled:pointer-events-none disabled:opacity-50 [&_svg]:pointer-events-none [&_svg]:size-3.5 [&_svg]:shrink-0 cursor-pointer select-none",
   {
     variants: {
       variant: {
         default:
-          "bg-cyan text-void hover:bg-cyan/90 shadow-[0_0_0_1px_rgba(92,207,230,0.4)]",
+          "bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-bright)] shadow-xs",
+        primary:
+          "bg-[var(--color-accent)] text-white hover:bg-[var(--color-accent-bright)] shadow-xs",
         secondary:
-          "bg-transparent text-text border border-border-strong hover:border-cyan hover:text-cyan",
-        ghost: "bg-transparent text-text-dim hover:text-text hover:bg-panel-2",
-        destructive: "bg-red/10 text-red border border-red/30 hover:bg-red/20",
-        link: "text-cyan underline-offset-4 hover:underline",
+          "bg-transparent text-[var(--color-text)] border border-[var(--color-border)] hover:border-[var(--color-accent)] hover:text-[var(--color-accent)] hover:bg-white/[0.02]",
+        ghost:
+          "bg-transparent text-[var(--color-text-dim)] hover:text-[var(--color-text)] hover:bg-white/[0.04]",
+        destructive:
+          "bg-[var(--color-danger)]/10 text-[var(--color-danger)] border border-[var(--color-danger)]/30 hover:bg-[var(--color-danger)]/20",
+        outline:
+          "border border-[var(--color-border)] bg-[var(--color-panel-2)] text-[var(--color-text)] hover:bg-[var(--color-panel-hover)]",
+        link:
+          "text-[var(--color-accent)] underline-offset-4 hover:underline p-0 h-auto",
       },
       size: {
-        default: "h-11 px-5 py-2",
-        sm: "h-9 px-3 text-xs",
-        lg: "h-12 px-8 text-base",
-        icon: "h-10 w-10",
+        default: "min-h-[44px] sm:min-h-[38px] px-4 py-2",
+        sm: "min-h-[36px] sm:min-h-[32px] px-3 text-[11px]",
+        lg: "min-h-[48px] sm:min-h-[44px] px-6 text-sm",
+        icon: "h-10 w-10 min-h-[40px] p-0",
       },
     },
     defaultVariants: {

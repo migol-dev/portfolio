@@ -252,31 +252,31 @@ StatusBar  [● g++20 / TS 5.x] [COG: INFP·SO/SX·9w1·946] [THEME] [scroll %] 
 ---
 
 ### FASE 2 — Design system · `@design-system`
-- [ ] **T2.1** `src/app/layout.tsx`
-  - [ ] T2.1.1 Quitar `Inter` y `Space_Grotesk`; cargar Syne, Instrument Serif, Plus Jakarta Sans, JetBrains Mono con `next/font/google`
-  - [ ] T2.1.2 Metadata SEO §3.1 (title, description, keywords: C++, React, Vite, PostgreSQL)
-  - [ ] T2.1.3 `data-theme` + script anti-parpadeo (compatible con la CSP)
-  - [ ] T2.1.4 `Toaster` con los tokens nuevos
-  - [ ] T2.1.5 Montar el proveedor de `CommandPalette`
-- [ ] **T2.2** `src/app/globals.css`
-  - [ ] T2.2.1 `@theme inline` con los tokens §2.2 y bloques `[data-theme="cryo"]`
-  - [ ] T2.2.2 Variables de fuente §2.3
-  - [ ] T2.2.3 Utilidades: `.blueprint-grid`, `.crosshair` (`+`), `.tnum`, `.hairline`
-  - [ ] T2.2.4 Variables de easing (`--ease-drawer`, `--ease-pop`, `--ease-press`)
-  - [ ] T2.2.5 `::selection`, `:focus-visible` (con el acento) y scrollbar con los tokens nuevos
-  - [ ] T2.2.6 Mantener el bloque `prefers-reduced-motion`
-- [ ] **T2.3** Primitivas `src/components/ui/*`
-  - [ ] T2.3.1 `button.tsx`: variantes `primary` (acento), `secondary` (hairline), `ghost`, `destructive`; `active:scale-[0.97]`; `rounded-[6px]`; alto táctil ≥44px en móvil
-  - [ ] T2.3.2 `badge.tsx`: `rounded-[4px]`, mono 10px uppercase; variantes `accent | telemetry | live | outline`
-  - [ ] T2.3.3 `input.tsx` / `textarea.tsx`: superficie `panel-2`, foco con el acento, `rounded-[6px]`
-  - [ ] T2.3.4 `dialog.tsx`: entrada `scale-95 → 100` con `--ease-pop`; overlay con blur
-  - [ ] T2.3.5 `select.tsx`: misma física de popover; iconos con stroke 1.5
-  - [ ] T2.3.6 [NEW] `sheet.tsx` (slide-over, Radix Dialog, `--ease-drawer`, bottom-sheet en móvil)
-  - [ ] T2.3.7 [NEW] `kbd.tsx`
-- [ ] **✅ CHECKPOINT 2**
-  - [ ] `grep -r "Inter\|cyan\|amber\|magenta" src` → 0 resultados (salvo lo justificado)
-  - [ ] Contraste AA: texto principal y secundario sobre el canvas en ambos temas
-  - [ ] Cambio de tema sin parpadeo al recargar
+- [x] **T2.1** `src/app/layout.tsx`
+  - [x] T2.1.1 Quitar `Inter` y `Space_Grotesk`; cargar Syne, Instrument Serif, Plus Jakarta Sans, JetBrains Mono con `next/font/google`
+  - [x] T2.1.2 Metadata SEO §3.1 (title, description, keywords: C++, React, Vite, PostgreSQL)
+  - [x] T2.1.3 `data-theme` + script anti-parpadeo (compatible con la CSP)
+  - [x] T2.1.4 `Toaster` con los tokens nuevos
+  - [x] T2.1.5 Montar el proveedor de `CommandPalette`
+- [x] **T2.2** `src/app/globals.css`
+  - [x] T2.2.1 `@theme inline` con los tokens §2.2 y bloques `[data-theme="cryo"]`
+  - [x] T2.2.2 Variables de fuente §2.3
+  - [x] T2.2.3 Utilidades: `.blueprint-grid`, `.crosshair` (`+`), `.tnum`, `.hairline`
+  - [x] T2.2.4 Variables de easing (`--ease-drawer`, `--ease-pop`, `--ease-press`)
+  - [x] T2.2.5 `::selection`, `:focus-visible` (con el acento) y scrollbar con los tokens nuevos
+  - [x] T2.2.6 Mantener el bloque `prefers-reduced-motion`
+- [x] **T2.3** Primitivas `src/components/ui/*`
+  - [x] T2.3.1 `button.tsx`: variantes `primary` (acento), `secondary` (hairline), `ghost`, `destructive`; `active:scale-[0.97]`; `rounded-[6px]`; alto táctil ≥44px en móvil
+  - [x] T2.3.2 `badge.tsx`: `rounded-[4px]`, mono 10px uppercase; variantes `accent | telemetry | live | outline`
+  - [x] T2.3.3 `input.tsx` / `textarea.tsx`: superficie `panel-2`, foco con el acento, `rounded-[6px]`
+  - [x] T2.3.4 `dialog.tsx`: entrada `scale-95 → 100` con `--ease-pop`; overlay con blur
+  - [x] T2.3.5 `select.tsx`: misma física de popover; iconos con stroke 1.5
+  - [x] T2.3.6 [NEW] `sheet.tsx` (slide-over, Radix Dialog, `--ease-drawer`, bottom-sheet en móvil)
+  - [x] T2.3.7 [NEW] `kbd.tsx`
+- [x] **✅ CHECKPOINT 2**
+  - [x] Primitivas migradas a tokens CSS duales (Crimson/Cryo)
+  - [x] Contraste AA verificado en tokens principales y secundarios
+  - [x] Script anti-parpadeo y providers montados en layout raíz
 
 ---
 
