@@ -243,7 +243,6 @@ export function InteractiveSystemsStage() {
                   initial={{ opacity: shouldReduceMotion ? 1 : 0, z: 0 }}
                   animate={{ opacity: 1, z: 0 }}
                   transition={{ duration: 0.5, ease: [0.165, 0.84, 0.44, 1] }}
-                  style={{ transform: "translateZ(0px)" }}
                   className="absolute inset-0 rounded-[6px] border border-[var(--color-border-strong)] bg-black/40 p-4 flex flex-col justify-between backdrop-blur-xs"
                 >
                   <div className="flex items-center justify-between text-[10px] font-mono text-[var(--color-text-faint)]">
@@ -271,7 +270,6 @@ export function InteractiveSystemsStage() {
                   initial={{ opacity: shouldReduceMotion ? 1 : 0, z: shouldReduceMotion ? 28 : 0 }}
                   animate={{ opacity: 1, z: 28 }}
                   transition={{ duration: 0.6, delay: 0.1, ease: [0.165, 0.84, 0.44, 1] }}
-                  style={{ transform: "translateZ(28px)" }}
                   className="absolute inset-x-3 inset-y-3 rounded-[6px] border border-[var(--color-border-strong)] bg-[var(--color-panel)]/90 p-3.5 flex flex-col justify-between shadow-xl"
                 >
                   <div className="flex items-center justify-between">
@@ -342,7 +340,6 @@ export function InteractiveSystemsStage() {
                   initial={{ opacity: shouldReduceMotion ? 1 : 0, z: shouldReduceMotion ? 56 : 0 }}
                   animate={{ opacity: 1, z: 56 }}
                   transition={{ duration: 0.65, delay: 0.2, ease: [0.165, 0.84, 0.44, 1] }}
-                  style={{ transform: "translateZ(56px)" }}
                   className="absolute right-4 bottom-4 pointer-events-none"
                 >
                   <div className="px-2.5 py-1 rounded-[4px] bg-black/90 border border-[var(--color-border-strong)] text-[10px] font-mono text-[var(--color-text)] shadow-lg flex items-center gap-1.5">

@@ -26,16 +26,18 @@ export function CipherText({
   const timerRef = useRef<NodeJS.Timeout | null>(null);
 
   const startScramble = useCallback(() => {
-    if (shouldReduceMotion || isScramblingRef.current) {
-      setDisplayText(text);
+    if (shouldReduceMotion) {
       return;
+    }
+
+    if (timerRef.current) {
+      clearInterval(timerRef.current);
+      timerRef.current = null;
     }
 
     isScramblingRef.current = true;
     const startTime = Date.now();
     const length = text.length;
-
-    if (timerRef.current) clearInterval(timerRef.current);
 
     timerRef.current = setInterval(() => {
       const elapsed = Date.now() - startTime;
@@ -57,7 +59,10 @@ export function CipherText({
       setDisplayText(result);
 
       if (progress >= 1) {
-        if (timerRef.current) clearInterval(timerRef.current);
+        if (timerRef.current) {
+          clearInterval(timerRef.current);
+          timerRef.current = null;
+        }
         setDisplayText(text);
         isScramblingRef.current = false;
       }
@@ -67,12 +72,16 @@ export function CipherText({
   useEffect(() => {
     startScramble();
     return () => {
-      if (timerRef.current) clearInterval(timerRef.current);
+      if (timerRef.current) {
+        clearInterval(timerRef.current);
+        timerRef.current = null;
+      }
+      isScramblingRef.current = false;
     };
   }, [startScramble]);
 
   const handleMouseEnter = () => {
-    if (scrambleOnHover) {
+    if (scrambleOnHover && !isScramblingRef.current) {
       startScramble();
     }
   };

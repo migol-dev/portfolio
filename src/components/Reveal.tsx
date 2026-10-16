@@ -65,9 +65,10 @@ export function SectionEyebrow({
       <motion.span
         initial={{ rotate: 0 }}
         whileInView={{ rotate: shouldReduceMotion ? 0 : 90 }}
+        whileHover={{ rotate: shouldReduceMotion ? 0 : 180, scale: 1.2 }}
         viewport={{ once: true }}
-        transition={{ duration: 0.6, ease: [0.165, 0.84, 0.44, 1] }}
-        className="text-[var(--color-accent)] font-semibold text-xs leading-none select-none inline-block origin-center"
+        transition={{ duration: 0.4, ease: [0.165, 0.84, 0.44, 1] }}
+        className="text-[var(--color-accent)] font-semibold text-xs leading-none select-none inline-block origin-center cursor-default"
       >
         +
       </motion.span>
