@@ -157,7 +157,7 @@ export function Skills({ skills }: { skills: Skill[] }) {
                 ) : (
                   filteredSkills.map((skill, index) => {
                     const Icon = resolveIcon(skill.icon);
-                    const hexIndex = `0x0${index + 1}`.slice(-4);
+                    const hexIndex = `0x${(index + 1).toString(16).toUpperCase().padStart(2, "0")}`;
                     const config = LEVEL_CONFIG[skill.level] || LEVEL_CONFIG.INTERMEDIO;
                     const isExpanded = expandedId === skill.id;
 

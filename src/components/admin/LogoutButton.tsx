@@ -14,11 +14,12 @@ export function LogoutButton() {
 
   return (
     <button
+      type="button"
       onClick={handleLogout}
-      className="flex items-center gap-2.5 rounded-md px-2.5 py-2 text-sm text-text-dim hover:bg-red/10 hover:text-red transition-colors text-left"
+      className="flex items-center gap-2.5 rounded-[6px] px-3 py-2 text-xs font-mono text-[var(--color-text-dim)] hover:bg-[var(--color-danger)]/10 hover:text-[var(--color-danger)] active:scale-[0.97] transition-all text-left cursor-pointer"
     >
-      <LogOut className="h-4 w-4" />
-      Cerrar sesión
+      <LogOut className="w-3.5 h-3.5" strokeWidth={1.5} />
+      <span>Cerrar sesión</span>
     </button>
   );
 }

@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -50,7 +50,7 @@ export function ProjectForm({
     handleSubmit,
     reset,
     setValue,
-    watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<ProjectInput>({
     resolver: zodResolver(projectSchema),
@@ -103,7 +103,7 @@ export function ProjectForm({
     }
   }
 
-  const status = watch("status");
+  const status = useWatch({ control, name: "status" });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

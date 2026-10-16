@@ -222,10 +222,10 @@ export function CommandPaletteProvider({ children }: { children: React.ReactNode
 
   // Manejo de flechas ↑↓ y Enter
   const handleKeyDown = (e: React.KeyboardEvent) => {
-    if (e.key === "ArrowDown") {
+    if (e.key === "ArrowDown" || (e.key === "Tab" && !e.shiftKey)) {
       e.preventDefault();
       setSelectedIndex((prev) => (prev + 1) % Math.max(1, filtered.length));
-    } else if (e.key === "ArrowUp") {
+    } else if (e.key === "ArrowUp" || (e.key === "Tab" && e.shiftKey)) {
       e.preventDefault();
       setSelectedIndex((prev) => (prev - 1 + filtered.length) % Math.max(1, filtered.length));
     } else if (e.key === "Enter") {

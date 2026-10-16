@@ -1,6 +1,6 @@
 "use client";
 
-import { useForm } from "react-hook-form";
+import { useForm, useWatch } from "react-hook-form";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useEffect } from "react";
 import { toast } from "sonner";
@@ -39,7 +39,7 @@ export function SkillForm({
     handleSubmit,
     reset,
     setValue,
-    watch,
+    control,
     formState: { errors, isSubmitting },
   } = useForm<SkillInput>({ resolver: zodResolver(skillSchema), defaultValues: EMPTY });
 
@@ -83,9 +83,9 @@ export function SkillForm({
     }
   }
 
-  const category = watch("category");
-  const level = watch("level");
-  const icon = watch("icon");
+  const category = useWatch({ control, name: "category" });
+  const level = useWatch({ control, name: "level" });
+  const icon = useWatch({ control, name: "icon" });
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>

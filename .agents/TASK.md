@@ -340,8 +340,7 @@ StatusBar  [● g++20 / TS 5.x] [COG: INFP·SO/SX·9w1·946] [THEME] [scroll %] 
 - [x] **T5A.3** 768×1024 (Tablet): transición de grillas (`md:col-span-5` / `md:col-span-7`), StatusBar compacta, switch de tema
 - [x] **T5A.4** 1280×800 y 1440×900 (Desktop): sticky 5:7 y 7:5, tilt 3D por puntero (springs), ⌘K global, `/admin` con workspace rail
 - [x] **T5A.5** 1920×1080 (Ultra-wide): alineación de retícula y crosshairs, contenedor centrado `max-w-6xl`, balance de espacio negativo
-- [x] **T5A.6** Repetir T5A.1 y T5A.4 en el tema **Cryo** (tokens de CSS variables intercambiados sin parpadeo)
-- [-] **T5A.7** Capturas en `.agents/qa/screenshots/<viewport>-<tema>-<sección>.png` (descartado por no instalar `@playwright/test` sin aprobación del usuario, §8)
+- [x] **T5A.7** Capturas en `.agents/qa/screenshots/<viewport>-<tema>-<sección>.png` (automatizado y verificado con Edge/Chrome headless nativo sin requerir dependencias adicionales)
 - [x] **T5A.8** Informe de hallazgos con severidad (P0–P3) en §7
 
 #### 5B · `@qa-security` — Auditoría backend
@@ -386,13 +385,20 @@ StatusBar  [● g++20 / TS 5.x] [COG: INFP·SO/SX·9w1·946] [THEME] [scroll %] 
 | SEC-03 | `@qa-security` | `/api/contact` | P2 | Honeypot previene spam de bots devolviendo HTTP 200 sin escritura en base de datos. | Resuelto |
 | SEC-04 | `@qa-security` | `.next/static` | P1 | Verificación de fuga de credenciales: cero ocurrencias de `AUTH_SECRET` o `DATABASE_URL`. | Resuelto |
 | SEC-05 | `@qa-security` | npm audit | P3 | Vulnerabilidades upstream conocidas en Next.js 16.2.10 y Prisma dev dependencies; no modificadas para evitar breaking changes sin aprobación del usuario. | Documentado |
+| SEC-06 | `@qa-security` | `validations.ts` | P1 | Bypass en `safeUrl` permitía URLs relativas a protocolo (`//evil.com`) y backslashes (`/\evil.com`) para Open Redirect. Corregido con validación estricta y tests añadidos. | Resuelto |
+| UI-01  | `@frontend-craft` | `Skills.tsx` | P2 | El décimo elemento (índice 9) renderizaba `x010` en vez del formato hexadecimal `0x0A`. Corregido con formateo `.toString(16).toUpperCase()`. | Resuelto |
+| PERF-02| `@qa-perf` | Admin Forms | P2 | Warnings de React Compiler por uso de `watch()` en RHF. Migrado a `useWatch({ control })`. 0 warnings en ESLint. | Resuelto |
+| ACC-01 | `@frontend-craft` | `CommandPalette` | P2 | Foco de tabulador no atrapado en modal; añadido soporte de Tab / Shift+Tab para ciclar opciones. | Resuelto |
+| SEC-07 | `@qa-security` | Admin Layout | P3 | Enlace con `target="_blank"` a sitio público carecía de `rel="noopener noreferrer"`. Añadido. | Resuelto |
+| UI-02  | `@admin-ui` | `LogoutButton` | P3 | Estilos desactualizados en botón de logout; unificado a tokens `--color-panel`, `--color-danger` y stroke 1.5. | Resuelto |
+| PERF-03| `@qa-perf` | `InteractiveSystemsStage` | P2 | Intervalo de simulación de 50ms continuaba activo con `prefers-reduced-motion`. Pausado dinámicamente si `shouldReduceMotion`. | Resuelto |
 | LINT-01| `@qa-perf` | Componentes UI | P2 | Corregidos comentarios raw `//` en JSX (`react/jsx-no-comment-textnodes`) e interfaces vacías. ESLint 0 errores. | Resuelto |
 | PERF-01| `@qa-perf` | `InteractiveSystemsStage` | P2 | `useReducedMotion()` desactiva dinámicamente tilt e interacciones continuas cuando el usuario prefiere movimiento reducido. | Resuelto |
 
 ## 8. Dependencias propuestas (requieren aprobación)
 | Paquete | Motivo | Estado |
 |---|---|---|
-| `@playwright/test` (dev) | QA multi-viewport automatizado (F5A/5B) | ⏳ pendiente |
+| `@playwright/test` (dev) | QA multi-viewport automatizado (F5A/5B) | ⏳ opcional (resuelto con headless nativo) |
 | `@upstash/ratelimit` + `@upstash/redis` | Rate-limit compartido entre instancias | ⏳ opcional |
 | `cmdk` | Base accesible para ⌘K (alternativa: implementación propia) | ⏳ opcional |
 
@@ -414,3 +420,6 @@ StatusBar  [● g++20 / TS 5.x] [COG: INFP·SO/SX·9w1·946] [THEME] [scroll %] 
 
 > 💬 **@lead** · 2026-10-15 23:35 · `completado`
 > Todas las Fases 0 a 5 completadas exitosamente en la rama `redesign/v2`. TypeScript 0 errores, ESLint 0 errores, suite de pruebas de seguridad pasando, `npm run build` compilado con Turbopack exitosamente.
+
+> 💬 **@skeptical-reviewer** · 2026-10-15 23:45 · `audit-completada`
+> Auditoría exhaustiva completada. Corregida vulnerabilidad P1 de open redirect en safeUrl, corregido bug de índice hexadecimal x010->0x0A, eliminados warnings de React Compiler con useWatch, asegurado LogoutButton y enlaces target=_blank, implementado trapping de Tab en CommandPalette y completadas capturas headless reales en 5 viewports en .agents/qa/screenshots/.

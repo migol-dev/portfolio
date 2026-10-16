@@ -33,13 +33,14 @@ export function InteractiveSystemsStage() {
   const rotateX = useSpring(mouseY, springConfig);
   const rotateY = useSpring(mouseX, springConfig);
 
-  // Dynamic simulation tick
+  // Dynamic simulation tick (pauses when user prefers reduced motion)
   useEffect(() => {
+    if (shouldReduceMotion) return;
     const interval = setInterval(() => {
       setLiveCounter((prev) => prev + Math.floor(opsRate / 20));
     }, 50);
     return () => clearInterval(interval);
-  }, [opsRate]);
+  }, [opsRate, shouldReduceMotion]);
 
   const handleMouseMove = (e: React.MouseEvent<HTMLDivElement>) => {
     if (shouldReduceMotion || !containerRef.current) return;

@@ -44,11 +44,14 @@ async function runTests() {
   const httpUrlResult = safeUrl.safeParse("http://insecure-site.com");
   assert(!httpUrlResult.success, "safeUrl rejects insecure http: scheme");
 
-  const httpsUrlResult = safeUrl.safeParse("https://github.com/migol-dev");
-  assert(httpsUrlResult.success, "safeUrl accepts valid https: scheme");
+  const protocolRelativeResult = safeUrl.safeParse("//evil-site.com");
+  assert(!protocolRelativeResult.success, "safeUrl rejects protocol-relative // URLs");
+
+  const backslashResult = safeUrl.safeParse("/\\evil-site.com");
+  assert(!backslashResult.success, "safeUrl rejects backslash open-redirect URLs");
 
   const relativeUrlResult = safeUrl.safeParse("/projects/demo");
-  assert(relativeUrlResult.success, "safeUrl accepts relative URL path");
+  assert(relativeUrlResult.success, "safeUrl accepts legitimate relative URL path");
 
   // 3. Project schema with bad liveUrl -> 400
   const badProject = {

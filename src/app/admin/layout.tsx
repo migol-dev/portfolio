@@ -77,6 +77,7 @@ export default function AdminLayout({ children }: { children: React.ReactNode })
           <Link
             href="/"
             target="_blank"
+            rel="noopener noreferrer"
             className="flex items-center gap-2.5 rounded-[6px] px-3 py-2 text-xs font-mono text-[var(--color-text-dim)] hover:bg-white/[0.02] hover:text-[var(--color-text)] transition-colors"
           >
             <ExternalLink className="w-3.5 h-3.5 text-[var(--color-text-faint)]" strokeWidth={1.5} />

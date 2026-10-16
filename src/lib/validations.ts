@@ -16,7 +16,12 @@ export const safeUrl = z
       ) {
         return false;
       }
-      if (val.startsWith("/")) return true;
+      if (val.startsWith("/")) {
+        if (val.startsWith("//") || val.includes("\\")) {
+          return false;
+        }
+        return true;
+      }
       try {
         const parsed = new URL(val);
         return parsed.protocol === "https:";
